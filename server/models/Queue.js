@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const queueSchema = new Schema({
-    users: { type: Schema.Types.ObjectId, ref: 'user' },
+    users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     },
     {
         toJSON: {
@@ -21,4 +21,4 @@ queueSchema.virtual('userCount').get(function () {
 
 const Queue = model("Queue", queueSchema);
 
-module.exports = queueSchema;
+module.exports = Queue;
