@@ -26,7 +26,7 @@ function Login() {
         variables: { ...formState },
       });
 
-      //Set the value of the
+      //Set the value of the token in local storage to the token received.
       Auth.login(data.login.token);
     } catch (err) {
       console.log(err);
