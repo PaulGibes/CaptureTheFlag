@@ -7,6 +7,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/pages/Home";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -31,7 +32,7 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <Routes>
-          {/* {put rest of app here if we want to use cache for anything} */}
+        <Route path="/" element={<Home />} />
         </Routes>
       </Router>
     </ApolloProvider>
