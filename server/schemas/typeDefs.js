@@ -11,13 +11,20 @@ const typeDefs = gql`
     hasFlag: Boolean
   }
 
+  type Auth {
+    token: ID!
+    user: User
+  }
+
   type Query {
     users: [User]!
     user(userId: ID!): User
+    me: User
   }
 
   type Mutation {
     addUser(username: String!, password: String!): User
+    login(username: String!, password: String!): Auth
   }
 `;
 
