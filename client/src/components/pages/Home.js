@@ -38,7 +38,7 @@ function Home() {
             </h3>
 
             <div className="flex gap-10 justify-center py-10">
-              <Button href="/choose-game"> Login to Play</Button>
+              <Button href="/login"> Login to Play</Button>
             </div>
           </div>
         </section>
