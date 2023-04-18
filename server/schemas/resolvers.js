@@ -23,7 +23,7 @@ const resolver = {
   Mutation: {
     addUser: async (parent, { username, password }) => {
       const user = User.create({ username, password });
-      const token = signToken(profile);
+      const token = signToken(user);
 
       return { user, token };
     },
