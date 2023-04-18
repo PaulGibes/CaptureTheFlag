@@ -12,6 +12,6 @@ const UserSchema = new Schema({
 //automatically encrypts "password" field.
 UserSchema.plugin(require("mongoose-bcrypt"));
 
-const User = model("User", userSchema);
+const User = model("User", UserSchema);
 
 module.exports = User;
