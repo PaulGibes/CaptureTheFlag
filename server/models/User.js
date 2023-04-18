@@ -1,13 +1,17 @@
 const { Schema, model } = require("mongoose");
-const bcrypt = require("bcrypt");
 
-const userSchema = new Schema({
-  name: {},
-  email: {},
-  password: {},
-  //high scores or other things here.
+const UserSchema = new Schema({
+  username: { type: String, required: true, unique: true, trim: true },
+  password: { type: String, required: true, trim: true },
+  wins: { type: Number },
+  loses: { type: Number },
+  position: { type: String },
+  hasFlag: { type: Boolean },
 });
 
-const User = model("User", userSchema);
+//automatically encrypts "password" field.
+UserSchema.plugin(require("mongoose-bcrypt"));
+
+const User = model("User", UserSchema);
 
 module.exports = User;
