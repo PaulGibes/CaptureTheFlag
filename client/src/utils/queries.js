@@ -26,3 +26,13 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
+export const QUERY_SCORES = gql`
+  query allUsers {
+    scores {
+      _id
+      username
+      wins
+    }
+  }
+`;
