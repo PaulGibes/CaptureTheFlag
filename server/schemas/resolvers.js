@@ -8,8 +8,8 @@ const resolver = {
       return User.find();
     },
 
-    user: async (parent, { userId }) => {
-      return User.findOne({ _id: userId });
+    user: async (parent, { username }) => {
+      return User.findOne({ username: username });
     },
 
     me: async (parent, args, context) => {
@@ -52,13 +52,13 @@ const resolver = {
       const user = await User.findOne({ username: username });
 
       if (!user) {
-        throw new AuthenticationError("Username of password incorrect.");
+        throw new AuthenticationError("Username incorrect.");
       }
 
       const passwordCheck = await user.isCorrectPassword(password);
 
       if (!passwordCheck) {
-        throw new AuthenticationError("Username of password incorrect.");
+        throw new AuthenticationError("Password incorrect.");
       }
 
       const token = signToken(user);

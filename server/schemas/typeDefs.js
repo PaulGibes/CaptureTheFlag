@@ -1,4 +1,4 @@
- const { gql } = require("apollo-server-express");
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type User {
@@ -36,14 +36,14 @@ const typeDefs = gql`
     teamTwoCount: Int
   }
 
-  type Queue{
+  type Queue {
     users: [User!]
     userCount: Int
   }
 
   type Query {
     users: [User]!
-    user(userId: ID!): User
+    user(username: String!): User
     me: User
     games: [Game]!
     game(gameId: ID!): Game
@@ -51,9 +51,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addUser(username: String!, password: String!): User
+    addUser(username: String!, password: String!): Auth
     login(username: String!, password: String!): Auth
-    createGame(status: String! teamOne: [String!]): Game
+    createGame(status: String!, teamOne: [String!]): Game
     joinGame(users: [String!]): Queue
     exitQueue(_id: String!): Queue
     fillGame(gameId: ID!): Game
@@ -61,4 +61,4 @@ const typeDefs = gql`
   }
 `;
 
- module.exports = typeDefs;
+module.exports = typeDefs;

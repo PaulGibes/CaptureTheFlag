@@ -1,9 +1,9 @@
 import React from "react";
 import "../../styles/globals.css";
 import ParticlesBg from 'particles-bg';
-import { BsFillMoonStarsFill } from "react-icons/bs";
-import Button from "../Button";
-import { useState } from "react";
+ import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion"
+
 import LoginModal from "../LoginModal";
 import Logo from "../../assets/images/capturetheflag.jpg";
 
@@ -36,6 +36,7 @@ function Home() {
           
           {modalOn && (
             <LoginModal setModalOn={setModalOn} setChoice={setChoice} />
+            
           )}
           
         </section>
