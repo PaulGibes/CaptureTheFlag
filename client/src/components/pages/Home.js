@@ -1,30 +1,46 @@
 import React from "react";
 import "../../styles/globals.css";
+import ParticlesBg from 'particles-bg';
 import { BsFillMoonStarsFill } from "react-icons/bs";
 import Button from "../Button";
 import { useState } from "react";
+import LoginModal from "../LoginModal";
+import Logo from "../../assets/images/capturetheflag.jpg";
 
 function Home() {
   const [darkMode, setDarkMode] = useState(false);
-  return (
-    <div className={darkMode ? "dark" : ""}>
-      <div className="bg-white px-10 md:px-20 lg:px-40 dark:bg-gray-900">
-        <section className="min-h-screen">
-          
-          <div className="text-center p-10">
-            <h2 className="text-4xl py-2 text-teal-400 font-medium md:text-6xl ">
-              The Outsiders
-            </h2>
-            <h3 className="text-2xl py-2 md:text-3xl dark:text-white">
-              Capture the Flag WebGame
-            </h3>
+  const [modalOn, setModalOn] = useState(false);
+  const [choice, setChoice] = useState(false);
 
-            <div className="flex gap-10 justify-center py-10">
-              <Button href="/login"> Login to Play</Button>
+  const clicked = () => {
+    setModalOn(true);
+  };
+  return (
+    
+    <div className={darkMode ? "dark" : ""}>
+      <ParticlesBg className= "min-h-screen" type="square" bg={true} />
+      <div className="px-10 md:px-20 lg:px-40 dark:bg-gray-900">
+      
+        <section className="min-h-screen">
+          <img
+          className="mx-auto logo-style"
+          src={Logo}
+          alt="capture flag logo"
+        />
+          <div
+              onClick={clicked}
+              className="  cursor-pointer justify-center w-1/3 mx-auto bg-blue-400 p-4 m-6 rounded-md text-white text-center"
+            >
+              Log In to Play
             </div>
-          </div>
+          
+          {modalOn && (
+            <LoginModal setModalOn={setModalOn} setChoice={setChoice} />
+          )}
+          
         </section>
       </div>
+      
     </div>
   );
 }

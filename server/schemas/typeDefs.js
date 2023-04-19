@@ -20,6 +20,7 @@ const typeDefs = gql`
     users: [User]!
     user(userId: ID!): User
     me: User
+    scores: [User]!
   }
 
   type Mutation {

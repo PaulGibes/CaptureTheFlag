@@ -18,6 +18,18 @@ const resolver = {
       }
       throw new AuthenticationError("You must be logged in to view this page");
     },
+
+    scores: async () => {
+      const scores = await User.find();
+
+      const byWins = scores.slice(0);
+
+      byWins.sort(function (a, b) {
+        return a.wins - b.wins;
+      });
+
+      return byWins.reverse();
+    },
   },
 
   Mutation: {

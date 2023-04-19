@@ -11,3 +11,8 @@
   box-sizing: border-box;
   font-family: "Poppins", "Plus Jakarta Sans", sans-serif;
 }
+
+.logo-style {
+  border-radius: 30%;
+
+}
