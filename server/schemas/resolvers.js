@@ -28,7 +28,7 @@ const resolver = {
         return a.wins - b.wins;
       });
 
-      return byWins;
+      return byWins.reverse();
     },
   },
 

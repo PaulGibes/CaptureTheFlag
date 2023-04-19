@@ -1,0 +1,34 @@
+[
+  {
+    "username": "frodo",
+    "password": "theOneRing",
+    "wins": 1,
+    "loses": 0,
+    "position": "",
+    "hasFlag": true
+  },
+  {
+    "username": "sauron",
+    "password": "alsoTheOneRing",
+    "wins": 0,
+    "loses": 2,
+    "position": "",
+    "hasFlag": false
+  },
+  {
+    "username": "aragorn",
+    "password": "theOneTrueKing",
+    "wins": 10,
+    "loses": 2,
+    "position": "",
+    "hasFlag": false
+  },
+  {
+    "username": "legolas",
+    "password": "princeBitch",
+    "wins": 100,
+    "loses": 0,
+    "position": "",
+    "hasFlag": false
+  }
+]
