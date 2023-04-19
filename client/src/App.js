@@ -36,7 +36,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-      <NavBar />
+        <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/choose-game" element={<ChooseGame />} />

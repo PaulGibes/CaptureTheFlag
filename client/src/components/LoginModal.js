@@ -20,17 +20,17 @@ const LoginModal = ({ setModalOn, setChoice }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     //set the form state equal to itself and then add the value to the name of the target(username or password)
     setFormState({
       ...formState,
       [name]: value,
     });
+    console.log(formState);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formState);
     try {
       const { data } = await login({
         variables: { ...formState },
@@ -41,6 +41,11 @@ const LoginModal = ({ setModalOn, setChoice }) => {
     } catch (err) {
       console.log(err);
     }
+
+    setFormState({
+      username: "",
+      password: "",
+    });
   };
 
   return (
@@ -53,7 +58,7 @@ const LoginModal = ({ setModalOn, setChoice }) => {
           </h2>
           <div className="flex flex-col">
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" action="#" method="POST">
+              <form className="space-y-6" onSubmit={handleFormSubmit}>
                 <div>
                   <label
                     htmlFor="name"
@@ -64,9 +69,10 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                   <div className="mt-2">
                     <input
                       id="name"
-                      name="name"
+                      name="username"
                       type="text"
-                      required
+                      value={formState.username}
+                      onChange={handleChange}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -94,18 +100,21 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                       id="password"
                       name="password"
                       type="password"
+                      value={formState.password}
+                      onChange={handleChange}
                       autoComplete="current-password"
-                      required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <Button type="submit" href="/choose-game">
-                    Log in to Play
-                  </Button>
-                </div>
+                <button
+                  className="btn btn-block btn-info"
+                  style={{ cursor: "pointer" }}
+                  type="submit"
+                >
+                  Submit
+                </button>
               </form>
 
               <p className="mt-2 text-center text-sm text-gray-500">
