@@ -27,6 +27,16 @@ export const QUERY_ME = gql`
   }
 `;
 
+export const QUERY_SCORES = gql`
+  query allUsers {
+    scores {
+      _id
+      username
+      wins
+    }
+  }
+`;
+
 export const GET_GAME = gql`
 query Query($gameId: ID!) {
   game(gameId: $gameId) {

@@ -4,8 +4,7 @@ import { LOGIN_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 import { useState } from "react";
 import Button from "../Button";
-import Logo from "../../assets/images/capturetheflag.jpg"
-
+import Logo from "../../assets/images/capturetheflag.jpg";
 
 function Login() {
   const [formState, setFormState] = useState({ username: "", password: "" });
@@ -40,7 +39,7 @@ function Login() {
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto logo-style"
-          src= {Logo}
+          src={Logo}
           alt="capture flag logo"
         />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -62,7 +61,7 @@ function Login() {
                 id="name"
                 name="name"
                 type="text"
-                 required
+                required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
@@ -104,29 +103,56 @@ function Login() {
               Choose your Character
             </label>
             <fieldset className=" gap-10">
-  
-  <input id="character1" className="peer/1" type="radio" name="status" checked />
-  <label for="character1" className="peer-checked/character1:text-sky-500">Character 1</label>
+              <input
+                id="character1"
+                className="peer/1"
+                type="radio"
+                name="status"
+                checked
+              />
+              <label
+                for="character1"
+                className="peer-checked/character1:text-sky-500"
+              >
+                Character 1
+              </label>
 
-  <input id="character2" className="peer/2" type="radio" name="status" />
-  <label for="character2" className="peer-checked/character2:text-sky-500">Character 2</label>
-  <input id="character3" className="peer/3" type="radio" name="status" />
-  <label or="character3" className="peer-checked/character3:text-sky-500">Character 3</label>
-   
- <br/>
-  <div className="hidden peer-checked/1:block flex-1 ">This is awesome!</div>
-  <div className="hidden peer-checked/2:block">Lets Go!</div>
-  <div className="hidden peer-checked/3:block">Are you ready?!</div>
-   
-</fieldset>
-             
+              <input
+                id="character2"
+                className="peer/2"
+                type="radio"
+                name="status"
+              />
+              <label
+                for="character2"
+                className="peer-checked/character2:text-sky-500"
+              >
+                Character 2
+              </label>
+              <input
+                id="character3"
+                className="peer/3"
+                type="radio"
+                name="status"
+              />
+              <label
+                or="character3"
+                className="peer-checked/character3:text-sky-500"
+              >
+                Character 3
+              </label>
+
+              <br />
+              <div className="hidden peer-checked/1:block flex-1 ">
+                This is awesome!
+              </div>
+              <div className="hidden peer-checked/2:block">Lets Go!</div>
+              <div className="hidden peer-checked/3:block">Are you ready?!</div>
+            </fieldset>
           </div>
 
           <div>
-            <Button
-              type="submit"
-              href="/choose-game"
-            >
+            <Button type="submit" href="/choose-game">
               Log in to Play
             </Button>
           </div>

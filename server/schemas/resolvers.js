@@ -84,6 +84,18 @@ const resolver = {
 
           return game;
         });
+      },   
+
+    scores: async () => {
+      const scores = await User.find();
+
+      const byWins = scores.slice(0);
+
+      byWins.sort(function (a, b) {
+        return a.wins - b.wins;
+      });
+
+      return byWins.reverse();
     },
   },
 
