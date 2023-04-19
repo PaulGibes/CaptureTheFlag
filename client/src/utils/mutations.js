@@ -23,3 +23,38 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const CREATE_GAME = gql`
+mutation Mutation($status: String!, $teamOne: [String!]) {
+  createGame(status: $status, teamOne: $teamOne) {
+    _id
+    teamTwoCount
+    teamOneCount
+    status
+  }
+}
+`;
+
+export const JOIN_QUEUE = gql`
+mutation Mutation($users: [String!]) {
+  joinGame(users: $users) {
+    userCount
+    users {
+      _id
+    }
+  }
+}
+`;
+
+export const EXIT_QUEUE = gql`
+mutation Mutation($id: String!) {
+  exitQueue(_id: $id) {
+    userCount
+    users {
+      _id
+    }
+  }
+}
+`;
+
+
