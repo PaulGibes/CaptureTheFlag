@@ -16,16 +16,47 @@ const typeDefs = gql`
     user: User
   }
 
+  type Bot {
+    _id: ID
+    botName: String
+    position: String
+    team: String
+  }
+
+  type Game {
+    _id: ID
+    status: String!
+    teamOne: [User!]
+    teamTwo: [User!]
+    flagOne: String
+    flagTwo: String
+    bots: [Bot]!
+    winner: Int
+    teamOneCount: Int
+    teamTwoCount: Int
+  }
+
+  type Queue {
+    users: [User!]
+    userCount: Int
+  }
+
   type Query {
     users: [User]!
-    user(userId: ID!): User
+    user(username: String!): User
     me: User
+    games: [Game]!
+    game(gameId: ID!): Game
+    fillGame(gameId: ID!): Game
     scores: [User]!
   }
 
   type Mutation {
-    addUser(username: String!, password: String!): User
+    addUser(username: String!, password: String!): Auth
     login(username: String!, password: String!): Auth
+    createGame(status: String!, teamOne: [String!]): Game
+    joinGame(users: [String!]): Queue
+    exitQueue(_id: String!): Queue
   }
 `;
 
