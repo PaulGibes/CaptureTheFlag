@@ -26,6 +26,65 @@ const resolver = {
     game: async (parent, { gameId }) => {
       return Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne");
     },
+
+    fillGame: async (parent, { gameId }) => {
+      const game = await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
+        .then((game) => {
+          //console.log(game)
+          var teamOne = game.teamOneCount;
+          var teamTwo = game.teamTwoCount;
+
+          Queue.findOne()
+            .then((queue) => {
+              //console.log(queue.userCount);
+              var userCount = queue.userCount;
+              var recordAdded = 0;
+
+              while (userCount > 0 && (teamOne < 3 || teamTwo < 3)) {
+                var updateData = {};
+
+                console.log(queue.users[recordAdded])
+                if (teamTwo < teamOne) {
+                  updateData = { $addToSet: { teamTwo: queue.users[recordAdded] } }
+                  teamTwo++;
+                } else if (teamOne <= teamTwo) {
+                  updateData = { $addToSet: { teamOne: queue.users[recordAdded] } }
+                  teamOne++;
+                }
+                recordAdded++;
+
+                //add the user to a team
+                Game.findOneAndUpdate(
+                  {
+                    _id: gameId
+                  },
+                  updateData,
+                  {
+                    new: true
+                  })
+                  .then((updatedGame) => {
+                    
+                  });
+
+                //remove user from queue
+                Queue.findOneAndUpdate(
+                  {
+
+                  },
+                  {
+                    $pull: { users: { _id: queue.users[recordAdded]}},
+                  },
+                  {
+                    new: true,
+                  }
+                  ).then((response)=>{console.log(response)});
+                userCount--;
+              }
+            })
+
+          return game;
+        });
+    },
   },
 
   Mutation: {
@@ -66,6 +125,22 @@ const resolver = {
         },
         {
           $addToSet: { users },
+        },
+        {
+          new: true,
+        }
+      );
+
+      return queue;
+    },
+
+    exitQueue: async (parent, { _id }) => {
+      const queue = Queue.findOneAndUpdate(
+        {
+
+        },
+        {
+          $pull: { users: _id },
         },
         {
           new: true,

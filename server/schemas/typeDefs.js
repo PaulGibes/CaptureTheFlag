@@ -32,6 +32,8 @@ const typeDefs = gql`
     flagTwo: String
     bots: [Bot]!
     winner: Int
+    teamOneCount: Int
+    teamTwoCount: Int
   }
 
   type Queue{
@@ -53,6 +55,7 @@ const typeDefs = gql`
     login(username: String!, password: String!): Auth
     createGame(status: String! teamOne: [String!]): Game
     joinGame(users: [String!]): Queue
+    exitQueue(_id: String!): Queue
   }
 `;
 
