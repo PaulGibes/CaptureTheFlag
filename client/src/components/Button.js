@@ -1,4 +1,3 @@
- 
 function Button(props) {
   return (
     <a
@@ -7,7 +6,7 @@ function Button(props) {
     >
       {props.children}
     </a>
-  )
+  );
 }
 
 export default Button;
