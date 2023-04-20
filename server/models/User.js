@@ -16,6 +16,11 @@ UserSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
 
+  if (this.isNew) {
+    this.wins = 0;
+    this.loses = 0;
+  }
+
   next();
 });
 
