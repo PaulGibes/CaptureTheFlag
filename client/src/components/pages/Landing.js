@@ -1,47 +1,71 @@
 import React from "react";
 import "../../styles/globals.css";
-import HowToPlayModal from "../../modal";
+import { Modal, Carousel, Button } from 'flowbite-react'
 import { useState } from "react";
-
-// const styles = {
-//   //   card: {
-//   //     margin: 20,
-//   //     background: "#e8eaf6",
-//   //   },
-//   //   heading: {
-//   //     background: "#3f51b5",
-//   //     minHeight: 50,
-//   //     lineHeight: 3.5,
-//   //     fontSize: "1.2rem",
-//   //     color: "white",
-//   //     padding: "0 20px",
-//   //   },
-//   //   content: {
-//   //     padding: 20,
-//   //   },
-// };
+import img1 from "../../assets/images/1.jpg"
 
 function Landing() {
-  const [modalOn, setModalOn] = useState(false);
-  const [choice, setChoice] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const clicked = () => {
-    setModalOn(true);
+  const onClick = () => {
+    setShowModal(true);
+  };
+  const onClose = () => {
+    setShowModal(false);
   };
 
   return (
     <>
-      <div className="flex justify-center">
-        <div
-          onClick={clicked}
-          className="flex cursor-pointer justify-center w-1/3 bg-blue-400 p-4 m-6 rounded-md text-white"
-        >
-          How to Play
+      <React.Fragment>
+        <div className="flex justify-center">
+          <Button onClick={onClick}>
+            How To Play
+          </Button>
         </div>
-        {modalOn && (
-          <HowToPlayModal setModalOn={setModalOn} setChoice={setChoice} />
-        )}
-      </div>
+        <Modal
+          show={showModal} onClose={onClose} size="3xl"
+        >
+          <Modal.Header>
+            How To Play
+          </Modal.Header>
+          <Modal.Body>
+            <div className="space-y-6">
+
+              <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+                <Carousel slide={false}>
+                  <img
+                    src={img1}
+                    alt="..."
+                  />
+                  <img
+                    src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
+                    alt="..."
+                  />
+                  <img
+                    src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
+                    alt="..."
+                  />
+                  <img
+                    src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
+                    alt="..."
+                  />
+                  <img
+                    src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
+                    alt="..."
+                  />
+                </Carousel>
+              </div>
+
+            </div>
+          </Modal.Body>
+          <Modal.Footer className="flex justify-center">
+            <Button onClick={onClose}>
+              I'm ready to play!
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </React.Fragment>
+
     </>
   );
 }

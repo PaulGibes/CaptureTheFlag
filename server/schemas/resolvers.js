@@ -25,66 +25,7 @@ const resolver = {
 
     game: async (parent, { gameId }) => {
       return Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne");
-    },
-
-    fillGame: async (parent, { gameId }) => {
-      const game = await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
-        .then((game) => {
-          //console.log(game)
-          var teamOne = game.teamOneCount;
-          var teamTwo = game.teamTwoCount;
-
-          Queue.findOne()
-            .then((queue) => {
-              //console.log(queue.userCount);
-              var userCount = queue.userCount;
-              var recordAdded = 0;
-
-              while (userCount > 0 && (teamOne < 3 || teamTwo < 3)) {
-                var updateData = {};
-
-                console.log(queue.users[recordAdded])
-                if (teamTwo < teamOne) {
-                  updateData = { $addToSet: { teamTwo: queue.users[recordAdded] } }
-                  teamTwo++;
-                } else if (teamOne <= teamTwo) {
-                  updateData = { $addToSet: { teamOne: queue.users[recordAdded] } }
-                  teamOne++;
-                }
-                recordAdded++;
-
-                //add the user to a team
-                Game.findOneAndUpdate(
-                  {
-                    _id: gameId
-                  },
-                  updateData,
-                  {
-                    new: true
-                  })
-                  .then((updatedGame) => {
-                    
-                  });
-
-                //remove user from queue
-                Queue.findOneAndUpdate(
-                  {
-
-                  },
-                  {
-                    $pull: { users: { _id: queue.users[recordAdded]}},
-                  },
-                  {
-                    new: true,
-                  }
-                  ).then((response)=>{console.log(response)});
-                userCount--;
-              }
-            })
-
-          return game;
-        });
-      },   
+    }, 
 
     scores: async () => {
       const scores = await User.find();
@@ -130,6 +71,7 @@ const resolver = {
       return game;
     },
 
+    //add a user to the queue
     joinGame: async (parent, { users }) => {
       const queue = Queue.findOneAndUpdate(
         {
@@ -146,7 +88,9 @@ const resolver = {
       return queue;
     },
 
+    // remove a user from the queue
     exitQueue: async (parent, { _id }) => {
+      console.log(_id);
       const queue = Queue.findOneAndUpdate(
         {
 
@@ -161,6 +105,104 @@ const resolver = {
 
       return queue;
     },
+
+    //fill the game with the users available in the queue and remove them from the queue
+    fillGame: async (parent, { gameId }) => {
+      await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
+        .then((game) => {
+          //console.log(game)
+          var teamOne = game.teamOneCount;
+          var teamTwo = game.teamTwoCount;
+
+          Queue.findOne()
+            .then((queue) => {
+              //console.log(queue.userCount);
+              var userCount = queue.userCount;
+              var recordAdded = 0;
+
+              while (userCount > 0 && (teamOne < 3 || teamTwo < 3)) {
+                var updateData = {};
+
+                console.log("Current user: " + queue.users[recordAdded] +" count "+ userCount)
+                if (teamTwo < teamOne) {
+                  updateData = { $addToSet: { teamTwo: queue.users[recordAdded] } }
+                  teamTwo++;
+                } else if (teamOne <= teamTwo) {
+                  updateData = { $addToSet: { teamOne: queue.users[recordAdded] } }
+                  teamOne++;
+                }
+                
+                //add the user to a team
+                Game.findOneAndUpdate(
+                  {
+                    _id: gameId
+                  },
+                  updateData,
+                  {
+                    new: true
+                  })
+                  .then((updatedGame) => {});
+
+                  //remove user from queue
+                  Queue.findOneAndUpdate(
+                    {
+
+                    },
+                    {
+                      $pull: { users: queue.users[recordAdded] },
+                    },
+                    {
+                      new: true,
+                    }
+                    ).then((response)=>{});
+                //updating counters for while loop
+                  userCount--;
+                  recordAdded++;
+              }
+            })
+
+          return game;
+        });
+      },
+      
+      startGame: async (parent, { gameId, teamLimit}) => {
+        await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
+          .then((game) => {
+            var teamOne = game.teamOneCount;
+            var teamTwo = game.teamTwoCount;
+
+            while (teamOne < teamLimit || teamTwo < teamLimit) {
+              var botData = {
+                botName: "Bot" + Math.floor(Math.random() * 5),
+                position: null,
+                team: null,
+              };
+
+              if (teamTwo < teamOne) {
+                botData.team = 2;
+                teamTwo++;
+              } else if (teamOne <= teamTwo) {
+                botData.team = 1;
+                teamOne++;
+              }
+              
+              //add the user to a team
+              Game.findOneAndUpdate(
+                {
+                  _id: gameId
+                },
+                {
+                   $addToSet: { bots: botData }
+                },
+                {
+                  new: true
+                })
+                .then((updatedGame) => {});
+            }
+
+            return game;
+          });
+      },
   },
 };
 
