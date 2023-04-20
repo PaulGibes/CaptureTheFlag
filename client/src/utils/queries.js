@@ -10,8 +10,8 @@ export const QUERY_USERS = gql`
 `;
 
 export const QUERY_SINGLE_USER = gql`
-  query oneUser {
-    user {
+  query ($username: String!) {
+    user (username: $username) {
       _id
       username
     }
