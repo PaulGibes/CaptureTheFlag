@@ -30,7 +30,7 @@ function ChooseGame() {
             </div>
             <div className="after:block after:bg-black after:w-[1px] after:h-64 after:mx-auto after:my-2"></div>
             <div className="flex flex-col  justify-center py-10">
-              <div className=" ">
+              <div  onClick={clicked} className=" ">
                 <p className="my-5">Join an online game:</p>
                 <Button> Join Game</Button>
               </div>
