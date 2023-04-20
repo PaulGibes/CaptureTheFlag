@@ -20,7 +20,9 @@ function NavBar() {
         <nav className="py-10 mb-12">
           <ul className="flex items-center justify-evenly">
             <li>
-              <h1 className="text-xl dark:text-white">Highscores</h1>
+              <h1 className="text-xl dark:text-white">
+                <Link to="/highscoreBoard">High Scores</Link>
+              </h1>
             </li>
             <li>
               <div className="text-center p-450">
@@ -35,15 +37,14 @@ function NavBar() {
 
             <li className="flex">
               <div
-              onClick={clicked}
+                onClick={clicked}
                 className="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-4 py-2 rounded-md mr-8"
-               
               >
                 Settings
               </div>
               {modalOn && (
-            <SettingsModal setModalOn={setModalOn} setChoice={setChoice} />
-          )}
+                <SettingsModal setModalOn={setModalOn} setChoice={setChoice} />
+              )}
               {/* </li> */}
               {/* <li> */}
               <BsFillMoonStarsFill
