@@ -1,12 +1,19 @@
 import React from "react";
 import "../../src/styles/globals.css";
 import { BsFillMoonStarsFill } from "react-icons/bs";
+import SettingsModal from "../components/SettingsModal";
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function NavBar() {
   const [darkMode, setDarkMode] = useState(true);
+  const [modalOn, setModalOn] = useState(false);
+  const [choice, setChoice] = useState(false);
+  const clicked = () => {
+    setModalOn(true);
+  };
+
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="bg-white px-10 md:px-20 lg:px-40 dark:bg-gray-900">
@@ -27,12 +34,16 @@ function NavBar() {
             </li>
 
             <li className="flex">
-              <a
+              <div
+              onClick={clicked}
                 className="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-4 py-2 rounded-md mr-8"
-                href="#"
+               
               >
                 Settings
-              </a>
+              </div>
+              {modalOn && (
+            <SettingsModal setModalOn={setModalOn} setChoice={setChoice} />
+          )}
               {/* </li> */}
               {/* <li> */}
               <BsFillMoonStarsFill

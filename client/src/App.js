@@ -15,6 +15,7 @@ import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import EndGame from "./components/pages/EndGame";
 import GamePlay from "./components/pages/GamePlay";
+import WaitingRoom from "./components/pages/WaitingRoom";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -47,6 +48,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/gameplay" element={<GamePlay />} />
           <Route path="/endgame" element={<EndGame />} />
+          <Route path="/waitingRoom" element={<WaitingRoom />} />
         </Routes>
       </Router>
     </ApolloProvider>

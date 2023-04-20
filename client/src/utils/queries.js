@@ -100,17 +100,3 @@ query Game($gameId: ID!) {
   }
 }
 `;
-
-export const FILL_GAME = gql`
-query Query($gameId: ID!) {
-  fillGame(gameId: $gameId) {
-    _id
-    status
-    flagOne
-    flagTwo
-    winner
-    teamOneCount
-    teamTwoCount
-  }
-}
-`;
