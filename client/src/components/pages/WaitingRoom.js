@@ -1,10 +1,30 @@
 import React, { useState } from "react";
 import "../../styles/globals.css";
 import { motion } from "framer-motion";
+import Auth from "../../utils/auth"
+import { QUERY_SINGLE_USER } from "../../utils/queries"
+import { useQuery } from "@apollo/client";
 
 function WaitingRoom() {
+    // first grabbing current user from local storage (auth.js)
+    const currentUser = Auth.getUsername()
+    console.log(currentUser)
+    // passing QUERY_SINGLE_USER GQL function to useQuery and passing an argument of currentUser
+    const { data } = useQuery(QUERY_SINGLE_USER, {
+        variables: { username: currentUser }
+    })
+    console.log(data)
+
     // change initial value for fun
     const [numUsers, setNumUsers] = useState(1);
+    const [hostUser, setHostUser] = useState(null);
+
+    // want to grab the current users id
+    // want to assign hostUser as the user who started the game room
+
+    // const handleStartGame = async () => {
+
+    // }
 
     const ballStyle = {
         width: "5rem",
@@ -48,7 +68,13 @@ function WaitingRoom() {
                 <p className="text-9xl p-4">VS</p>
                 <p className="text-5xl p-4 mt-8">{opponent}</p>
             </div>
-            <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
+            <div className="flex justify-evenly">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white max-h-[3rem] font-bold px-4 rounded">Leave Game</button>
+                <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
+
+                <button className="bg-blue-500 hover:bg-blue-700 text-white max-h-[3rem] font-bold px-4 rounded">Start Game</button>
+
+            </div>
             <div className="flex justify-center">
                 {balls.map((ball, index) => (
                     <div
