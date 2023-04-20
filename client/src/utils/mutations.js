@@ -57,4 +57,20 @@ mutation Mutation($id: String!) {
 }
 `;
 
+export const FILL_GAME = gql`
+mutation Mutation($gameId: ID!) {
+  fillGame(gameId: $gameId) {
+    _id
+  }
+}
+`;
+
+export const START_GAME = gql`
+mutation($gameId: ID!, $teamLimit: Int!) {
+  startGame(gameId: $gameId, teamLimit: $teamLimit) {
+    _id
+  }
+}
+`;
+
 
