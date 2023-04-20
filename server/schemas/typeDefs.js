@@ -20,7 +20,7 @@ const typeDefs = gql`
     _id: ID
     botName: String
     position: String
-    team: String
+    team: Int
   }
 
   type Game {
@@ -47,7 +47,6 @@ const typeDefs = gql`
     me: User
     games: [Game]!
     game(gameId: ID!): Game
-    fillGame(gameId: ID!): Game
     scores: [User]!
   }
 
@@ -57,6 +56,8 @@ const typeDefs = gql`
     createGame(status: String!, teamOne: [String!]): Game
     joinGame(users: [String!]): Queue
     exitQueue(_id: String!): Queue
+    fillGame(gameId: ID!): Game
+    startGame(gameId: ID! teamLimit: Int!): Game
   }
 `;
 
