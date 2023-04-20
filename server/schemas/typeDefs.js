@@ -57,7 +57,7 @@ const typeDefs = gql`
     joinGame(users: [String!]): Queue
     exitQueue(_id: String!): Queue
     fillGame(gameId: ID!): Game
-    startGame(gameId: ID! teamLimit: Int!): Game
+    startGame(gameId: ID!, teamLimit: Int!): Game
   }
 `;
 
