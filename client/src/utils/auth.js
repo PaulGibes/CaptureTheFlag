@@ -32,6 +32,11 @@ class AuthService {
     localStorage.removeItem("id_token");
     window.location.reload();
   }
+
+  logUsername(userId){
+    localStorage.setItem("username", userId);
+    window.location.assign("/");
+  }
 }
 
 export default new AuthService();

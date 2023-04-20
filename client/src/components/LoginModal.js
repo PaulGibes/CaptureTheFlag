@@ -39,6 +39,7 @@ const LoginModal = ({ setModalOn, setChoice }) => {
 
       //Set the value of the token in local storage to the token received.
       Auth.login(data.login.token);
+      Auth.logUsername(data.login.user.username);
     } catch (err) {
       console.log(err);
     }

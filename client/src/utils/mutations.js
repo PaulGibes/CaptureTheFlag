@@ -65,7 +65,7 @@ mutation Mutation($gameId: ID!) {
 }
 `;
 
-export const START_GAME = qgl`
+export const START_GAME = gql`
 mutation($gameId: ID!, $teamLimit: Int!) {
   startGame(gameId: $gameId, teamLimit: $teamLimit) {
     _id
