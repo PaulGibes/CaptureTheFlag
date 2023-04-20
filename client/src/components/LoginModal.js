@@ -2,9 +2,12 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { useState } from "react";
-import Button from "./Button";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLoginFormValidator } from "../utils/useLoginFormValidator.js";
+import { clsx } from "clsx";
+import "../styles/modules.css";
+import styles from "../styles/modules.css";
 
 const LoginModal = ({ setModalOn, setChoice }) => {
   const handleOKClick = () => {
@@ -17,21 +20,38 @@ const LoginModal = ({ setModalOn, setChoice }) => {
   };
 
   const [formState, setFormState] = useState({ username: "", password: "" });
+  const { errors, validateForm, onBlurField } =
+    useLoginFormValidator(formState);
+
   const [login, { error, data }] = useMutation(LOGIN_USER);
+  const isValid = formState.username !== "";
+  const [touched, setTouched] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     //set the form state equal to itself and then add the value to the name of the target(username or password)
-    setFormState({
+    console.log(value);
+    const nextFormState = {
       ...formState,
       [name]: value,
-    });
+    };
+    setFormState(nextFormState);
+    console.log(errors[name]);
+    if (errors[name].dirty)
+      validateForm({
+        formState: nextFormState,
+        errors,
+        name,
+      });
     console.log(formState);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log(formState);
+
+    // alert(JSON.stringify(formState, null, 2));
+
     try {
       const { data } = await login({
         variables: { ...formState },
@@ -42,6 +62,14 @@ const LoginModal = ({ setModalOn, setChoice }) => {
       Auth.logUsername(data.login.user.username);
     } catch (err) {
       console.log(err);
+      //alert(JSON.stringify(formState, null, 2));
+      alert("username or password not found");
+      const { isValid } = validateForm({
+        formState,
+        errors,
+        forceTouchErrors: true,
+      });
+      if (!isValid) return;
     }
 
     setFormState({
@@ -101,8 +129,20 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                         type="text"
                         value={formState.username}
                         onChange={handleChange}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onBlur={onBlurField}
+                        className={
+                          errors.username.dirty && errors.username.error
+                            ? "formFieldError"
+                            : "formField"
+                        }
+                        // className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
+                      {touched ? (isValid ? "✅" : "❌") : null}
+                      {errors.username.dirty && errors.username.error ? (
+                        <p className="formFieldErrorMessage">
+                          {errors.username.message}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
 
@@ -130,9 +170,26 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                         type="password"
                         value={formState.password}
                         onChange={handleChange}
+                        onBlur={onBlurField}
                         autoComplete="current-password"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className={
+                          errors.password.dirty && errors.password.error
+                            ? "formFieldError"
+                            : "formField"
+                        }
+                        //className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        // {clsx(
+                        //   styles.formField,
+                        //   errors.password.dirty &&
+                        //   errors.password.error &&
+                        //   styles.formFieldError
+                        // )}
                       />
+                      {errors.password.dirty && errors.password.error ? (
+                        <p className="formFieldErrorMessage">
+                          {errors.password.message}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
 
