@@ -16,13 +16,13 @@ function NavBar() {
     setModalOn(true);
   };
 
-  const [user, setLoggedUser] = useState([]
+  const [user, setLoggedUser] = useState(
+    []
     //const saved = localStorage.getItem("username");
     //const initialValue = JSON.parse(saved);
     //console.log(saved);
 
     //return saved || "";
-     
   );
 
   useEffect(() => {
@@ -30,10 +30,16 @@ function NavBar() {
     if (username) {
       setLoggedUser(username);
       console.log(username);
-    }else{
+    } else {
       setLoggedUser(username);
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("username");
+    window.location.href = "/";
+  };
 
   return (
     <div className={darkMode ? "dark" : ""}>
@@ -50,8 +56,12 @@ function NavBar() {
                 <h2 className="text-4xl py-1 text-teal-400 font-medium md:text-4xl ">
                   <Link to={"/"}> The Outsiders </Link>
                 </h2>
-                 <h3></h3>
-                {user ?  <h3 className="text-1xl py-2 md:text-2xl dark:text-white">Welcome {user}!</h3> : null}
+                <h3></h3>
+                {user ? (
+                  <h3 className="text-1xl py-2 md:text-2xl dark:text-white">
+                    Welcome {user}!
+                  </h3>
+                ) : null}
               </div>
             </li>
 
@@ -72,6 +82,13 @@ function NavBar() {
                 className="cursor-pointer text-2xl dark:text-white"
               />
             </li>
+            {user ? (
+              <li>
+                <h1 className="text-xl dark:text-white" onClick={handleLogout}>
+                  logout
+                </h1>
+              </li>
+            ) : null}
           </ul>
         </nav>
       </div>
