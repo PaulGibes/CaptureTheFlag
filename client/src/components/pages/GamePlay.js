@@ -43,7 +43,7 @@ function GamePlay() {
     }, 1000);
   }
 
-  //startTimer();
+  startTimer();
 
   const fieldMap = [
     { id: '1-1', player: "", active: false, image: "", },
