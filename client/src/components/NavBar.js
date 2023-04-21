@@ -11,6 +11,7 @@ function NavBar() {
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
   const clicked = () => {
+    console.log("nav bar state chnage");
     setModalOn(true);
   };
 
