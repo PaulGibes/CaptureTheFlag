@@ -18,7 +18,7 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
       <div className="flex h-screen justify-center items-center">
         <div className="flex-col justify-center bg-white opacity-100 py-6 px-6 border-4 w-90 lg:w-1/3 border-sky-500 rounded-xl">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-           Game Settings
+            Game Settings
           </h2>
           <div className="flex flex-col">
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -46,11 +46,11 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                       htmlFor="flags"
                       className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
                     >
-                     AI Difficulty
+                      AI Difficulty
                     </label>
                     <div className="mt-2">
                       <ul class="flex w-full gap-2.5 ">
-                      <li>
+                        <li>
                           <input
                             type="radio"
                             id="eazy"
@@ -134,12 +134,11 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                       htmlFor="ai"
                       className="block text-sm text-right mr-8 font-medium leading-6 text-gray-900"
                     >
-                    Clear High Scores
+                      Clear High Scores
                     </label>
-                   
+
                     <div className="mt-2">
                       <ul class="flex w-full gap-8 ">
-                    
                         <li>
                           <input
                             type="radio"
@@ -148,10 +147,7 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                             value="3-players"
                             class="hidden peer"
                           />
-                          <label
-                          
-                            class="inline-flex items-center justify-between w-full px-16 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-red-800 dark:hover:bg-red-700"
-                          >
+                          <label class="inline-flex items-center justify-between w-full px-16 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-red-800 dark:hover:bg-red-700">
                             <div class="block">
                               <div class="w-full text-lg text-center font-semibold">
                                 Yes
@@ -161,8 +157,6 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                         </li>
                       </ul>
                     </div>
-                     
-                  
                   </div>
                   <div className="flex gap-10 mt-10">
                     <button
