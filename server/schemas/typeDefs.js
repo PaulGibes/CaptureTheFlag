@@ -9,6 +9,7 @@ const typeDefs = gql`
     loses: Int
     position: String
     hasFlag: Boolean
+    isHost: Boolean
   }
 
   type Auth {
@@ -54,7 +55,7 @@ const typeDefs = gql`
     addUser(username: String!, password: String!): Auth
     login(username: String!, password: String!): Auth
     createGame(status: String!, teamOne: [String!]): Game
-    joinGame(users: [String!]): Queue
+    joinQueue(users: [String!]): Queue
     exitQueue(_id: String!): Queue
     fillGame(gameId: ID!): Game
     startGame(gameId: ID!, teamLimit: Int!): Game

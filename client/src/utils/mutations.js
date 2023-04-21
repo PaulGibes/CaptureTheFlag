@@ -37,7 +37,7 @@ mutation Mutation($status: String!, $teamOne: [String!]) {
 
 export const JOIN_QUEUE = gql`
 mutation Mutation($users: [String!]) {
-  joinGame(users: $users) {
+  joinQueue(users: $users) {
     userCount
     users {
       _id
