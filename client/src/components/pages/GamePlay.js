@@ -7,89 +7,108 @@ import CreateGameModal from "../CreateGameModal";
 import HighscoreBoard from "../HighscoreBoard";
 import { Link } from "react-router-dom";
 
+import MapLogic from "../../utils/mapLogic";
+
 function GamePlay() {
+  console.log("test");
   //let yellow = "#ffc800";
-  const [bgColor, setActiveMode] = useState(" ");
+  const [roundCount, startNewRound] = useState(" ");
 
   const activeSpace = (id) => {
     //let indigo = "#000";
-    setActiveMode(bgColor);
-    var element = document.getElementById("0");
-    var element1 = document.getElementById("1");
-    var element2 = document.getElementById("12");
-    var element3 = document.getElementById("13");
-    element.style.backgroundColor = "indigo";
-    element1.style.backgroundColor = bgColor;
-    element2.style.backgroundColor = bgColor;
-    element3.style.backgroundColor = bgColor;
+
+    // const row = parseInt(id.charAt(0));
+    // const column = parseInt(id.substring(2, id.length));
+
+    document.getElementById(id).style.backgroundColor = "indigo";
+
   };
 
-  // useEffect(() => {
+  const doNothing = function () {
 
-  // }, [bgColor]);
+  };
 
-  const ids = [
-    "1-1",
-    "1-2",
-    "1-3",
-    "1-4",
-    "1-5",
-    "1-6",
-    "1-7",
-    "1-8",
-    "1-9",
-    "1-10",
-    "1-11",
-    "1-12",
-    "2-1",
-    "2-2",
-    "2-3",
-    "2-4",
-    "2-5",
-    "2-6",
-    "2-7",
-    "2-8",
-    "2-9",
-    "2-10",
-    "2-11",
-    "2-12",
-    "3-1",
-    "3-2",
-    "3-3",
-    "3-4",
-    "3-5",
-    "3-6",
-    "3-7",
-    "3-8",
-    "3-9",
-    "3-10",
-    "3-11",
-    "3-12",
-    "4-1",
-    "4-2",
-    "4-3",
-    "4-4",
-    "4-5",
-    "4-6",
-    "4-7",
-    "4-8",
-    "4-9",
-    "4-10",
-    "4-11",
-    "4-12",
-    "5-1",
-    "5-2",
-    "5-3",
-    "5-4",
-    "5-5",
-    "5-6",
-    "5-7",
-    "5-8",
-    "5-9",
-    "5-10",
-    "5-11",
-    "5-12",
+
+  function startTimer(display) {
+    var timer = 5;
+    console.log("Timer started");
+    var interval = setInterval(function () {
+      document.getElementById("timer").textContent = "00:0" + timer;
+      if (timer == 0) {
+        clearInterval(interval);
+        document.getElementById("1-" + Math.floor((Math.random() * 12) + 1)).style.backgroundColor = "indigo";
+        startNewRound("");
+      }
+      timer--;
+    }, 1000);
+  }
+
+  //startTimer();
+
+  const fieldMap = [
+    { id: '1-1', player: "", active: false, image: "", },
+    { id: '1-2', player: "", active: false, image: "", },
+    { id: '1-3', player: "", active: false, image: "", },
+    { id: '1-4', player: "", active: true, image: "", },
+    { id: '1-5', player: "", active: false, image: "", },
+    { id: '1-6', player: "Bot3", active: false, image: "", },
+    { id: '1-7', player: "", active: false, image: "", },
+    { id: '1-8', player: "", active: false, image: "", },
+    { id: '1-9', player: "", active: false, image: "", },
+    { id: '1-10', player: "", active: false, image: "", },
+    { id: '1-11', player: "", active: false, image: "", },
+    { id: '1-12', player: "", active: false, image: "", },
+    { id: '2-1', player: "", active: false, image: "", },
+    { id: '2-2', player: "", active: false, image: "", },
+    { id: '2-3', player: "", active: false, image: "", },
+    { id: '2-4', player: "", active: false, image: "", },
+    { id: '2-5', player: "", active: false, image: "", },
+    { id: '2-6', player: "", active: false, image: "", },
+    { id: '2-7', player: "Myself", active: false, image: "", },
+    { id: '2-8', player: "", active: false, image: "", },
+    { id: '2-9', player: "", active: false, image: "", },
+    { id: '2-10', player: "", active: false, image: "", },
+    { id: '2-11', player: "", active: false, image: "", },
+    { id: '2-12', player: "", active: false, image: "", },
+    { id: '3-1', player: "", active: false, image: "", },
+    { id: '3-2', player: "", active: false, image: "", },
+    { id: '3-3', player: "", active: false, image: "", },
+    { id: '3-4', player: "", active: false, image: "", },
+    { id: '3-5', player: "", active: false, image: "", },
+    { id: '3-6', player: "", active: false, image: "", },
+    { id: '3-7', player: "", active: false, image: "", },
+    { id: '3-8', player: "", active: false, image: "", },
+    { id: '3-9', player: "", active: false, image: "", },
+    { id: '3-10', player: "", active: false, image: "", },
+    { id: '3-11', player: "", active: false, image: "", },
+    { id: '3-12', player: "", active: false, image: "", },
+    { id: '4-1', player: "", active: false, image: "", },
+    { id: '4-2', player: "Player2", active: false, image: "", },
+    { id: '4-3', player: "", active: false, image: "", },
+    { id: '4-4', player: "", active: false, image: "", },
+    { id: '4-5', player: "", active: false, image: "", },
+    { id: '4-6', player: "", active: false, image: "", },
+    { id: '4-7', player: "", active: false, image: "", },
+    { id: '4-8', player: "", active: false, image: "", },
+    { id: '4-9', player: "", active: false, image: "", },
+    { id: '4-10', player: "", active: false, image: "", },
+    { id: '4-11', player: "", active: false, image: "", },
+    { id: '4-12', player: "", active: false, image: "", },
+    { id: '5-1', player: "", active: false, image: "", },
+    { id: '5-2', player: "", active: false, image: "", },
+    { id: '5-3', player: "", active: false, image: "", },
+    { id: '5-4', player: "", active: false, image: "", },
+    { id: '5-5', player: "Bot2", active: false, image: "", },
+    { id: '5-6', player: "", active: false, image: "", },
+    { id: '5-7', player: "", active: false, image: "", },
+    { id: '5-8', player: "", active: false, image: "", },
+    { id: '5-9', player: "", active: false, image: "", },
+    { id: '5-10', player: "", active: false, image: "", },
+    { id: '5-11', player: "", active: false, image: "", },
+    { id: '5-12', player: "", active: false, image: "", },
   ];
+
+  MapLogic.activatePossibleMoves(fieldMap);
 
   return (
     <div className="">
@@ -102,7 +121,7 @@ function GamePlay() {
         </div>
         <div>
           <h2>
-            Timer<span className="ml-2 font-bold">00:03</span>
+            Timer<span id="timer" className="ml-2 font-bold">00:03</span>
           </h2>
         </div>
         <div className="flex">
@@ -114,13 +133,15 @@ function GamePlay() {
       </div>
 
       <div className="grid grid-cols-12 p-10 min-h-screen">
-        {ids.map((id, index) => {
+        {fieldMap.map((id, index) => {
           return (
             <div
-              id={id}
-              onClick={activeSpace(id)}
-              className=" hover:bg-indigo-500 border-solid border-2 border-indigo-600 cursor-pointer min-h-[100px]"
-            ></div>
+              key={fieldMap[index].id}
+              id={fieldMap[index].id}
+              onClick={fieldMap[index].active ? () => activeSpace(fieldMap[index].id) : doNothing}
+              className={"hover:bg-indigo-500 border-solid border-2 border-indigo-600 cursor-pointer min-h-[100px]"}
+              style={fieldMap[index].active ? { backgroundColor: "yellow" } : { backgroundColor: "white" }}
+            >{fieldMap[index].player}</div>
           );
         })}
       </div>
