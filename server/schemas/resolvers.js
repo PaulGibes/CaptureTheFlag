@@ -110,16 +110,18 @@ const resolver = {
     fillGame: async (parent, { gameId }) => {
       await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
         .then((game) => {
-          //console.log(game)
+          //getting current team count
           var teamOne = game.teamOneCount;
           var teamTwo = game.teamTwoCount;
 
+          //get data from queue
           Queue.findOne()
             .then((queue) => {
-              //console.log(queue.userCount);
+              //get user count 
               var userCount = queue.userCount;
               var recordAdded = 0;
 
+              //move users from queue to a game
               while (userCount > 0 && (teamOne < 3 || teamTwo < 3)) {
                 var updateData = {};
 
@@ -168,9 +170,43 @@ const resolver = {
     startGame: async (parent, { gameId, teamLimit }) => {
       await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
         .then((game) => {
+          //get current count for each team
           var teamOne = game.teamOneCount;
           var teamTwo = game.teamTwoCount;
 
+          const teamOnePositions = ["2-2","3-3","4-2"];
+          const teamTwoPositions = ["2-11","3-10","4-11"];
+
+          //update human positions for team one
+          for (let i = 0; i < teamOne.length; i++) {
+            User.findOneAndUpdate(
+              {
+                _id: game.teamOne[i]
+              },
+              {
+                position: teamOnePositions[i]
+              },
+              {
+                new: true
+              })
+          }
+
+          //update human positions for team two
+          for (let i = 0; i < teamTwo.length; i++) {
+            User.findOneAndUpdate(
+              {
+                _id: game.teamOne[i]
+              },
+              {
+                position: teamTwoPositions[i]
+              },
+              {
+                new: true
+              })
+          }
+
+          
+          // fill remaining team with bots
           while (teamOne < teamLimit || teamTwo < teamLimit) {
             var botData = {
               botName: "Bot" + Math.floor(Math.random() * 5),
@@ -181,12 +217,14 @@ const resolver = {
             if (teamTwo < teamOne) {
               botData.team = 2;
               teamTwo++;
+              botData.position = teamTwoPositions[teamTwo];
             } else if (teamOne <= teamTwo) {
               botData.team = 1;
               teamOne++;
+              botData.position = teamOnePositions[teamOne];
             }
 
-            //add the user to a team
+            //add the bot to a team
             Game.findOneAndUpdate(
               {
                 _id: gameId
