@@ -21,10 +21,10 @@ function GamePlay() {
     // const column = parseInt(id.substring(2, id.length));
 
     document.getElementById(id).style.backgroundColor = "indigo";
-    
+
   };
 
-  const doNothing = function(){
+  const doNothing = function () {
 
   };
 
@@ -140,7 +140,7 @@ function GamePlay() {
               id={fieldMap[index].id}
               onClick={fieldMap[index].active ? () => activeSpace(fieldMap[index].id) : doNothing}
               className={"hover:bg-indigo-500 border-solid border-2 border-indigo-600 cursor-pointer min-h-[100px]"}
-              style={fieldMap[index].active ? {backgroundColor: "yellow"} : {backgroundColor: "white"}}
+              style={fieldMap[index].active ? { backgroundColor: "yellow" } : { backgroundColor: "white" }}
             >{fieldMap[index].player}</div>
           );
         })}
