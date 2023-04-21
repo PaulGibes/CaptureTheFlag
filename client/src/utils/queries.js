@@ -16,6 +16,7 @@ export const QUERY_SINGLE_USER = gql`
       username
       position
       isHost
+      image
     }
   }
 `;
