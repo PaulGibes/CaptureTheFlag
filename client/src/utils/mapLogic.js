@@ -1,10 +1,8 @@
 class MapLogic {
     activatePossibleMoves(fieldMap) {
-        const playerLocation = fieldMap.find(map => map.active).id;
-
         const index = fieldMap.findIndex((map => map.active));
+
         const posibilities = [
-            index,
             index+1,
             index-1,
             index-13,
