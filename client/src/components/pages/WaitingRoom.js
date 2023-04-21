@@ -8,13 +8,13 @@ import { useQuery } from "@apollo/client";
 function WaitingRoom() {
     // first grabbing current user from local storage (auth.js)
     const currentUser = Auth.getUsername()
-    // console.log(currentUser)
+    // useQuery uses useState and setState internally
     // passing QUERY_SINGLE_USER GQL function to useQuery and passing an argument of currentUser
-    const { data } = useQuery(QUERY_SINGLE_USER, {
+    const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
         variables: { username: currentUser }
-    })
-
-    console.log(data.user.isHost)
+    });
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
 
     const ballStyle = {
         width: "5rem",
@@ -57,11 +57,9 @@ function WaitingRoom() {
             <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
             <div className="flex justify-evenly">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Leave Game</button>
-                {data.user.isHost && (
-                    <div>
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
-                    </div>
-                )}
+                {data.user.isHost ? <div>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
+                </div> : "Not a Host"}
             </div>
             <div className="flex justify-center">
                 {balls.map((ball, index) => (
