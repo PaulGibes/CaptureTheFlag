@@ -115,15 +115,14 @@ const resolver = {
           var teamTwo = game.teamTwoCount;
 
           //get data from queue
-          Queue.findOne()
-            .then((queue) => {
-              //get user count 
-              var userCount = queue.userCount;
-              var recordAdded = 0;
+          Queue.findOne().then((queue) => {
+            //get user count
+            var userCount = queue.userCount;
+            var recordAdded = 0;
 
-              //move users from queue to a game
-              while (userCount > 0 && (teamOne < 3 || teamTwo < 3)) {
-                var updateData = {};
+            //move users from queue to a game
+            while (userCount > 0 && (teamOne < 3 || teamTwo < 3)) {
+              var updateData = {};
 
               console.log(
                 "Current user: " +
@@ -183,38 +182,39 @@ const resolver = {
           var teamOne = game.teamOneCount;
           var teamTwo = game.teamTwoCount;
 
-          const teamOnePositions = ["2-2","3-3","4-2"];
-          const teamTwoPositions = ["2-11","3-10","4-11"];
+          const teamOnePositions = ["2-2", "3-3", "4-2"];
+          const teamTwoPositions = ["2-11", "3-10", "4-11"];
 
           //update human positions for team one
           for (let i = 0; i < teamOne.length; i++) {
             User.findOneAndUpdate(
               {
-                _id: game.teamOne[i]
+                _id: game.teamOne[i],
               },
               {
-                position: teamOnePositions[i]
+                position: teamOnePositions[i],
               },
               {
-                new: true
-              })
+                new: true,
+              }
+            );
           }
 
           //update human positions for team two
           for (let i = 0; i < teamTwo.length; i++) {
             User.findOneAndUpdate(
               {
-                _id: game.teamOne[i]
+                _id: game.teamOne[i],
               },
               {
-                position: teamTwoPositions[i]
+                position: teamTwoPositions[i],
               },
               {
-                new: true
-              })
+                new: true,
+              }
+            );
           }
 
-          
           // fill remaining team with bots
           while (teamOne < teamLimit || teamTwo < teamLimit) {
             var botData = {
@@ -259,9 +259,16 @@ const resolver = {
       );
       return user;
     },
-  },
 
-  updateFlag: 
+    updateFlag: async (parent, { username, hasFlag }) => {
+      const user = await User.findOneAndUpdate(
+        { username: username },
+        { hasFlag: hasFlag },
+        { new: true }
+      );
+      return user;
+    },
+  },
 };
 
 module.exports = resolver;
