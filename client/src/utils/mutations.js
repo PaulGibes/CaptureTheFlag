@@ -25,56 +25,54 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_GAME = gql`
-mutation Mutation($status: String!, $teamOne: [String!]) {
-  createGame(status: $status, teamOne: $teamOne) {
-    _id
-    teamTwoCount
-    teamOneCount
-    status
+  mutation Mutation($status: String!, $teamOne: [String!]) {
+    createGame(status: $status, teamOne: $teamOne) {
+      _id
+      teamTwoCount
+      teamOneCount
+      status
+    }
   }
-}
 `;
 
 export const JOIN_QUEUE = gql`
-mutation Mutation($users: [String!]) {
-  joinQueue(users: $users) {
-    userCount
-    users {
-      _id
+  mutation Mutation($users: [String!]) {
+    joinQueue(users: $users) {
+      userCount
+      users {
+        _id
+      }
     }
   }
-}
 `;
 
 export const EXIT_QUEUE = gql`
-mutation Mutation($id: String!) {
-  exitQueue(_id: $id) {
-    userCount
-    users {
-      _id
+  mutation Mutation($id: String!) {
+    exitQueue(_id: $id) {
+      userCount
+      users {
+        _id
+      }
     }
   }
-}
 `;
 
 export const FILL_GAME = gql`
-mutation Mutation($gameId: ID!) {
-  fillGame(gameId: $gameId) {
-    _id
+  mutation Mutation($gameId: ID!) {
+    fillGame(gameId: $gameId) {
+      _id
+    }
   }
-}
 `;
 
 export const START_GAME = gql`
-mutation($gameId: ID!, $teamLimit: Int!) {
-  startGame(gameId: $gameId, teamLimit: $teamLimit) {
-    _id
-  }
-  hostUser {
+  mutation ($gameId: ID!, $teamLimit: Int!) {
+    startGame(gameId: $gameId, teamLimit: $teamLimit) {
+      _id
+    }
+    hostUser {
       _id
       username
     }
-}
+  }
 `;
-
-
