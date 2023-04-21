@@ -43,8 +43,8 @@ const resolver = {
   },
 
   Mutation: {
-    addUser: async (parent, { username, password }) => {
-      const user = User.create({ username, password });
+    addUser: async (parent, { username, password, image }) => {
+      const user = User.create({ username, password, image });
       const token = signToken(user);
 
       return { user, token };

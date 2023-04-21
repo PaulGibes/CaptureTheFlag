@@ -8,7 +8,8 @@ const UserSchema = new Schema({
   loses: { type: Number },
   position: { type: String },
   hasFlag: { type: Boolean },
-  isHost: { type: Boolean }
+  isHost: { type: Boolean },
+  image: { type: String }
 });
 
 UserSchema.pre("save", async function (next) {

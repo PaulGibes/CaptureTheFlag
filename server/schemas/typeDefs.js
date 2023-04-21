@@ -10,6 +10,7 @@ const typeDefs = gql`
     position: String
     hasFlag: Boolean
     isHost: Boolean
+    image: String
   }
 
   type Auth {
@@ -52,7 +53,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addUser(username: String!, password: String!): Auth
+    addUser(username: String!, password: String!, image: String): Auth
     login(username: String!, password: String!): Auth
     createGame(status: String!, teamOne: [String!]): Game
     joinQueue(users: [String!]): Queue
