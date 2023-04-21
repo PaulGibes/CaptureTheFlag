@@ -7,24 +7,24 @@ import CreateGameModal from "../CreateGameModal";
 import HighscoreBoard from "../HighscoreBoard";
 import { Link } from "react-router-dom";
 
+import MapLogic from "../../utils/mapLogic";
+
 function GamePlay() {
+  console.log("test");
   //let yellow = "#ffc800";
   const [roundCount, startNewRound] = useState(" ");
 
   const activeSpace = (id) => {
     //let indigo = "#000";
 
-    const row = parseInt(id.charAt(0));
-    const column = parseInt(id.substring(2, id.length));
-    console.log(row + " " + column);
+    // const row = parseInt(id.charAt(0));
+    // const column = parseInt(id.substring(2, id.length));
 
-    //const allowedMove = [];
-    if (row > 1 && row < 5) {
-      document.getElementById((row - 1) + "-" + (column)).style.backgroundColor = "indigo";
-    }
+    document.getElementById(id).style.backgroundColor = "indigo";
+
   };
 
-  const doNothing = function(){
+  const doNothing = function () {
 
   };
 
@@ -43,70 +43,72 @@ function GamePlay() {
     }, 1000);
   }
 
-  startTimer();
+  //startTimer();
 
   const fieldMap = [
-    { id: '1-1', player: "", me: false, image: "", },
-    { id: '1-2', player: "", me: false, image: "", },
-    { id: '1-3', player: "", me: false, image: "", },
-    { id: '1-4', player: "", me: false, image: "", },
-    { id: '1-5', player: "", me: false, image: "", },
-    { id: '1-6', player: "player1", me: true, image: "", },
-    { id: '1-7', player: "", me: false, image: "", },
-    { id: '1-8', player: "", me: false, image: "", },
-    { id: '1-9', player: "", me: false, image: "", },
-    { id: '1-10', player: "", me: false, image: "", },
-    { id: '1-11', player: "", me: false, image: "", },
-    { id: '1-12', player: "", me: false, image: "", },
-    { id: '2-1', player: "", me: false, image: "", },
-    { id: '2-2', player: "", me: false, image: "", },
-    { id: '2-3', player: "", me: false, image: "", },
-    { id: '2-4', player: "", me: false, image: "", },
-    { id: '2-5', player: "", me: false, image: "", },
-    { id: '2-6', player: "", me: false, image: "", },
-    { id: '2-7', player: "", me: false, image: "", },
-    { id: '2-8', player: "", me: false, image: "", },
-    { id: '2-9', player: "", me: false, image: "", },
-    { id: '2-10', player: "", me: false, image: "", },
-    { id: '2-11', player: "", me: false, image: "", },
-    { id: '2-12', player: "", me: false, image: "", },
-    { id: '3-1', player: "", me: false, image: "", },
-    { id: '3-2', player: "", me: false, image: "", },
-    { id: '3-3', player: "", me: false, image: "", },
-    { id: '3-4', player: "", me: false, image: "", },
-    { id: '3-5', player: "", me: false, image: "", },
-    { id: '3-6', player: "", me: false, image: "", },
-    { id: '3-7', player: "", me: false, image: "", },
-    { id: '3-8', player: "", me: false, image: "", },
-    { id: '3-9', player: "", me: false, image: "", },
-    { id: '3-10', player: "", me: false, image: "", },
-    { id: '3-11', player: "", me: false, image: "", },
-    { id: '3-12', player: "", me: false, image: "", },
-    { id: '4-1', player: "", me: false, image: "", },
-    { id: '4-2', player: "", me: false, image: "", },
-    { id: '4-3', player: "", me: false, image: "", },
-    { id: '4-4', player: "", me: false, image: "", },
-    { id: '4-5', player: "", me: false, image: "", },
-    { id: '4-6', player: "", me: false, image: "", },
-    { id: '4-7', player: "", me: false, image: "", },
-    { id: '4-8', player: "", me: false, image: "", },
-    { id: '4-9', player: "", me: false, image: "", },
-    { id: '4-10', player: "", me: false, image: "", },
-    { id: '4-11', player: "", me: false, image: "", },
-    { id: '4-12', player: "", me: false, image: "", },
-    { id: '5-1', player: "", me: false, image: "", },
-    { id: '5-2', player: "", me: false, image: "", },
-    { id: '5-3', player: "", me: false, image: "", },
-    { id: '5-4', player: "", me: false, image: "", },
-    { id: '5-5', player: "", me: false, image: "", },
-    { id: '5-6', player: "", me: false, image: "", },
-    { id: '5-7', player: "", me: false, image: "", },
-    { id: '5-8', player: "", me: false, image: "", },
-    { id: '5-9', player: "", me: false, image: "", },
-    { id: '5-10', player: "", me: false, image: "", },
-    { id: '5-11', player: "", me: false, image: "", },
-    { id: '5-12', player: "", me: false, image: "", },
+    { id: '1-1', player: "", active: false, image: "", },
+    { id: '1-2', player: "", active: false, image: "", },
+    { id: '1-3', player: "", active: false, image: "", },
+    { id: '1-4', player: "", active: true, image: "", },
+    { id: '1-5', player: "", active: false, image: "", },
+    { id: '1-6', player: "Bot3", active: false, image: "", },
+    { id: '1-7', player: "", active: false, image: "", },
+    { id: '1-8', player: "", active: false, image: "", },
+    { id: '1-9', player: "", active: false, image: "", },
+    { id: '1-10', player: "", active: false, image: "", },
+    { id: '1-11', player: "", active: false, image: "", },
+    { id: '1-12', player: "", active: false, image: "", },
+    { id: '2-1', player: "", active: false, image: "", },
+    { id: '2-2', player: "", active: false, image: "", },
+    { id: '2-3', player: "", active: false, image: "", },
+    { id: '2-4', player: "", active: false, image: "", },
+    { id: '2-5', player: "", active: false, image: "", },
+    { id: '2-6', player: "", active: false, image: "", },
+    { id: '2-7', player: "Myself", active: false, image: "", },
+    { id: '2-8', player: "", active: false, image: "", },
+    { id: '2-9', player: "", active: false, image: "", },
+    { id: '2-10', player: "", active: false, image: "", },
+    { id: '2-11', player: "", active: false, image: "", },
+    { id: '2-12', player: "", active: false, image: "", },
+    { id: '3-1', player: "", active: false, image: "", },
+    { id: '3-2', player: "", active: false, image: "", },
+    { id: '3-3', player: "", active: false, image: "", },
+    { id: '3-4', player: "", active: false, image: "", },
+    { id: '3-5', player: "", active: false, image: "", },
+    { id: '3-6', player: "", active: false, image: "", },
+    { id: '3-7', player: "", active: false, image: "", },
+    { id: '3-8', player: "", active: false, image: "", },
+    { id: '3-9', player: "", active: false, image: "", },
+    { id: '3-10', player: "", active: false, image: "", },
+    { id: '3-11', player: "", active: false, image: "", },
+    { id: '3-12', player: "", active: false, image: "", },
+    { id: '4-1', player: "", active: false, image: "", },
+    { id: '4-2', player: "Player2", active: false, image: "", },
+    { id: '4-3', player: "", active: false, image: "", },
+    { id: '4-4', player: "", active: false, image: "", },
+    { id: '4-5', player: "", active: false, image: "", },
+    { id: '4-6', player: "", active: false, image: "", },
+    { id: '4-7', player: "", active: false, image: "", },
+    { id: '4-8', player: "", active: false, image: "", },
+    { id: '4-9', player: "", active: false, image: "", },
+    { id: '4-10', player: "", active: false, image: "", },
+    { id: '4-11', player: "", active: false, image: "", },
+    { id: '4-12', player: "", active: false, image: "", },
+    { id: '5-1', player: "", active: false, image: "", },
+    { id: '5-2', player: "", active: false, image: "", },
+    { id: '5-3', player: "", active: false, image: "", },
+    { id: '5-4', player: "", active: false, image: "", },
+    { id: '5-5', player: "Bot2", active: false, image: "", },
+    { id: '5-6', player: "", active: false, image: "", },
+    { id: '5-7', player: "", active: false, image: "", },
+    { id: '5-8', player: "", active: false, image: "", },
+    { id: '5-9', player: "", active: false, image: "", },
+    { id: '5-10', player: "", active: false, image: "", },
+    { id: '5-11', player: "", active: false, image: "", },
+    { id: '5-12', player: "", active: false, image: "", },
   ];
+
+  MapLogic.activatePossibleMoves(fieldMap);
 
   return (
     <div className="">
@@ -136,9 +138,10 @@ function GamePlay() {
             <div
               key={fieldMap[index].id}
               id={fieldMap[index].id}
-              onClick={fieldMap[index].me ? () => activeSpace(fieldMap[index].id) : doNothing}
-              className=" hover:bg-indigo-500 border-solid border-2 border-indigo-600 cursor-pointer min-h-[100px]"
-            >{fieldMap[index].id + " " + fieldMap[index].player}</div>
+              onClick={fieldMap[index].active ? () => activeSpace(fieldMap[index].id) : doNothing}
+              className={"hover:bg-indigo-500 border-solid border-2 border-indigo-600 cursor-pointer min-h-[100px]"}
+              style={fieldMap[index].active ? { backgroundColor: "yellow" } : { backgroundColor: "white" }}
+            >{fieldMap[index].player}</div>
           );
         })}
       </div>

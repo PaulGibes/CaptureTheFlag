@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function NavBar() {
+  console.log("navbar");
   const [darkMode, setDarkMode] = useState(true);
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
