@@ -25,7 +25,7 @@ const resolver = {
 
     game: async (parent, { gameId }) => {
       return Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne");
-    }, 
+    },
 
     scores: async () => {
       const scores = await User.find();
@@ -72,7 +72,7 @@ const resolver = {
     },
 
     //add a user to the queue
-    joinGame: async (parent, { users }) => {
+    joinQueue: async (parent, { users }) => {
       const queue = Queue.findOneAndUpdate(
         {
 
@@ -123,7 +123,7 @@ const resolver = {
               while (userCount > 0 && (teamOne < 3 || teamTwo < 3)) {
                 var updateData = {};
 
-                console.log("Current user: " + queue.users[recordAdded] +" count "+ userCount)
+                console.log("Current user: " + queue.users[recordAdded] + " count " + userCount)
                 if (teamTwo < teamOne) {
                   updateData = { $addToSet: { teamTwo: queue.users[recordAdded] } }
                   teamTwo++;
@@ -131,7 +131,7 @@ const resolver = {
                   updateData = { $addToSet: { teamOne: queue.users[recordAdded] } }
                   teamOne++;
                 }
-                
+
                 //add the user to a team
                 Game.findOneAndUpdate(
                   {
@@ -141,68 +141,68 @@ const resolver = {
                   {
                     new: true
                   })
-                  .then((updatedGame) => {});
+                  .then((updatedGame) => { });
 
-                  //remove user from queue
-                  Queue.findOneAndUpdate(
-                    {
+                //remove user from queue
+                Queue.findOneAndUpdate(
+                  {
 
-                    },
-                    {
-                      $pull: { users: queue.users[recordAdded] },
-                    },
-                    {
-                      new: true,
-                    }
-                    ).then((response)=>{});
+                  },
+                  {
+                    $pull: { users: queue.users[recordAdded] },
+                  },
+                  {
+                    new: true,
+                  }
+                ).then((response) => { });
                 //updating counters for while loop
-                  userCount--;
-                  recordAdded++;
+                userCount--;
+                recordAdded++;
               }
             })
 
           return game;
         });
-      },
-      
-      startGame: async (parent, { gameId, teamLimit}) => {
-        await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
-          .then((game) => {
-            var teamOne = game.teamOneCount;
-            var teamTwo = game.teamTwoCount;
+    },
 
-            while (teamOne < teamLimit || teamTwo < teamLimit) {
-              var botData = {
-                botName: "Bot" + Math.floor(Math.random() * 5),
-                position: null,
-                team: null,
-              };
+    startGame: async (parent, { gameId, teamLimit }) => {
+      await Game.findOne({ _id: gameId }).populate("teamTwo").populate("teamOne")
+        .then((game) => {
+          var teamOne = game.teamOneCount;
+          var teamTwo = game.teamTwoCount;
 
-              if (teamTwo < teamOne) {
-                botData.team = 2;
-                teamTwo++;
-              } else if (teamOne <= teamTwo) {
-                botData.team = 1;
-                teamOne++;
-              }
-              
-              //add the user to a team
-              Game.findOneAndUpdate(
-                {
-                  _id: gameId
-                },
-                {
-                   $addToSet: { bots: botData }
-                },
-                {
-                  new: true
-                })
-                .then((updatedGame) => {});
+          while (teamOne < teamLimit || teamTwo < teamLimit) {
+            var botData = {
+              botName: "Bot" + Math.floor(Math.random() * 5),
+              position: null,
+              team: null,
+            };
+
+            if (teamTwo < teamOne) {
+              botData.team = 2;
+              teamTwo++;
+            } else if (teamOne <= teamTwo) {
+              botData.team = 1;
+              teamOne++;
             }
 
-            return game;
-          });
-      },
+            //add the user to a team
+            Game.findOneAndUpdate(
+              {
+                _id: gameId
+              },
+              {
+                $addToSet: { bots: botData }
+              },
+              {
+                new: true
+              })
+              .then((updatedGame) => { });
+          }
+
+          return game;
+        });
+    },
   },
 };
 
