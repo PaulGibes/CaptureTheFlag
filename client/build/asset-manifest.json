@@ -1,5 +1,6 @@
 {
   "files": {
+
     "main.css": "/static/css/main.9589ac0f.css",
     "main.js": "/static/js/main.7547ac18.js",
     "static/media/capturetheflag.jpg": "/static/media/capturetheflag.afa1fa45e2681664a942.jpg",
@@ -11,5 +12,6 @@
   "entrypoints": [
     "static/css/main.9589ac0f.css",
     "static/js/main.7547ac18.js"
+
   ]
 }
