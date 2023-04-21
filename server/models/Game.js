@@ -29,10 +29,12 @@ const gameSchema = new Schema({
   teamOne:[ {type: Schema.Types.ObjectId, ref: 'User'}],
   teamTwo:[ {type: Schema.Types.ObjectId, ref: 'User'}],
   flagOne: {
-    type: Object
+    type: String,
+    default: "3-2",
   },
   flagTwo: {
-    type: Object
+    type: String,
+    default: "3-11",
   },
   bots:[botSchema],
   winner:{
