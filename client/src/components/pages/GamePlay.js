@@ -10,46 +10,11 @@ import { Link } from "react-router-dom";
 import MapLogic from "../../utils/mapLogic";
 
 function GamePlay() {
-  console.log("test");
-  //let yellow = "#ffc800";
-  const [roundCount, startNewRound] = useState(" ");
-
-  const activeSpace = (id) => {
-    //let indigo = "#000";
-
-    // const row = parseInt(id.charAt(0));
-    // const column = parseInt(id.substring(2, id.length));
-
-    document.getElementById(id).style.backgroundColor = "indigo";
-
-  };
-
-  const doNothing = function () {
-
-  };
-
-
-  function startTimer(display) {
-    var timer = 5;
-    console.log("Timer started");
-    var interval = setInterval(function () {
-      document.getElementById("timer").textContent = "00:0" + timer;
-      if (timer == 0) {
-        clearInterval(interval);
-        document.getElementById("1-" + Math.floor((Math.random() * 12) + 1)).style.backgroundColor = "indigo";
-        startNewRound("");
-      }
-      timer--;
-    }, 1000);
-  }
-
-  startTimer();
-
-  const fieldMap = [
+  const [fieldMap, startNewRound] = useState([
     { id: '1-1', player: "", active: false, image: "", },
     { id: '1-2', player: "", active: false, image: "", },
     { id: '1-3', player: "", active: false, image: "", },
-    { id: '1-4', player: "", active: true, image: "", },
+    { id: '1-4', player: "", active: false, image: "", },
     { id: '1-5', player: "", active: false, image: "", },
     { id: '1-6', player: "Bot3", active: false, image: "", },
     { id: '1-7', player: "", active: false, image: "", },
@@ -64,7 +29,7 @@ function GamePlay() {
     { id: '2-4', player: "", active: false, image: "", },
     { id: '2-5', player: "", active: false, image: "", },
     { id: '2-6', player: "", active: false, image: "", },
-    { id: '2-7', player: "Myself", active: false, image: "", },
+    { id: '2-7', player: "Myself", active: true, image: "", },
     { id: '2-8', player: "", active: false, image: "", },
     { id: '2-9', player: "", active: false, image: "", },
     { id: '2-10', player: "", active: false, image: "", },
@@ -106,7 +71,48 @@ function GamePlay() {
     { id: '5-10', player: "", active: false, image: "", },
     { id: '5-11', player: "", active: false, image: "", },
     { id: '5-12', player: "", active: false, image: "", },
-  ];
+  ]);
+
+  // first grabbing current user from local storage (auth.js)
+  // const currentUser = Auth.getUsername()
+  // // console.log(currentUser)
+  // // passing QUERY_SINGLE_USER GQL function to useQuery and passing an argument of currentUser
+  // const { data } = useQuery(QUERY_SINGLE_USER, {
+  //     variables: { username: currentUser }
+  // })
+  
+  // console.log(data.user.isHost)
+
+  const activeSpace = (id) => {
+    //let indigo = "#000";
+    // const row = parseInt(id.charAt(0));
+    // const column = parseInt(id.substring(2, id.length));
+    document.getElementById(id).style.backgroundColor = "indigo";
+  };
+  const doNothing = function () {
+  };
+
+
+  function startTimer(display) {
+    var timer = 5;
+    console.log("Timer started");
+    var interval = setInterval(function () {
+      document.getElementById("timer").textContent = "00:0" + timer;
+      if (timer == 0) {
+        clearInterval(interval);
+        document.getElementById("1-" + Math.floor((Math.random() * 12) + 1)).style.backgroundColor = "indigo";
+        //change state
+        //let tempMap = fieldMap;
+        fieldMap[0].player ="Bot" + Math.floor(Math.random() * 12);
+        startNewRound([...fieldMap]);
+      }
+      timer--;
+    }, 1000);
+  }
+
+  startTimer();
+
+  //const fieldMap = ;
 
   MapLogic.activatePossibleMoves(fieldMap);
 
@@ -121,7 +127,7 @@ function GamePlay() {
         </div>
         <div>
           <h2>
-            Timer<span id="timer" className="ml-2 font-bold">00:03</span>
+            Timer<span id="timer" className="ml-2 font-bold">00:05</span>
           </h2>
         </div>
         <div className="flex">

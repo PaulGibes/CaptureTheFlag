@@ -10,6 +10,7 @@ const typeDefs = gql`
     position: String
     hasFlag: Boolean
     isHost: Boolean
+    game: Game
   }
 
   type Auth {
