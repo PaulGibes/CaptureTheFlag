@@ -103,7 +103,7 @@ function GamePlay() {
         document.getElementById("1-" + Math.floor((Math.random() * 12) + 1)).style.backgroundColor = "indigo";
         //change state
         //let tempMap = fieldMap;
-        fieldMap[0].player ="Bot" + Math.floor(Math.random() * 12)
+        fieldMap[0].player ="Bot" + Math.floor(Math.random() * 12);
         startNewRound([...fieldMap]);
       }
       timer--;
