@@ -2,14 +2,15 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLoginFormValidator } from "../utils/useLoginFormValidator.js";
-import { clsx } from "clsx";
-import "../styles/modules.css";
-import styles from "../styles/modules.css";
-
+ import "../styles/modules.css";
+ 
 const LoginModal = ({ setModalOn, setChoice }) => {
+
+  const navigate = useNavigate();
+
   const handleOKClick = () => {
     setChoice(true);
     setModalOn(false);
@@ -24,8 +25,11 @@ const LoginModal = ({ setModalOn, setChoice }) => {
     useLoginFormValidator(formState);
 
   const [login, { error, data }] = useMutation(LOGIN_USER);
+
   const isValid = formState.username !== "";
+
   const [touched, setTouched] = useState(false);
+  const [player, isPlayer] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,11 +64,13 @@ const LoginModal = ({ setModalOn, setChoice }) => {
       //Set the value of the token in local storage to the token received.
       Auth.login(data.login.token);
       Auth.logUsername(data.login.user.username);
+      console.log(data.login.user.username)
+      window.location.href="/choose-game";
+
     } catch (err) {
       console.log(err);
-      //alert(JSON.stringify(formState, null, 2));
-      alert("username or password not found");
-      const { isValid } = validateForm({
+       isPlayer(true)
+       const { isValid } = validateForm({
         formState,
         errors,
         forceTouchErrors: true,
@@ -200,6 +206,11 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                   >
                     Log In to Play
                   </button>
+                  {player ? (
+                        <p className="formFieldErrorMessage">
+                         Player or password is incorrect
+                        </p>
+                      ) : null}
                 </form>
 
                 <p className="mt-2 text-center text-sm text-gray-500">

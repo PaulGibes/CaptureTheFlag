@@ -6,6 +6,8 @@ import Logo from "../../assets/images/capturetheflag.jpg";
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
+import { useLoginFormValidator } from "../../utils/useLoginFormValidator.js";
+import "../../styles/modules.css";
 
 function Signup() {
   const [formState, setFormState] = useState({
@@ -13,16 +15,29 @@ function Signup() {
     password: "",
   });
 
+  const { errors, validateForm, onBlurField } =
+    useLoginFormValidator(formState);
+
   const [addUser, { error, data }] = useMutation(ADD_USER);
+
+  const isValid = formState.username !== "";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     //set the form state equal to itself and then add the value to the name of the target(username or password)
-    setFormState({
+    const nextFormState = {
       ...formState,
       [name]: value,
-    });
+    };
+    setFormState(nextFormState);
+    console.log(errors[name]);
+    if (errors[name].dirty)
+      validateForm({
+        formState: nextFormState,
+        errors,
+        name,
+      });
     console.log(formState);
   };
 
@@ -39,8 +54,20 @@ function Signup() {
       console.log("user created");
     } catch (err) {
       console.log(err);
+      const { isValid } = validateForm({
+        formState,
+        errors,
+        forceTouchErrors: true,
+      });
+      if (!isValid) return;
     }
+
+    setFormState({
+      username: "",
+      password: "",
+    });
   };
+
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
 
@@ -78,9 +105,20 @@ function Signup() {
                 type="text"
                 value={formState.username}
                 onChange={handleChange}
+                onBlur={onBlurField}
+                className={
+                  errors.username.dirty && errors.username.error
+                    ? "formFieldError"
+                    : "formField"
+                }
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                //className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
+              {errors.username.dirty && errors.username.error ? (
+                <p className="formFieldErrorMessage">
+                  {errors.username.message}
+                </p>
+              ) : null}
             </div>
           </div>
 
@@ -100,74 +138,99 @@ function Signup() {
                 type="password"
                 value={formState.password}
                 onChange={handleChange}
+                onBlur={onBlurField}
                 autoComplete="current-password"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className={
+                  errors.password.dirty && errors.password.error
+                    ? "formFieldError"
+                    : "formField"
+                }
               />
+              {errors.password.dirty && errors.password.error ? (
+                <p className="formFieldErrorMessage">
+                  {errors.password.message}
+                </p>
+              ) : null}
             </div>
           </div>
-          <div>
+          <div className="flex flex-col justify-end items-center ">
             <label
-              htmlFor="character"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              htmlFor="flags"
+              className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
             >
-              Choose your Character
+              Choose a Character
             </label>
-            <fieldset className=" gap-10">
-              <input
-                id="character1"
-                className="peer/1"
-                type="radio"
-                name="status"
-                checked
-              />
-              <label
-                for="character1"
-                className="peer-checked/character1:text-sky-500"
-              >
-                Character 1
-              </label>
-
-              <input
-                id="character2"
-                className="peer/2"
-                type="radio"
-                name="status"
-              />
-              <label
-                for="character2"
-                className="peer-checked/character2:text-sky-500"
-              >
-                Character 2
-              </label>
-              <input
-                id="character3"
-                className="peer/3"
-                type="radio"
-                name="status"
-              />
-              <label
-                or="character3"
-                className="peer-checked/character3:text-sky-500"
-              >
-                Character 3
-              </label>
-
-              <br />
-              <div className="hidden peer-checked/1:block flex-1 ">
-                This is awesome!
-              </div>
-              <div className="hidden peer-checked/2:block">Lets Go!</div>
-              <div className="hidden peer-checked/3:block">Are you ready?!</div>
-            </fieldset>
+            <div className="mt-2">
+              <ul class="flex w-full gap-6 ">
+                <li>
+                  <input
+                    type="radio"
+                    id="avatar-1"
+                    name="avatar"
+                    value="avatar-1"
+                    class="hidden peer"
+                    required
+                  />
+                  <label
+                    for="avatar-1"
+                    class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                  >
+                    <div class="block">
+                      <div class="w-full text-lg text-center font-semibold">
+                        1
+                      </div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <input
+                    type="radio"
+                    id="avatar-2"
+                    name="avatar"
+                    value="avatar-2"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="avatar-2"
+                    class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                  >
+                    <div class="block">
+                      <div class="w-full text-lg text-center font-semibold">
+                        2
+                      </div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <input
+                    type="radio"
+                    id="avatar-3"
+                    name="avatar"
+                    value="avatar-3"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="avatar-3"
+                    class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                  >
+                    <div class="block">
+                      <div class="w-full text-lg text-center font-semibold">
+                        3
+                      </div>
+                    </div>
+                  </label>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <button
-            className="btn btn-block btn-info"
+            className="btn btn-block btn-info flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
             style={{ cursor: "pointer" }}
             type="submit"
           >
-            Submit
+            Create Player
           </button>
         </form>
 
