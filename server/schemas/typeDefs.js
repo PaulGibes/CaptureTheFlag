@@ -59,6 +59,8 @@ const typeDefs = gql`
     exitQueue(_id: String!): Queue
     fillGame(gameId: ID!): Game
     startGame(gameId: ID!, teamLimit: Int!): Game
+    updatePosition(username: String!, position: String!): User
+    updateFlag(username: String!, hasFlag: Boolean): User
   }
 `;
 

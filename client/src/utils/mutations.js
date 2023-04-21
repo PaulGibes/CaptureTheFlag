@@ -76,3 +76,22 @@ export const START_GAME = gql`
     }
   }
 `;
+
+export const UPDATE_POSITION = gql`
+  mutation Mutation($username: String!, $position: String!) {
+    updatePosition(username: $username, position: $position) {
+      username
+      position
+      }
+    }
+  }
+`;
+
+export const HAS_FLAG = gql`
+ mutation Mutation($username: String!, $hasFlag: Boolean!) {
+  updateFlag(username; $username, hasFlag: $hasFlag) {
+    username
+    hasFlag
+  }
+ }
+`;
