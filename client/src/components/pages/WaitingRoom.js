@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../styles/globals.css";
 import { motion } from "framer-motion";
 import Auth from "../../utils/auth"
@@ -8,23 +8,13 @@ import { useQuery } from "@apollo/client";
 function WaitingRoom() {
     // first grabbing current user from local storage (auth.js)
     const currentUser = Auth.getUsername()
-    console.log(currentUser)
+    // console.log(currentUser)
     // passing QUERY_SINGLE_USER GQL function to useQuery and passing an argument of currentUser
     const { data } = useQuery(QUERY_SINGLE_USER, {
         variables: { username: currentUser }
     })
-    console.log(data)
 
-    // change initial value for fun
-    const [numUsers, setNumUsers] = useState(1);
-    const [hostUser, setHostUser] = useState(null);
-
-    // want to grab the current users id
-    // want to assign hostUser as the user who started the game room
-
-    // const handleStartGame = async () => {
-
-    // }
+    console.log(data.user.isHost)
 
     const ballStyle = {
         width: "5rem",
@@ -37,7 +27,7 @@ function WaitingRoom() {
         return Math.random() * 0.4 + 0.2;
     };
 
-    function getRandomColor() {
+    const getRandomColor = () => {
         var letters = "0123456789ABCDEF";
         var color = "#";
         for (var i = 0; i < 6; i++) {
@@ -46,34 +36,32 @@ function WaitingRoom() {
         return color;
     }
 
-    const balls = Array.from({ length: numUsers }).map(() => {
+    const getRandomNumber = () => {
+        return Math.floor(Math.random() * 6) + 1
+    }
+
+    const balls = Array.from({ length: getRandomNumber() }).map(() => {
         return {
             duration: getRandomDuration(),
             color: getRandomColor(),
         };
     });
 
-    const gameMode = 1
-    let opponent = ""
-    if (gameMode === 1) {
-        opponent = "The Insiders"
-    } else {
-        opponent = "The Machines"
-    }
-
     return (
         <>
             <div className="flex justify-evenly">
                 <p className="text-5xl p-4 mt-8">The Outsiders</p>
                 <p className="text-9xl p-4">VS</p>
-                <p className="text-5xl p-4 mt-8">{opponent}</p>
+                <p className="text-5xl p-4 mt-8">The Insiders</p>
             </div>
+            <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
             <div className="flex justify-evenly">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white max-h-[3rem] font-bold px-4 rounded">Leave Game</button>
-                <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
-
-                <button className="bg-blue-500 hover:bg-blue-700 text-white max-h-[3rem] font-bold px-4 rounded">Start Game</button>
-
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Leave Game</button>
+                {data.user.isHost && (
+                    <div>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
+                    </div>
+                )}
             </div>
             <div className="flex justify-center">
                 {balls.map((ball, index) => (

@@ -2,14 +2,14 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLoginFormValidator } from "../utils/useLoginFormValidator.js";
-import { clsx } from "clsx";
 import "../styles/modules.css";
-import styles from "../styles/modules.css";
 
 const LoginModal = ({ setModalOn, setChoice }) => {
+  const navigate = useNavigate();
+
   const handleOKClick = () => {
     setChoice(true);
     setModalOn(false);
@@ -24,8 +24,11 @@ const LoginModal = ({ setModalOn, setChoice }) => {
     useLoginFormValidator(formState);
 
   const [login, { error, data }] = useMutation(LOGIN_USER);
+
   const isValid = formState.username !== "";
+
   const [touched, setTouched] = useState(false);
+  const [player, isPlayer] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,10 +63,15 @@ const LoginModal = ({ setModalOn, setChoice }) => {
       //Set the value of the token in local storage to the token received.
       Auth.login(data.login.token);
       Auth.logUsername(data.login.user.username);
+      console.log(data.login.user.username);
+      // if user.state = logged in then window.location.href = "/choose-game";
+
+      if (Auth.loggedIn()) {
+        window.location.href = "/choose-game";
+      }
     } catch (err) {
       console.log(err);
-      //alert(JSON.stringify(formState, null, 2));
-      alert("username or password not found");
+      isPlayer(true);
       const { isValid } = validateForm({
         formState,
         errors,
@@ -192,7 +200,6 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                       ) : null}
                     </div>
                   </div>
-
                   <button
                     className="btn btn-block btn-info flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
                     style={{ cursor: "pointer" }}
@@ -200,6 +207,11 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                   >
                     Log In to Play
                   </button>
+                  {player ? (
+                    <p className="formFieldErrorMessage">
+                      Player or password is incorrect
+                    </p>
+                  ) : null}
                 </form>
 
                 <p className="mt-2 text-center text-sm text-gray-500">

@@ -14,6 +14,8 @@ export const QUERY_SINGLE_USER = gql`
     user (username: $username) {
       _id
       username
+      position
+      isHost
     }
   }
 `;

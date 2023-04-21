@@ -5,7 +5,8 @@
     "wins": 1,
     "loses": 0,
     "position": "",
-    "hasFlag": true
+    "hasFlag": true,
+    "isHost": true
   },
   {
     "username": "sauron",
@@ -13,7 +14,8 @@
     "wins": 0,
     "loses": 2,
     "position": "",
-    "hasFlag": false
+    "hasFlag": false,
+    "isHost": false
   },
   {
     "username": "aragorn",
