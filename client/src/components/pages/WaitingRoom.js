@@ -17,14 +17,6 @@ function WaitingRoom() {
 
     // change initial value for fun
     const [numUsers, setNumUsers] = useState(1);
-    const [hostUser, setHostUser] = useState(null);
-
-    // want to grab the current users id
-    // want to assign hostUser as the user who started the game room
-
-    // const handleStartGame = async () => {
-
-    // }
 
     const ballStyle = {
         width: "5rem",
