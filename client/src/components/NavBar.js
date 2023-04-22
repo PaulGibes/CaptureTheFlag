@@ -2,6 +2,8 @@ import React from "react";
 import "../../src/styles/globals.css";
 import { BsFillMoonStarsFill } from "react-icons/bs";
 import SettingsModal from "../components/SettingsModal";
+import { navbarGUI, iconSettings, iconHighscore } from "../assets/images";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -41,55 +43,158 @@ function NavBar() {
     window.location.href = "/";
   };
 
-  return (
-    <div className={darkMode ? "dark" : ""}>
-      <div className="bg-white px-10 md:px-20 lg:px-40 dark:bg-gray-900">
-        <nav className="py-10 mb-12">
-          <ul className="flex items-center justify-evenly">
-            <li>
-              <h1 className="text-xl dark:text-white">
-                <Link to="/highscoreBoard">High Scores</Link>
-              </h1>
-            </li>
-            <li>
-              <div className="text-center p-450">
-                <h2 className="text-4xl py-1 text-teal-400 font-medium md:text-4xl ">
-                  <Link to={"/"}> The Outsiders </Link>
-                </h2>
-                <h3></h3>
-                {user ? (
-                  <h3 className="text-1xl py-2 md:text-2xl dark:text-white">
-                    Welcome {user}!
-                  </h3>
-                ) : null}
-              </div>
-            </li>
+  const iconScale = {
+    rest: { scale: 1, ease: "easeOut", duration: 0.2, type: "tween" },
+    hover: {
+      scale: 0.8,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      },
+    },
+  };
+  const textAnimate = {
+    rest: {
+      opacity: 1,
+      x: 0,
+      ease: "easeOut",
+      duration: 0.2,
+      type: "tween",
+    },
+    hover: {
+      opacity: 0.9,
+      x: 5,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      },
+    },
+  };
+  const textAnimate2 = {
+    rest: {
+      opacity: 1,
+      x: 0,
+      ease: "easeOut",
+      duration: 0.2,
+      type: "tween",
+    },
+    hover: {
+      opacity: 0.9,
+      x: -5,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      },
+    },
+  };
+  const cornerBorder = {
+    rest: { scale: 1, ease: "easeOut", duration: 0.2, type: "tween" },
+    hover: {
+      scale: 1.2,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      },
+    },
+  };
 
-            <li className="flex">
-              <div
-                onClick={clicked}
-                className="bg-gradient-to-r from-cyan-500 to-teal-500 text-white px-4 py-2 rounded-md mr-8"
+  // whileHover={{ scale: 1.2 }}
+  //             whileTap={{ scale: 0.9 }}
+  //             transition={{ type: "spring", stiffness: 400, damping: 17 }}
+
+  return (
+    <div className="">
+      <div className=" px-10 md:px-20 lg:px-40  ">
+        <nav className="pb-10 mb-12">
+          <div className="text-center absolute z-0 w-90 mx-auto left-0 right-0 flex flex-col justify-center items-center">
+            <Link to={"/"}>
+              <div className="w-full">
+                <img src={navbarGUI} />
+              </div>
+            </Link>
+
+            <h2 className="text-md absolute py-1 text-white font-medium md:text-4xl ">
+              THE OUTSIDERS
+            </h2>
+            <h3></h3>
+            {user ? (
+              <h3 className="text-1xl py-10 sm:pt-12 md:pt-16 md:text-2xl dark:text-white">
+                Welcome {user}!
+              </h3>
+            ) : null}
+          </div>
+          <Link to="/highscoreBoard">
+            <motion.div
+              className="flex items-center py-10 sm:pt-12 md:pt-16 absolute z-10  "
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+            >
+              <motion.div
+                className=" w-8 h-8 md:w-10 md:h-10 mx-2 box box-e cursor-pointer"
+                variants={cornerBorder}
+              >
+                <motion.div
+                  className="w-7 h-7 md:w-9 md:h-9 bg-icon "
+                  variants={iconScale}
+                >
+                  <img src={iconHighscore} />
+                </motion.div>
+              </motion.div>
+              <motion.h2
+                className="hidden sm:block text-md md:text-2xl text-white"
+                variants={textAnimate}
+              >
+                High Scores
+              </motion.h2>
+            </motion.div>
+          </Link>
+          <div className=" ">
+            <motion.div
+              onClick={clicked}
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              className=" flex items-center  cursor-pointer py-10 sm:pt-12 md:pt-16 relative z-10 pr-10 float-right"
+            >
+              <motion.h2
+                className="hidden sm:block text-md md:text-2xl text-white"
+                variants={textAnimate2}
               >
                 Settings
-              </div>
-              {modalOn && (
-                <SettingsModal setModalOn={setModalOn} setChoice={setChoice} />
-              )}
-              {/* </li> */}
-              {/* <li> */}
-              <BsFillMoonStarsFill
+              </motion.h2>
+              <motion.div
+                className=" w-8 h-8 md:w-10 md:h-10 mx-2 box box-e cursor-pointer"
+                variants={cornerBorder}
+              >
+                <motion.div
+                  className="w-7 h-7 md:w-9 md:h-9 bg-icon "
+                  variants={iconScale}
+                >
+                  <img src={iconSettings} />
+                </motion.div>
+              </motion.div>
+            </motion.div>
+            {modalOn && (
+              <SettingsModal setModalOn={setModalOn} setChoice={setChoice} />
+            )}
+
+            {/* <BsFillMoonStarsFill
                 onClick={() => setDarkMode(!darkMode)}
                 className="cursor-pointer text-2xl dark:text-white"
-              />
-            </li>
-            {user ? (
-              <li>
-                <h1 className="text-xl dark:text-white" onClick={handleLogout}>
-                  logout
-                </h1>
-              </li>
-            ) : null}
-          </ul>
+              /> */}
+          </div>
+          {user ? (
+            <div>
+              <h1 className="text-xl dark:text-white" onClick={handleLogout}>
+                logout
+              </h1>
+            </div>
+          ) : null}
         </nav>
       </div>
     </div>

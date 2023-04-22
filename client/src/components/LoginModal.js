@@ -6,6 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLoginFormValidator } from "../utils/useLoginFormValidator.js";
 import "../styles/modules.css";
+import {} from "../assets/images";
+import { BiUser } from "react-icons/bi";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 const LoginModal = ({ setModalOn, setChoice }) => {
   const navigate = useNavigate();
@@ -106,7 +109,7 @@ const LoginModal = ({ setModalOn, setChoice }) => {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        className="bg-zinc-200/75 fixed inset-0 z-50"
+        className="bg-modal fixed inset-0 z-50"
         variants={backdrop}
         initial="hidden"
         animate="visible"
@@ -114,37 +117,47 @@ const LoginModal = ({ setModalOn, setChoice }) => {
       >
         <div className="flex h-screen justify-center items-center">
           <motion.div
-            className="flex-col justify-center bg-white opacity-100 py-6 px-6 border-4 w-1/3 border-sky-500 rounded-xl"
+            className="flex-col justify-center bg-modal-login opacity-100  w-1/3 "
             variants={modal}
           >
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Log in to play!
+            <h2 className="mt-10 text-center text-2xl tracking-tight text-white">
+              Welcome,
             </h2>
-            <div className="flex flex-col">
-              <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" onSubmit={handleFormSubmit}>
+            <p className="text-center text-white text-sm mb-5">
+              Log in with your player name to play:
+            </p>
+            <div className="flex flex-col w-2/3 px-5 pb-12 mx-auto">
+              <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                <form className="space-y-4" onSubmit={handleFormSubmit}>
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium leading-6 text-gray-900"
+                      className="block text-sm font-medium leading-6 text-white"
                     >
                       Player name
                     </label>
-                    <div className="mt-2">
-                      <input
-                        id="name"
-                        name="username"
-                        type="text"
-                        value={formState.username}
-                        onChange={handleChange}
-                        onBlur={onBlurField}
-                        className={
-                          errors.username.dirty && errors.username.error
-                            ? "formFieldError"
-                            : "formField"
-                        }
-                        // className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                    <div className="">
+                      <label
+                        htmlFor="name"
+                        class="relative text-orange-500 focus-within:text-orange-600 block"
+                      >
+                        <BiUser className="pointer-events-none w-6 h-6 absolute top-1/2 transform -translate-y-1/2 left-3" />
+
+                        <input
+                          id="name"
+                          name="username"
+                          type="text"
+                          value={formState.username}
+                          onChange={handleChange}
+                          onBlur={onBlurField}
+                          placeholder="username"
+                          className={
+                            errors.username.dirty && errors.username.error
+                              ? "formFieldError form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
+                              : "formField form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
+                          }
+                        />
+                      </label>
                       {touched ? (isValid ? "✅" : "❌") : null}
                       {errors.username.dirty && errors.username.error ? (
                         <p className="formFieldErrorMessage">
@@ -158,41 +171,39 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                     <div className="flex items-center justify-between">
                       <label
                         htmlFor="password"
-                        className="block text-sm font-medium leading-6 text-gray-900"
+                        className="block text-sm font-medium leading-6 text-white"
                       >
                         Password
                       </label>
-                      <div className="text-sm">
-                        <a
-                          href="#"
-                          className="font-semibold text-indigo-600 hover:text-indigo-500"
-                        >
-                          Forgot password?
-                        </a>
-                      </div>
                     </div>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={formState.password}
-                        onChange={handleChange}
-                        onBlur={onBlurField}
-                        autoComplete="current-password"
-                        className={
-                          errors.password.dirty && errors.password.error
-                            ? "formFieldError"
-                            : "formField"
-                        }
-                        //className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        // {clsx(
-                        //   styles.formField,
-                        //   errors.password.dirty &&
-                        //   errors.password.error &&
-                        //   styles.formFieldError
-                        // )}
-                      />
+                    <div className="">
+                      <label
+                        htmlFor="name"
+                        class="relative text-orange-500 focus-within:text-orange-600 block"
+                      >
+                        <RiLockPasswordFill className="pointer-events-none w-6 h-6 absolute top-1/2 transform -translate-y-1/2 left-3" />
+                        <input
+                          id="password"
+                          name="password"
+                          type="password"
+                          value={formState.password}
+                          onChange={handleChange}
+                          onBlur={onBlurField}
+                          autoComplete="current-password"
+                          className={
+                            errors.password.dirty && errors.password.error
+                              ? "formFieldError form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
+                              : "formField form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
+                          }
+                          //className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          // {clsx(
+                          //   styles.formField,
+                          //   errors.password.dirty &&
+                          //   errors.password.error &&
+                          //   styles.formFieldError
+                          // )}
+                        />
+                      </label>
                       {errors.password.dirty && errors.password.error ? (
                         <p className="formFieldErrorMessage">
                           {errors.password.message}
@@ -200,30 +211,49 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                       ) : null}
                     </div>
                   </div>
+                  {/* <label  htmlFor="name" class="relative text-gray-400 focus-within:text-gray-600 block">
+                    <BiUser className="pointer-events-none w-8 h-8 absolute top-1/2 transform -translate-y-1/2 left-3" />
+
+                    <input
+                       id="name"
+                       name="username"
+                       type="text"
+                       value={formState.username}
+                       onChange={handleChange}
+                       onBlur={onBlurField}
+                      placeholder="username"
+                      className={
+                        errors.username.dirty && errors.username.error
+                          ? "formFieldError form-input border border-gray-900 py-3 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
+                          : "formField form-input border border-gray-900 py-3 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
+                      }
+                       
+                    />
+                  </label> */}
                   <button
-                    className="btn btn-block btn-info flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                    className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
                     style={{ cursor: "pointer" }}
                     type="submit"
                   >
-                    Log In to Play
+                    <h3> Log In to Play </h3>
                   </button>
                   {player ? (
-                    <p className="formFieldErrorMessage">
+                    <p className="formFieldErrorMessage my-0 text-center">
                       Player or password is incorrect
                     </p>
                   ) : null}
-                </form>
 
-                <p className="mt-2 text-center text-sm text-gray-500">
-                  Not a member?{" "}
-                  <Link
-                    to={"/signup"}
-                    className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-                  >
-                    {" "}
-                    Create a New Player{" "}
-                  </Link>
-                </p>
+                  <p className=" text-center text-sm text-gray-500">
+                    Not a member?{" "}
+                    <Link
+                      to={"/signup"}
+                      className="font-semibold leading-6 accent hover:text-orange-600"
+                    >
+                      {" "}
+                      Create a New Player{" "}
+                    </Link>
+                  </p>
+                </form>
               </div>
               {/* <button
               onClick={handleOKClick}
@@ -233,9 +263,9 @@ const LoginModal = ({ setModalOn, setChoice }) => {
             </button> */}
               <button
                 onClick={handleCancelClick}
-                className="rounded px-4 py-2 mt-4 text-white bg-blue-500"
+                className=" text-gray-500 absolute top-5 right-12 px-2 py-2 mt-4  "
               >
-                Cancel
+                Cancel X
               </button>
             </div>
           </motion.div>
