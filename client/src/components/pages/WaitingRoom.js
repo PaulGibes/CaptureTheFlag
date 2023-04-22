@@ -3,7 +3,8 @@ import "../../styles/globals.css";
 import { motion } from "framer-motion";
 import Auth from "../../utils/auth"
 import { QUERY_SINGLE_USER } from "../../utils/queries"
-import { useQuery } from "@apollo/client";
+import { EXIT_QUEUE } from "../../utils/mutations";
+import { useQuery, useMutation } from "@apollo/client";
 
 function WaitingRoom() {
     // first grabbing current user from local storage (auth.js)
@@ -15,6 +16,7 @@ function WaitingRoom() {
     });
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
+    console.log(data)
 
     const ballStyle = {
         width: "5rem",
@@ -47,6 +49,24 @@ function WaitingRoom() {
         };
     });
 
+    const HandleExitQueue = async (id) => {
+        try {
+            // Call the mutate function with the mutation and variables
+            const result = await useMutation({
+                mutation: EXIT_QUEUE,
+                variables: {
+                    id: id // Pass the 'id' variable as an argument to the mutation
+                }
+            });
+
+            // Access the data returned from the mutation
+            console.log(result.data.exitQueue);
+        } catch (error) {
+            console.error(error);
+        }
+        window.location.href = "/choose-game";
+    };
+
     return (
         <>
             <div className="flex justify-evenly">
@@ -56,10 +76,11 @@ function WaitingRoom() {
             </div>
             <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
             <div className="flex justify-evenly">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Leave Game</button>
+                {/* onClick={HandleLeaveGame} */}
+                <button onClick={() => HandleExitQueue(data.user._id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Leave Lobby</button>
                 {data.user.isHost ? <div>
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
-                </div> : "Not a Host"}
+                </div> : ""}
             </div>
             <div className="flex justify-center">
                 {balls.map((ball, index) => (
