@@ -5,7 +5,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../styles/home.css";
 import LoginModal from "../LoginModal";
-import { terrain } from "../../assets/images";
+import { terrain, stars } from "../../assets/images";
 
 function Home() {
   const [darkMode, setDarkMode] = useState(false);
@@ -18,10 +18,12 @@ function Home() {
   return (
     <div className="bg-main">
       {/* <ParticlesBg className= "min-h-screen" type="square" bg={true} /> */}
+      <div className="absolute -top-[50%] z-0">
+        <img src={stars} />
+      </div>
       <div className=" dark:bg-gray-900">
         <section className="min-h-screen">
           <div className="flex flex-col px-10 py-10 md:px-20 lg:px-40 justify-center text-center clear-both">
-            <div> </div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl text-white">
               THE OUTSIDERS
             </h1>
@@ -30,7 +32,7 @@ function Home() {
           <div className="flex">
             <motion.div
               onClick={clicked}
-              className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2   text-white text-center"
+              className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
               whileHover={{ scale: 1.3 }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -39,7 +41,7 @@ function Home() {
             </motion.div>
           </div>
           <div className="w-full">
-            <img src={terrain} />
+            <img className=" mx-auto" src={terrain} />
           </div>
 
           {modalOn && (

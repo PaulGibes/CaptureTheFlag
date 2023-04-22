@@ -117,7 +117,13 @@ function NavBar() {
               </div>
             </Link>
 
-            <h2 className="text-md absolute pb-5 text-white font-medium md:text-4xl ">
+            <h2
+              className={
+                user
+                  ? "text-md absolute pb-5 text-white font-medium md:text-4xl "
+                  : "text-md absolute pt-5 pb-5 text-white font-medium md:text-4xl"
+              }
+            >
               THE OUTSIDERS
             </h2>
             <div className="flex items-center">
@@ -127,7 +133,10 @@ function NavBar() {
                 </h3>
               ) : null}
               {user ? (
-                <h1 className="text-md ml-2  accent hover:text-orange-600" onClick={handleLogout}>
+                <h1
+                  className="text-md ml-2 cursor-pointer accent hover:text-orange-600"
+                  onClick={handleLogout}
+                >
                   <MdLogout />
                 </h1>
               ) : null}
@@ -165,7 +174,7 @@ function NavBar() {
               initial="rest"
               whileHover="hover"
               animate="rest"
-              className=" flex items-center  cursor-pointer py-10 sm:pt-12 md:pt-16 relative z-10 pr-10 float-right"
+              className=" flex items-center  cursor-pointer py-10 sm:pt-12 md:pt-16 relative z-10 pr-0 md:pr-10 float-right"
             >
               <motion.h2
                 className="hidden sm:block text-md md:text-2xl text-white"

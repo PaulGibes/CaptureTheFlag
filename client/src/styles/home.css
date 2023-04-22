@@ -8,6 +8,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
+  background-position-y: center;
 }
 
 .hover\:bg-btn-h:hover {
@@ -15,7 +16,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
- }
+  background-position-y: center;
+}
 
 .box {
   display: flex;
@@ -68,4 +70,12 @@
 
 .bg-icon {
   background: #ff6a131f;
+}
+
+.map-footer {
+  background: url("../assets/images/map-footer.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
 }
