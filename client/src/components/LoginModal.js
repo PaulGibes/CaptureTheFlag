@@ -117,10 +117,17 @@ const LoginModal = ({ setModalOn, setChoice }) => {
       >
         <div className="flex h-screen justify-center items-center">
           <motion.div
-            className="flex-col justify-center bg-modal-login opacity-100  w-1/3 "
+            className="flex-col justify-center bg-modal-login opacity-100 w-4/5 sm:w-4/5 md:w-3/5 lg:w-2/5   "
             variants={modal}
           >
-            <h2 className="mt-10 text-center text-2xl tracking-tight text-white">
+            <button
+              onClick={handleCancelClick}
+              className=" text-gray-500 mt-10 float-right pr-20  "
+            >
+              Cancel X
+              {/* absolute top-5 right-20 sm:right-24 md:right-32 lg:right-28 */}
+            </button>
+            <h2 className="mt-10 clear-both text-center text-2xl tracking-tight text-white">
               Welcome,
             </h2>
             <p className="text-center text-white text-sm mb-5">
@@ -192,8 +199,8 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                           autoComplete="current-password"
                           className={
                             errors.password.dirty && errors.password.error
-                              ? "formFieldError form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
-                              : "formField form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
+                              ? "formFieldError form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 tracking-[.5em]  focus:outline-none"
+                              : "formField form-input border border-gray-900 py-2 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 tracking-[.5em]  focus:outline-none"
                           }
                           //className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           // {clsx(
@@ -211,25 +218,7 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                       ) : null}
                     </div>
                   </div>
-                  {/* <label  htmlFor="name" class="relative text-gray-400 focus-within:text-gray-600 block">
-                    <BiUser className="pointer-events-none w-8 h-8 absolute top-1/2 transform -translate-y-1/2 left-3" />
-
-                    <input
-                       id="name"
-                       name="username"
-                       type="text"
-                       value={formState.username}
-                       onChange={handleChange}
-                       onBlur={onBlurField}
-                      placeholder="username"
-                      className={
-                        errors.username.dirty && errors.username.error
-                          ? "formFieldError form-input border border-gray-900 py-3 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
-                          : "formField form-input border border-gray-900 py-3 px-4  placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none"
-                      }
-                       
-                    />
-                  </label> */}
+                 
                   <button
                     className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
                     style={{ cursor: "pointer" }}
@@ -261,12 +250,6 @@ const LoginModal = ({ setModalOn, setChoice }) => {
             >
               Yes
             </button> */}
-              <button
-                onClick={handleCancelClick}
-                className=" text-gray-500 absolute top-5 right-12 px-2 py-2 mt-4  "
-              >
-                Cancel X
-              </button>
             </div>
           </motion.div>
         </div>

@@ -18,6 +18,9 @@
   border-bottom: 1px solid #3d3d3d;
   color: #e0e0e0;
 }
+.player{
+    color: #ff6a13;
+}
 
 .formFieldError {
   background-color: transparent;
@@ -28,7 +31,7 @@
 
 .formFieldErrorMessage {
   color: #fa2654;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .formActions {
@@ -56,6 +59,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
+  max-height: 40rem;
+  max-width: 30rem;
 }
 
 [type="text"]:focus,
@@ -78,11 +83,10 @@
 }
 
 .btn-outsider {
-  border: 1px solid #ff6a13;
-  border-radius: 10px;
+   border-radius: 10px;
 }
 .btn-outsider:hover {
-  border: 1px solid #ff6a13;
+   
   box-shadow: 0px 1px 8px 0.5px #fb7d33, inset 0px 0px 3px #ff7829;
   border-radius: 10px;
   background-color: #fc6b1826;

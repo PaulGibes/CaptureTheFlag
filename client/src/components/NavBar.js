@@ -1,6 +1,6 @@
 import React from "react";
 import "../../src/styles/globals.css";
-import { BsFillMoonStarsFill } from "react-icons/bs";
+import { MdLogout } from "react-icons/md";
 import SettingsModal from "../components/SettingsModal";
 import { navbarGUI, iconSettings, iconHighscore } from "../assets/images";
 import { motion, AnimatePresence } from "framer-motion";
@@ -117,15 +117,21 @@ function NavBar() {
               </div>
             </Link>
 
-            <h2 className="text-md absolute py-1 text-white font-medium md:text-4xl ">
+            <h2 className="text-md absolute pb-5 text-white font-medium md:text-4xl ">
               THE OUTSIDERS
             </h2>
-            <h3></h3>
-            {user ? (
-              <h3 className="text-1xl py-10 sm:pt-12 md:pt-16 md:text-2xl dark:text-white">
-                Welcome {user}!
-              </h3>
-            ) : null}
+            <div className="flex items-center">
+              {user ? (
+                <h3 className="text-1xl   md:text-2xl text-white">
+                  Welcome {user}!
+                </h3>
+              ) : null}
+              {user ? (
+                <h1 className="text-md ml-2  accent hover:text-orange-600" onClick={handleLogout}>
+                  <MdLogout />
+                </h1>
+              ) : null}
+            </div>
           </div>
           <Link to="/highscoreBoard">
             <motion.div
@@ -188,13 +194,6 @@ function NavBar() {
                 className="cursor-pointer text-2xl dark:text-white"
               /> */}
           </div>
-          {user ? (
-            <div>
-              <h1 className="text-xl dark:text-white" onClick={handleLogout}>
-                logout
-              </h1>
-            </div>
-          ) : null}
         </nav>
       </div>
     </div>
