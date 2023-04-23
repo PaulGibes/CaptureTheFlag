@@ -1,18 +1,53 @@
-import { useState } from "react";
-import Button from "./Button";
 import { Link } from "react-router-dom";
+import Auth from "../utils/auth"
+import { QUERY_SINGLE_USER } from "../utils/queries"
+import { UPDATE_ISHOST } from "../utils/mutations"
+import { JOIN_QUEUE } from "../utils/mutations";
+import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CreateGameModal = ({ setModalOn, setChoice }) => {
-  const handleOKClick = () => {
-    setChoice(true);
-    setModalOn(false);
-  };
+  const updateHost = useMutation(UPDATE_ISHOST);
+  const updateQueue = useMutation(JOIN_QUEUE);
+
+
   const handleCancelClick = () => {
     setChoice(false);
     setModalOn(false);
   };
+
+  const currentUser = Auth.getUsername()
+  const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
+    variables: { username: currentUser }
+  });
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
+
+  const HandleJoinQueue = async (username) => {
+    // try {
+    //   const { isHostResult } = await updateHost({
+    //     variables: {
+    //       username: username,
+    //       isHost: true
+    //     },
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+    // try {
+    //   const { joinQueueResult } = await updateQueue({
+    //     variables: {
+    //       username: username
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+    window.location.href = "/waitingroom";
+  }
 
   const backdrop = {
     visible: { opacity: 1 },
@@ -64,7 +99,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                       htmlFor="flags"
                       className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      FLAGS TO WIN
+                      FLAGS TO WIN (1-10)
                     </label>
                     <div className="mt-2">
                       <input
@@ -127,7 +162,61 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                       </ul>
                     </div>
                   </div>
-                  <div className="flex justify-end  items-center">
+                  <div className="flex justify-end items-center ">
+                    <label
+                      htmlFor="ai"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
+                    >
+                      DIFFICULTY
+                    </label>
+                    <div className="mt-2">
+                      <ul class="flex w-full gap-6 ">
+                        <li>
+                          <input
+                            type="radio"
+                            id="easy"
+                            name="difficulty"
+                            value="easy"
+                            class="hidden peer"
+                            required
+                          />
+                          <label
+                            for="easy"
+                            className="inline-flex items-center justify-between w-full px-6 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
+                          >
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
+                                Easy
+                              </div>
+                            </div>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="radio"
+                            id="hard"
+                            name="difficulty"
+                            value="hard"
+                            class="hidden peer"
+                          />
+                          <label
+                            for="hard"
+                            className="inline-flex items-center justify-between w-full px-6 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
+                          >
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
+                                Hard
+                              </div>
+                            </div>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+
+
+                  {/* <div className="flex justify-end  items-center">
                     <label
                       htmlFor="field"
                       className="block text-sm text-right mr-6 font-medium leading-6 text-white"
@@ -143,8 +232,8 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                         className="text-center block w-full rounded-md border p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                       />
                     </div>
-                  </div>
-                  <div className="flex justify-end items-center ">
+                  </div> */}
+                  {/* <div className="flex justify-end items-center ">
                     <label
                       htmlFor="ai"
                       className="block text-sm text-right mr-6 font-medium leading-6 text-white"
@@ -160,10 +249,10 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                         className="text-center block w-full rounded-md border  p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex gap-10 mt-10">
                     <Link
-                      to={"/waitingroom"}
+                      onClick={() => HandleJoinQueue(data.user.username)}
                       className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white  border border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
                       style={{ cursor: "pointer" }}
                     >
