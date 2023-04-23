@@ -11,6 +11,10 @@ const botSchema = new Schema(
     },
     team:{
       type: String,
+    },
+    hasFlag:{
+      type: Boolean,
+      default: false
     }
   },
   {
