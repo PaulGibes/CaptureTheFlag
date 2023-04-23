@@ -220,7 +220,7 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                   </div>
                  
                   <button
-                    className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white shadow-sm border border-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                    className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white shadow-sm border border-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  "
                     style={{ cursor: "pointer" }}
                     type="submit"
                   >

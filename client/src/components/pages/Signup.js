@@ -98,8 +98,8 @@ function Signup() {
             </h2>
           </div>
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleFormSubmit}>
+          <div className="mt-10 z-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form className="space-y-6 " onSubmit={handleFormSubmit}>
               <div>
                 {/* <label
               htmlFor="name"
@@ -196,7 +196,7 @@ function Signup() {
                       />
                       <label
                         for="avatar-1"
-                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500 hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
+                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500  hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
                       >
                         <div class="block">
                           <div class="w-full text-lg text-center font-semibold">
@@ -215,7 +215,7 @@ function Signup() {
                       />
                       <label
                         for="avatar-2"
-                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500 hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
+                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500  hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
                       >
                         <div class="block">
                           <div class="w-full text-lg text-center font-semibold">
@@ -234,7 +234,7 @@ function Signup() {
                       />
                       <label
                         for="avatar-3"
-                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500 hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
+                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
                       >
                         <div class="block">
                           <div class="w-full text-lg text-center font-semibold">
