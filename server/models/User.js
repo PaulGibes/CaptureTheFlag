@@ -9,7 +9,8 @@ const UserSchema = new Schema({
   position: { type: String },
   hasFlag: { type: Boolean },
   isHost: { type: Boolean },
-  game: {type: Schema.Types.ObjectId, ref: 'Game'}
+  game: {type: Schema.Types.ObjectId, ref: 'Game'},
+  image: {type: String}
 });
 
 UserSchema.pre("save", async function (next) {

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const ADD_USER = gql`
-  mutation addUser($username: String!, $password: String!) {
-    addUser(username: $username, password: $password) {
+  mutation addUser($username: String!, $password: String!, $image: String) {
+    addUser(username: $username, password: $password, image: $image) {
       token
       user {
         _id
@@ -68,13 +68,13 @@ export const FILL_GAME = gql`
 export const START_GAME = gql`
   mutation ($gameId: ID!, $teamLimit: Int!) {
     startGame(gameId: $gameId, teamLimit: $teamLimit) {
-      _id
-    }
+    _id
     hostUser {
       _id
       username
     }
   }
+}
 `;
 
 export const UPDATE_POSITION = gql`
