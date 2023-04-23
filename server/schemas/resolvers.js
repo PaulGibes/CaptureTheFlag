@@ -1,6 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Game, Queue } = require("../models");
 const { signToken } = require("../utils/auth");
+const {moveBot, newTest} = require("../utils/botBrains")
 
 const resolver = {
   Query: {
@@ -40,11 +41,23 @@ const resolver = {
 
       return byWins.reverse();
     },
+
+    botMove: async (parent, { gameId }) => {
+      const game = await Game.findOne({ _id: gameId })
+        .populate("teamTwo")
+        .populate("teamOne")
+        .then((game) => {
+          console.log("hello world");
+          moveBot(game);
+          return game;
+        })
+      return game;
+    },
   },
 
   Mutation: {
-    addUser: async (parent, { username, password }) => {
-      const user = User.create({ username, password });
+    addUser: async (parent, { username, password, image }) => {
+      const user = User.create({ username, password, image });
       const token = signToken(user);
 
       return { user, token };
@@ -74,11 +87,11 @@ const resolver = {
     },
 
     //add a user to the queue
-    joinQueue: async (parent, { users }) => {
+    joinQueue: async (parent, { username }) => {
       const queue = Queue.findOneAndUpdate(
         {},
         {
-          $addToSet: { users },
+          $addToSet: { username },
         },
         {
           new: true,
@@ -126,9 +139,9 @@ const resolver = {
 
               console.log(
                 "Current user: " +
-                  queue.users[recordAdded] +
-                  " count " +
-                  userCount
+                queue.users[recordAdded] +
+                " count " +
+                userCount
               );
               if (teamTwo < teamOne) {
                 updateData = {
@@ -151,7 +164,7 @@ const resolver = {
                 {
                   new: true,
                 }
-              ).then((updatedGame) => {});
+              ).then((updatedGame) => { });
 
               //remove user from queue
               Queue.findOneAndUpdate(
@@ -162,7 +175,7 @@ const resolver = {
                 {
                   new: true,
                 }
-              ).then((response) => {});
+              ).then((response) => { });
               //updating counters for while loop
               userCount--;
               recordAdded++;
@@ -170,7 +183,7 @@ const resolver = {
           });
 
           return game;
-        });
+        }); 
     },
 
     startGame: async (parent, { gameId, teamLimit }) => {
@@ -182,14 +195,14 @@ const resolver = {
           var teamOne = game.teamOneCount;
           var teamTwo = game.teamTwoCount;
 
-          const teamOnePositions = ["2-2", "3-3", "4-2"];
-          const teamTwoPositions = ["2-11", "3-10", "4-11"];
+          var teamOnePositions = ["2-2", "3-3", "4-2"];
+          var teamTwoPositions = ["2-11", "3-10", "4-11"];
 
           //update human positions for team one
           for (let i = 0; i < teamOne.length; i++) {
             User.findOneAndUpdate(
               {
-                _id: game.teamOne[i],
+                _id: game.teamOne[i]._id,
               },
               {
                 position: teamOnePositions[i],
@@ -204,7 +217,7 @@ const resolver = {
           for (let i = 0; i < teamTwo.length; i++) {
             User.findOneAndUpdate(
               {
-                _id: game.teamOne[i],
+                _id: game.teamOne[i]._id,
               },
               {
                 position: teamTwoPositions[i],
@@ -218,19 +231,19 @@ const resolver = {
           // fill remaining team with bots
           while (teamOne < teamLimit || teamTwo < teamLimit) {
             var botData = {
-              botName: "Bot" + Math.floor(Math.random() * 5),
+              botName: "Bot" + Math.floor(Math.random() * 50),
               position: null,
               team: null,
             };
 
             if (teamTwo < teamOne) {
               botData.team = 2;
-              teamTwo++;
               botData.position = teamTwoPositions[teamTwo];
+              teamTwo++;
             } else if (teamOne <= teamTwo) {
               botData.team = 1;
-              teamOne++;
               botData.position = teamOnePositions[teamOne];
+              teamOne++;
             }
 
             //add the bot to a team
@@ -239,15 +252,16 @@ const resolver = {
                 _id: gameId,
               },
               {
+                status: "started",
                 $addToSet: { bots: botData },
               },
               {
                 new: true,
               }
-            ).then((updatedGame) => {});
+            ).then((updatedGame) => { });
           }
 
-          return game;
+          return {message: "Success"};
         });
     },
 
@@ -264,6 +278,15 @@ const resolver = {
       const user = await User.findOneAndUpdate(
         { username: username },
         { hasFlag: hasFlag },
+        { new: true }
+      );
+      return user;
+    },
+
+    updateIsHost: async (parent, { username, isHost }) => {
+      const user = await User.findOneAndUpdate(
+        { username: username },
+        { isHost: isHost },
         { new: true }
       );
       return user;

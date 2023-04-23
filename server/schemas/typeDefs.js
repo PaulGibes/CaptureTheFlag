@@ -11,6 +11,7 @@ const typeDefs = gql`
     hasFlag: Boolean
     isHost: Boolean
     game: Game
+    image: String
   }
 
   type Auth {
@@ -23,6 +24,7 @@ const typeDefs = gql`
     botName: String
     position: String
     team: Int
+    hasFlag: Boolean
   }
 
   type Game {
@@ -50,18 +52,20 @@ const typeDefs = gql`
     games: [Game]!
     game(gameId: ID!): Game
     scores: [User]!
+    botMove(gameId: ID!): Game
   }
 
   type Mutation {
-    addUser(username: String!, password: String!): Auth
+    addUser(username: String!, password: String!, image: String): Auth
     login(username: String!, password: String!): Auth
     createGame(status: String!, teamOne: [String!]): Game
-    joinQueue(users: [String!]): Queue
-    exitQueue(_id: String!): Queue
+    joinQueue(username: String!): Queue
+    exitQueue(username: String!): Queue
     fillGame(gameId: ID!): Game
     startGame(gameId: ID!, teamLimit: Int!): Game
     updatePosition(username: String!, position: String!): User
     updateFlag(username: String!, hasFlag: Boolean): User
+    updateIsHost(username: String!, isHost: Boolean): User
   }
 `;
 
