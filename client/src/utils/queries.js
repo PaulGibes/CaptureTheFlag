@@ -64,6 +64,9 @@ export const GET_GAME = gql`
         team
       }
       winner
+      flagsToWin
+      teamPlayers
+      difficulty
       teamOneCount
       teamTwoCount
     }
@@ -96,6 +99,9 @@ export const GET_GAMES = gql`
         team
       }
       winner
+      flagsToWin
+      teamPlayers
+      difficulty
       teamOneCount
       teamTwoCount
     }

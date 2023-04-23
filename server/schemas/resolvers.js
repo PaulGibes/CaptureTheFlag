@@ -1,7 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Game, Queue } = require("../models");
 const { signToken } = require("../utils/auth");
-const {moveBot, newTest} = require("../utils/botBrains")
+const { moveBot, newTest } = require("../utils/botBrains")
 
 const resolver = {
   Query: {
@@ -102,12 +102,12 @@ const resolver = {
     },
 
     // remove a user from the queue
-    exitQueue: async (parent, { _id }) => {
-      console.log(_id);
+    exitQueue: async (parent, { username }) => {
+      // console.log(username);
       const queue = Queue.findOneAndUpdate(
         {},
         {
-          $pull: { users: _id },
+          $pull: { users: username },
         },
         {
           new: true,
@@ -183,7 +183,7 @@ const resolver = {
           });
 
           return game;
-        }); 
+        });
     },
 
     startGame: async (parent, { gameId, teamLimit }) => {
@@ -261,7 +261,7 @@ const resolver = {
             ).then((updatedGame) => { });
           }
 
-          return {message: "Success"};
+          return { message: "Success" };
         });
     },
 
@@ -291,6 +291,17 @@ const resolver = {
       );
       return user;
     },
+
+    // updateGame: async (parent, { _id, flagsToWin, teamPlayers, difficulty }) => {
+    //   const game = await Game.findOneAndUpdate(
+    //     { _id: id },
+    //     { flagsToWin },
+    //     { teamPlayers },
+    //     { difficulty },
+    //     { new: true }
+    //   );
+    //   return game;
+    // },
   },
 };
 

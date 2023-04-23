@@ -35,7 +35,10 @@ const typeDefs = gql`
     flagOne: String
     flagTwo: String
     bots: [Bot]!
-    winner: Int
+    winner: String
+    flagsToWin: Int!
+    teamPlayers: Int!
+    difficulty: String
     teamOneCount: Int
     teamTwoCount: Int
   }

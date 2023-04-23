@@ -48,6 +48,18 @@ const gameSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  flagsToWin: {
+    type: Number,
+    default: 1
+  },
+  teamPlayers: {
+    type: Number,
+    default: 2
+  },
+  difficulty: {
+    type: String,
+    default: "easy"
+  }
 },
   {
     toJSON: {

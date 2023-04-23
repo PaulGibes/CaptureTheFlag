@@ -31,6 +31,9 @@ export const CREATE_GAME = gql`
       teamTwoCount
       teamOneCount
       status
+      flagsToWin
+      teamPlayers
+      difficulty
     }
   }
 `;
@@ -47,7 +50,7 @@ export const JOIN_QUEUE = gql`
 `;
 
 export const EXIT_QUEUE = gql`
-  mutation Mutation($username: String!) {
+  mutation exitQueue($username: String!) {
     exitQueue(username: $username) {
       userCount
       users {
@@ -58,7 +61,7 @@ export const EXIT_QUEUE = gql`
 `;
 
 export const FILL_GAME = gql`
-  mutation Mutation($gameId: ID!) {
+  mutation fillGame($gameId: ID!) {
     fillGame(gameId: $gameId) {
       _id
     }
@@ -103,3 +106,14 @@ export const UPDATE_ISHOST = gql`
       }
     }
   `;
+
+// export const UPDATE_GAME = gql`
+//   mutation updateGame($gameId: ID!, $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
+//     updateGame(gameId: $gameId, flagsToWin: $flagsToWin, teamPlayers: $teamPlayers, difficulty: $difficulty) {
+//       _id
+//       flagsToWin
+//       teamPlayers
+//       difficulty
+//       }
+//     }
+//   `;

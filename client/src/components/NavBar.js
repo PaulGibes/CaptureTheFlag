@@ -9,12 +9,12 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function NavBar() {
-  console.log("navbar");
+  // console.log("navbar");
   const [darkMode, setDarkMode] = useState(true);
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
   const clicked = () => {
-    console.log("nav bar state chnage");
+    // console.log("nav bar state chnage");
     setModalOn(true);
   };
 
@@ -31,7 +31,7 @@ function NavBar() {
     const username = localStorage.getItem("username");
     if (username) {
       setLoggedUser(username);
-      console.log(username);
+      // console.log(username);
     } else {
       setLoggedUser(username);
     }
