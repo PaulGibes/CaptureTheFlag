@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Button from "./Button";
 import { Link } from "react-router-dom";
+import "../styles/modules.css";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CreateGameModal = ({ setModalOn, setChoice }) => {
   const handleOKClick = () => {
@@ -12,24 +14,57 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
     setModalOn(false);
   };
 
+  const backdrop = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  };
+
+  const modal = {
+    hidden: {
+      y: "-100vh",
+      opacity: 0,
+    },
+    visible: {
+      y: "0px",
+      opacity: 1,
+      transition: { delay: 0.2 },
+    },
+  };
+
   return (
     // fixed and inset-0 makes it expand to the entire screen. Opacity is what is behind it loses focus. A high z-index insures the modal will be on top
-    <div className="bg-zinc-200/75 fixed inset-0 z-50">
+    <div
+      className="bg-modal fixed inset-0 z-50"
+      variants={backdrop}
+      initial="hidden"
+      animate="visible"
+      exit={{ opacity: 0 }}
+    >
       <div className="flex h-screen justify-center items-center">
-        <div className="flex-col justify-center bg-white opacity-100 py-6 px-6 border-4 w-90 lg:w-1/3 border-sky-500 rounded-xl">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Create a New Game
+        <motion.div
+          className="flex-col justify-center bg-modal-create opacity-100 w-4/5 sm:w-4/5 md:w-3/5 lg:w-2/5 h-3/5  "
+          variants={modal}
+        >
+          <button
+            onClick={handleCancelClick}
+            className=" text-gray-500 mt-10 float-right pr-20 hover:text-orange-500 "
+          >
+            Cancel X
+            {/* absolute top-5 right-20 sm:right-24 md:right-32 lg:right-28 */}
+          </button>
+          <h2 className="mt-10 clear-both text-center text-2xl tracking-tight text-white">
+            CREATE GAME
           </h2>
-          <div className="flex flex-col">
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" action="#" method="POST">
+          <div className="flex flex-col  mx-auto">
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              <form className="space-y-4" action="#" method="POST">
                 <div className="w-80 mx-auto">
                   <div className="flex justify-end items-center ">
                     <label
                       htmlFor="flags"
-                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      Flags to Win
+                      FLAGS TO WIN
                     </label>
                     <div className="mt-2">
                       <input
@@ -37,16 +72,16 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                         name="flags"
                         type="text"
                         required
-                        className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="text-center block w-full rounded-md border p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
                   <div className="flex justify-end items-center ">
                     <label
                       htmlFor="flags"
-                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      Team Players
+                      TEAM PLAYERS
                     </label>
                     <div className="mt-2">
                       <ul class="flex w-full gap-6 ">
@@ -61,10 +96,10 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                           />
                           <label
                             for="2-players"
-                            class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                            className="inline-flex items-center justify-between w-full px-8 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
                           >
-                            <div class="block">
-                              <div class="w-full text-lg text-center font-semibold">
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
                                 2
                               </div>
                             </div>
@@ -80,10 +115,10 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                           />
                           <label
                             for="3-players"
-                            class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                            className="inline-flex items-center justify-between w-full px-8 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
                           >
-                            <div class="block">
-                              <div class="w-full text-lg text-center font-semibold">
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
                                 3
                               </div>
                             </div>
@@ -95,9 +130,9 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                   <div className="flex justify-end  items-center">
                     <label
                       htmlFor="field"
-                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      Field Level
+                      BOARD SIZE
                     </label>
                     <div className="mt-2">
                       <input
@@ -105,16 +140,16 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                         name="field"
                         type="text"
                         required
-                        className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="text-center block w-full rounded-md border p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
                   <div className="flex justify-end items-center ">
                     <label
                       htmlFor="ai"
-                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      AI Difficulty
+                      AI LEVEL
                     </label>
                     <div className="mt-2">
                       <input
@@ -122,22 +157,17 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                         name="ai"
                         type="text"
                         required
-                        className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="text-center block w-full rounded-md border  p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
                   <div className="flex gap-10 mt-10">
-                    <button
-                      onClick={handleCancelClick}
-                      className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                    >
-                      Cancel
-                    </button>
                     <Link
                       to={"/waitingroom"}
-                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white  border border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                      style={{ cursor: "pointer" }}
                     >
-                      Play
+                      GO TO QUEUE
                     </Link>
                   </div>
                 </div>
@@ -150,7 +180,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
               Yes
             </button> */}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
