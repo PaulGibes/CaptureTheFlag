@@ -71,6 +71,22 @@
   max-height: 40rem;
   max-width: 36rem;
 }
+.bg-modal-highscore {
+  background: url("../assets/images/modal-highscore.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  /* max-height: 40rem;
+  max-width: 36rem; */
+}
+.bg-modal-highscore2 {
+  background: url("../assets/images/modal-highscore.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  /* max-height: 40rem;
+  max-width: 36rem; */
+}
 
 [type="text"]:focus,
 [type="email"]:focus,
@@ -98,4 +114,11 @@
   box-shadow: 0px 1px 8px 0.5px #fb7d33, inset 0px 0px 3px #ff7829;
 
   background-color: #fc6b1826;
+}
+
+@media screen and (max-width: 600px) {
+  [data-testid="table-element"] {
+    width: 22rem;
+    height: 12rem;
+  }
 }
