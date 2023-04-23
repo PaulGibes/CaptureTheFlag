@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import Auth from "../utils/auth"
 import { QUERY_SINGLE_USER } from "../utils/queries"
-import { useQuery } from "@apollo/client";
+import { CREATE_GAME, START_GAME } from "../utils/mutations";
+import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -11,17 +12,45 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
         setChoice(false);
         setAIModalOn(false);
     };
-
+    const [createGame] = useMutation(CREATE_GAME);
+    const [startGame] = useMutation(START_GAME);
     const currentUser = Auth.getUsername()
     const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
         variables: { username: currentUser }
     });
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
+    
+    const userId = data.user._id;
+    const HandlePlayBots = async () => {
+        try {
+            const { data } = await createGame({
+              variables: {status: "open", teamOne: userId },
+            });
+            
+            console.log(data);
+            const gameId= data.createGame._id;
 
-    const HandlePlayBots = () => {
-        window.location.href = "/gameplay";
+            handleStartGame(gameId)
+            
+            window.location.href = "/gameplay?game=" + gameId;
+            
+          } catch (err) {
+            console.log(err);
+          }
     };
+
+    async function handleStartGame(game){
+        try{
+            const { data } = await startGame({
+                    variables: {gameId: game, teamLimit: 3}
+                });
+            
+            console.log(data);  
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     const backdrop = {
         visible: { opacity: 1 },
@@ -92,14 +121,14 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                             TEAM PLAYERS
                                         </label>
                                         <div className="mt-2">
-                                            <ul class="flex w-full gap-6 ">
+                                            <ul className="flex w-full gap-6 ">
                                                 <li>
                                                     <input
                                                         type="radio"
                                                         id="2-players"
                                                         name="players"
                                                         value="2-players"
-                                                        class="hidden peer"
+                                                        className="hidden peer"
                                                         required
                                                     />
                                                     <label
@@ -119,7 +148,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                                         id="3-players"
                                                         name="players"
                                                         value="3-players"
-                                                        class="hidden peer"
+                                                        className="hidden peer"
                                                     />
                                                     <label
                                                         for="3-players"
@@ -143,14 +172,14 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                             DIFFICULTY
                                         </label>
                                         <div className="mt-2">
-                                            <ul class="flex w-full gap-6 ">
+                                            <ul className="flex w-full gap-6 ">
                                                 <li>
                                                     <input
                                                         type="radio"
                                                         id="easy"
                                                         name="difficulty"
                                                         value="easy"
-                                                        class="hidden peer"
+                                                        className="hidden peer"
                                                         required
                                                     />
                                                     <label
@@ -170,7 +199,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                                         id="hard"
                                                         name="difficulty"
                                                         value="hard"
-                                                        class="hidden peer"
+                                                        className="hidden peer"
                                                     />
                                                     <label
                                                         for="hard"

@@ -69,10 +69,6 @@ export const START_GAME = gql`
   mutation ($gameId: ID!, $teamLimit: Int!) {
     startGame(gameId: $gameId, teamLimit: $teamLimit) {
     _id
-    hostUser {
-      _id
-      username
-    }
   }
 }
 `;
