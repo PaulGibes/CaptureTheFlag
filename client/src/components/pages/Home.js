@@ -32,12 +32,12 @@ function Home() {
           <div className="flex">
             <motion.div
               onClick={clicked}
-              className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
+              className="bg-btn hover:bg-btn-h cursor-pointer flex items-center justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
               whileHover={{ scale: 1.3 }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <div className="mt-1 sm:mt-4 md:text-xl">Log In to Play</div>
+              <div className="  md:text-xl">Log In to Play</div>
             </motion.div>
           </div>
           <div className="w-full">
