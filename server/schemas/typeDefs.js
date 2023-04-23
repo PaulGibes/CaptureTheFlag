@@ -55,7 +55,7 @@ const typeDefs = gql`
     addUser(username: String!, password: String!): Auth
     login(username: String!, password: String!): Auth
     createGame(status: String!, teamOne: [String!]): Game
-    joinQueue(users: [String!]): Queue
+    joinQueue(_id: String!): Queue
     exitQueue(_id: String!): Queue
     fillGame(gameId: ID!): Game
     startGame(gameId: ID!, teamLimit: Int!): Game

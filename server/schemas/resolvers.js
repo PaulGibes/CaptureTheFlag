@@ -74,11 +74,11 @@ const resolver = {
     },
 
     //add a user to the queue
-    joinQueue: async (parent, { users }) => {
+    joinQueue: async (parent, { _id }) => {
       const queue = Queue.findOneAndUpdate(
         {},
         {
-          $addToSet: { users },
+          $addToSet: { _id },
         },
         {
           new: true,
@@ -126,9 +126,9 @@ const resolver = {
 
               console.log(
                 "Current user: " +
-                  queue.users[recordAdded] +
-                  " count " +
-                  userCount
+                queue.users[recordAdded] +
+                " count " +
+                userCount
               );
               if (teamTwo < teamOne) {
                 updateData = {
@@ -151,7 +151,7 @@ const resolver = {
                 {
                   new: true,
                 }
-              ).then((updatedGame) => {});
+              ).then((updatedGame) => { });
 
               //remove user from queue
               Queue.findOneAndUpdate(
@@ -162,7 +162,7 @@ const resolver = {
                 {
                   new: true,
                 }
-              ).then((response) => {});
+              ).then((response) => { });
               //updating counters for while loop
               userCount--;
               recordAdded++;
@@ -244,7 +244,7 @@ const resolver = {
               {
                 new: true,
               }
-            ).then((updatedGame) => {});
+            ).then((updatedGame) => { });
           }
 
           return game;

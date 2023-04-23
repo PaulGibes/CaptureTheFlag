@@ -1,15 +1,35 @@
-import { useState } from "react";
-import Button from "./Button";
 import { Link } from "react-router-dom";
+import Auth from "../utils/auth"
+import { QUERY_SINGLE_USER } from "../utils/queries"
+import { JOIN_QUEUE } from "../utils/mutations";
+import { useQuery, useMutation } from "@apollo/client";
 
 const CreateGameModal = ({ setModalOn, setChoice }) => {
-  const handleOKClick = () => {
-    setChoice(true);
-    setModalOn(false);
-  };
   const handleCancelClick = () => {
     setChoice(false);
     setModalOn(false);
+  };
+
+  const currentUser = Auth.getUsername()
+  const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
+    variables: { username: currentUser }
+  });
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
+
+  const HandleJoinQueue = async (id) => {
+    try {
+      const result = await useMutation({
+        mutation: JOIN_QUEUE,
+        variables: {
+          id: id
+        }
+      });
+
+    } catch (error) {
+      console.error(error);
+    }
+    window.location.href = "/waitingroom";
   };
 
   return (
@@ -92,7 +112,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                       </ul>
                     </div>
                   </div>
-                  <div className="flex justify-end  items-center">
+                  {/* <div className="flex justify-end  items-center">
                     <label
                       htmlFor="field"
                       className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
@@ -108,7 +128,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                         className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex justify-end items-center ">
                     <label
                       htmlFor="ai"
@@ -134,7 +154,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                       Cancel
                     </button>
                     <Link
-                      to={"/waitingroom"}
+                      onClick={() => HandleJoinQueue(data.user._id)}
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Play

@@ -36,8 +36,8 @@ export const CREATE_GAME = gql`
 `;
 
 export const JOIN_QUEUE = gql`
-  mutation Mutation($users: [String!]) {
-    joinQueue(users: $users) {
+  mutation Mutation($id: String!) {
+    joinQueue(_id: $id) {
       userCount
       users {
         _id

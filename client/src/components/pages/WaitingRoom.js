@@ -51,21 +51,25 @@ function WaitingRoom() {
 
     const HandleExitQueue = async (id) => {
         try {
-            // Call the mutate function with the mutation and variables
             const result = await useMutation({
                 mutation: EXIT_QUEUE,
                 variables: {
-                    id: id // Pass the 'id' variable as an argument to the mutation
+                    id: id
                 }
             });
 
-            // Access the data returned from the mutation
-            console.log(result.data.exitQueue);
         } catch (error) {
             console.error(error);
         }
         window.location.href = "/choose-game";
     };
+
+    const HandleCreateGame = async () => {
+        // i want to query for an array of users in the queue array
+        // i want to use the createGame mutation to create a game
+        // i want to use the fillGame mutation to fill the game with up to 6 players
+        window.location.href = "/choose-game";
+    }
 
     return (
         <>
@@ -76,10 +80,9 @@ function WaitingRoom() {
             </div>
             <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
             <div className="flex justify-evenly">
-                {/* onClick={HandleLeaveGame} */}
                 <button onClick={() => HandleExitQueue(data.user._id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Leave Lobby</button>
                 {data.user.isHost ? <div>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
+                    <button onClick={() => HandleCreateGame()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
                 </div> : ""}
             </div>
             <div className="flex justify-center">
