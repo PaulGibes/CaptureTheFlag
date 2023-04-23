@@ -3,13 +3,13 @@ const { Schema, model } = require("mongoose");
 //Bot subdocument
 const botSchema = new Schema(
   {
-    botName:{
+    botName: {
       type: String,
     },
-    position:{
+    position: {
       type: Object,
     },
-    team:{
+    team: {
       type: String,
     }
   },
@@ -22,12 +22,12 @@ const botSchema = new Schema(
 );
 
 const gameSchema = new Schema({
-  status: {      
+  status: {
     type: String,
-    required: true,
+    default: "Ready",
   },
-  teamOne:[ {type: Schema.Types.ObjectId, ref: 'User'}],
-  teamTwo:[ {type: Schema.Types.ObjectId, ref: 'User'}],
+  teamOne: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  teamTwo: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   flagOne: {
     type: String,
     default: "3-2",
@@ -36,8 +36,8 @@ const gameSchema = new Schema({
     type: String,
     default: "3-11",
   },
-  bots:[botSchema],
-  winner:{
+  bots: [botSchema],
+  winner: {
     type: String,
   },
   createdAt: {
@@ -45,13 +45,13 @@ const gameSchema = new Schema({
     default: Date.now,
   },
 },
-{
-  toJSON: {
-    virtuals: true,
-    getters: true,
-  },
-  id: false,
-});
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true,
+    },
+    id: false,
+  });
 
 // Create a virtual property to count the current amount of human players
 gameSchema.virtual('teamOneCount').get(function () {

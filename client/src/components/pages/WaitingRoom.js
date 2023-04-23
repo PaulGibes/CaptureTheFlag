@@ -3,12 +3,16 @@ import "../../styles/globals.css";
 import { motion } from "framer-motion";
 import Auth from "../../utils/auth";
 import { QUERY_SINGLE_USER } from "../../utils/queries";
-import { EXIT_QUEUE } from "../../utils/mutations";
+import { EXIT_QUEUE, UPDATE_ISHOST, CREATE_GAME } from "../../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../../styles/home.css";
 import { mapFooter } from "../../assets/images";
 
 function WaitingRoom() {
+    const [updateHost] = useMutation(UPDATE_ISHOST);
+    // const [addProfile, { error }] = useMutation(ADD_PROFILE);
+
+
     // first grabbing current user from local storage (auth.js)
     const currentUser = Auth.getUsername();
     // useQuery uses useState and setState internally
@@ -53,24 +57,36 @@ function WaitingRoom() {
 
     const HandleExitQueue = async (username) => {
         try {
-            const result = await useMutation({
-                mutation: EXIT_QUEUE,
+            const { data: { updateIsHost } } = await updateHost({
                 variables: {
-                    username: username
-                }
+                    username: username,
+                    isHost: false
+                },
             });
-
+            console.log(updateIsHost)
         } catch (error) {
             console.error(error);
         }
+
         window.location.href = "/choose-game";
     };
 
-    const HandleCreateGame = async () => {
-        // i want to query for an array of users in the queue array
+    const HandleCreateGame = async (username) => {
         // i want to use the createGame mutation to create a game
         // i want to use the fillGame mutation to fill the game with up to 6 players or bots
-        window.location.href = "/choose-game";
+        try {
+            const { data: { updateIsHost } } = await updateHost({
+                variables: {
+                    username: username,
+                    isHost: false
+                },
+            });
+            console.log("line 37 " + updateIsHost)
+        } catch (error) {
+            console.error(error);
+        }
+        // i want to use the startGame function
+        window.location.href = "/gameplay";
     }
 
     return (
@@ -107,7 +123,7 @@ function WaitingRoom() {
                     {data.user.isHost ? (
                         <div className="flex">
                             <motion.div
-                                //   onClick={clicked}
+                                onClick={() => HandleCreateGame(data.user.username)}
                                 className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
                                 whileHover={{ scale: 1.3 }}
                                 whileTap={{ scale: 0.9 }}

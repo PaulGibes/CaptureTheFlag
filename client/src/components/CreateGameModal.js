@@ -8,8 +8,8 @@ import "../styles/modules.css";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CreateGameModal = ({ setModalOn, setChoice }) => {
-  const updateHost = useMutation(UPDATE_ISHOST);
-  const updateQueue = useMutation(JOIN_QUEUE);
+  const [updateHost] = useMutation(UPDATE_ISHOST);
+  const [updateQueue] = useMutation(JOIN_QUEUE);
 
 
   const handleCancelClick = () => {
@@ -21,30 +21,34 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
   const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
     variables: { username: currentUser }
   });
+  console.log(data)
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  const HandleJoinQueue = async (username) => {
-    // try {
-    //   const { isHostResult } = await updateHost({
-    //     variables: {
-    //       username: username,
-    //       isHost: true
-    //     },
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
 
-    // try {
-    //   const { joinQueueResult } = await updateQueue({
-    //     variables: {
-    //       username: username
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
+  const HandleJoinQueue = async (username) => {
+    try {
+      const { data } = await updateHost({
+        variables: {
+          username: username,
+          isHost: true
+        },
+      });
+      console.log(data)
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const { data } = await updateQueue({
+        variables: {
+          username: username
+        },
+      });
+      console.log(data)
+    } catch (error) {
+      console.error(error);
+    }
 
     window.location.href = "/waitingroom";
   }
