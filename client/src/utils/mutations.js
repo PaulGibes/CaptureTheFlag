@@ -36,22 +36,22 @@ export const CREATE_GAME = gql`
 `;
 
 export const JOIN_QUEUE = gql`
-  mutation Mutation($id: String!) {
-    joinQueue(_id: $id) {
+  mutation Mutation($username: String!) {
+    joinQueue(username: $username) {
       userCount
       users {
-        _id
+        username
       }
     }
   }
 `;
 
 export const EXIT_QUEUE = gql`
-  mutation Mutation($id: String!) {
-    exitQueue(_id: $id) {
+  mutation Mutation($username: String!) {
+    exitQueue(username: $username) {
       userCount
       users {
-        _id
+        username
       }
     }
   }
@@ -94,3 +94,12 @@ export const HAS_FLAG = gql`
   }
  }
 `;
+
+export const UPDATE_ISHOST = gql`
+  mutation Mutation($username: String!, $isHost: String!) {
+    updateIsHost(username: $username, isHost: $isHost) {
+      username
+      isHost
+      }
+    }
+  `;

@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import Auth from "../utils/auth"
 import { QUERY_SINGLE_USER } from "../utils/queries"
+import { UPDATE_ISHOST } from "../utils/mutations"
 import { JOIN_QUEUE } from "../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 
 const CreateGameModal = ({ setModalOn, setChoice }) => {
+  const updateHost = useMutation(UPDATE_ISHOST);
+  const updateQueue = useMutation(JOIN_QUEUE);
+
+
   const handleCancelClick = () => {
     setChoice(false);
     setModalOn(false);
@@ -17,18 +22,28 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  const HandleJoinQueue = async (id) => {
+  const HandleJoinQueue = async (username) => {
     try {
-      const result = await useMutation({
-        mutation: JOIN_QUEUE,
+      const { isHostResult } = await updateHost({
         variables: {
-          id: id
-        }
+          username: username,
+          isHost: true
+        },
       });
-
     } catch (error) {
       console.error(error);
     }
+
+    try {
+      const { joinQueueResult } = await updateQueue({
+        variables: {
+          username: username
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
     window.location.href = "/waitingroom";
   };
 
@@ -112,6 +127,57 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                       </ul>
                     </div>
                   </div>
+                  <div className="flex justify-end items-center ">
+                    <label
+                      htmlFor="ai"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                    >
+                      Difficulty
+                    </label>
+                    <div className="mt-2">
+                      <ul class="flex w-full gap-6 ">
+                        <li>
+                          <input
+                            type="radio"
+                            id="easy"
+                            name="difficulty"
+                            value="easy"
+                            class="hidden peer"
+                            required
+                          />
+                          <label
+                            for="easy"
+                            class="inline-flex items-center justify-between w-full px-6 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                          >
+                            <div class="block">
+                              <div class="w-full text-lg text-center font-semibold">
+                                Easy
+                              </div>
+                            </div>
+                          </label>
+                        </li>
+                        <li>
+                          <input
+                            type="radio"
+                            id="hard"
+                            name="difficulty"
+                            value="hard"
+                            class="hidden peer"
+                          />
+                          <label
+                            for="hard"
+                            class="inline-flex items-center justify-between w-full px-6 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                          >
+                            <div class="block">
+                              <div class="w-full text-lg text-center font-semibold">
+                                Hard
+                              </div>
+                            </div>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                   {/* <div className="flex justify-end  items-center">
                     <label
                       htmlFor="field"
@@ -129,7 +195,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                       />
                     </div>
                   </div> */}
-                  <div className="flex justify-end items-center ">
+                  {/* <div className="flex justify-end items-center ">
                     <label
                       htmlFor="ai"
                       className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
@@ -145,7 +211,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                         className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex gap-10 mt-10">
                     <button
                       onClick={handleCancelClick}
@@ -154,7 +220,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                       Cancel
                     </button>
                     <Link
-                      onClick={() => HandleJoinQueue(data.user._id)}
+                      onClick={() => HandleJoinQueue(data.user.username)}
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Play

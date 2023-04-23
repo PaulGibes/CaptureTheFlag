@@ -49,12 +49,12 @@ function WaitingRoom() {
         };
     });
 
-    const HandleExitQueue = async (id) => {
+    const HandleExitQueue = async (username) => {
         try {
             const result = await useMutation({
                 mutation: EXIT_QUEUE,
                 variables: {
-                    id: id
+                    username: username
                 }
             });
 
@@ -67,7 +67,7 @@ function WaitingRoom() {
     const HandleCreateGame = async () => {
         // i want to query for an array of users in the queue array
         // i want to use the createGame mutation to create a game
-        // i want to use the fillGame mutation to fill the game with up to 6 players
+        // i want to use the fillGame mutation to fill the game with up to 6 players or bots
         window.location.href = "/choose-game";
     }
 
@@ -80,7 +80,7 @@ function WaitingRoom() {
             </div>
             <p className="text-2xl text-center p-10">Get ready to Capture the Flag!</p>
             <div className="flex justify-evenly">
-                <button onClick={() => HandleExitQueue(data.user._id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Leave Lobby</button>
+                <button onClick={() => HandleExitQueue(data.user.username)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Leave Lobby</button>
                 {data.user.isHost ? <div>
                     <button onClick={() => HandleCreateGame()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
                 </div> : ""}

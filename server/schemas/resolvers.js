@@ -74,11 +74,11 @@ const resolver = {
     },
 
     //add a user to the queue
-    joinQueue: async (parent, { _id }) => {
+    joinQueue: async (parent, { username }) => {
       const queue = Queue.findOneAndUpdate(
         {},
         {
-          $addToSet: { _id },
+          $addToSet: { username },
         },
         {
           new: true,
@@ -264,6 +264,15 @@ const resolver = {
       const user = await User.findOneAndUpdate(
         { username: username },
         { hasFlag: hasFlag },
+        { new: true }
+      );
+      return user;
+    },
+
+    updateIsHost: async (parent, { username, isHost }) => {
+      const user = await User.findOneAndUpdate(
+        { username: username },
+        { isHost: isHost },
         { new: true }
       );
       return user;
