@@ -1,26 +1,55 @@
 import { Link } from "react-router-dom";
-import Auth from "../utils/auth";
-import { QUERY_SINGLE_USER } from "../utils/queries";
-import { useQuery } from "@apollo/client";
+import Auth from "../utils/auth"
+import { QUERY_SINGLE_USER } from "../utils/queries"
+import { CREATE_GAME, START_GAME } from "../utils/mutations";
+import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
-  const handleCancelClick = () => {
-    setChoice(false);
-    setAIModalOn(false);
-  };
+    const handleCancelClick = () => {
+        setChoice(false);
+        setAIModalOn(false);
+    };
+    const [createGame] = useMutation(CREATE_GAME);
+    const [startGame] = useMutation(START_GAME);
+    const currentUser = Auth.getUsername()
+    const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
+        variables: { username: currentUser }
+    });
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
+    
+    const userId = data.user._id;
+    const HandlePlayBots = async () => {
+        try {
+            const { data } = await createGame({
+              variables: {status: "open", teamOne: userId },
+            });
+            
+            console.log(data);
+            const gameId= data.createGame._id;
 
-  const currentUser = Auth.getUsername();
-  const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
-    variables: { username: currentUser },
-  });
-  if (loading) return "Loading...";
-  if (error) return `Error! ${error.message}`;
+            handleStartGame(gameId)
+            
+            window.location.href = "/gameplay?game=" + gameId;
+            
+          } catch (err) {
+            console.log(err);
+          }
+    };
 
-  const HandlePlayBots = () => {
-    window.location.href = "/gameplay";
-  };
+    async function handleStartGame(game){
+        try{
+            const { data } = await startGame({
+                    variables: {gameId: game, teamLimit: 3}
+                });
+            
+            console.log(data);  
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
   const backdrop = {
     visible: { opacity: 1 },
@@ -85,14 +114,14 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                       TEAM PLAYERS
                     </label>
                     <div className="mt-2">
-                      <ul className="flex w-full gap-6 ">
+                      <ul classNameName="flex w-full gap-6 ">
                         <li>
                           <input
                             type="radio"
                             id="2-players"
                             name="players"
                             value="2-players"
-                            className="hidden peer"
+                            classNameName="hidden peer"
                             required
                           />
                           <label className="inline-flex items-center justify-between w-full px-8 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
@@ -109,7 +138,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                             id="3-players"
                             name="players"
                             value="3-players"
-                            className="hidden peer"
+                            classNameName="hidden peer"
                           />
                           <label className="inline-flex items-center justify-between w-full px-8 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
                             <div className="block">
@@ -127,14 +156,14 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                       DIFFICULTY
                     </label>
                     <div className="mt-2">
-                      <ul className="flex w-full gap-6 ">
+                      <ul classNameName="flex w-full gap-6 ">
                         <li>
                           <input
                             type="radio"
                             id="easy"
                             name="difficulty"
                             value="easy"
-                            className="hidden peer"
+                            classNameName="hidden peer"
                             required
                           />
                           <label className="inline-flex items-center justify-between w-full px-6 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
@@ -151,7 +180,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                             id="hard"
                             name="difficulty"
                             value="hard"
-                            className="hidden peer"
+                            classNameName="hidden peer"
                           />
                           <label className="inline-flex items-center justify-between w-full px-6 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
                             <div className="block">
