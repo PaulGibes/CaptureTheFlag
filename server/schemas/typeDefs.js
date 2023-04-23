@@ -24,6 +24,7 @@ const typeDefs = gql`
     botName: String
     position: String
     team: Int
+    hasFlag: Boolean
   }
 
   type Game {
@@ -51,6 +52,7 @@ const typeDefs = gql`
     games: [Game]!
     game(gameId: ID!): Game
     scores: [User]!
+    botMove(gameId: ID!): Game
   }
 
   type Mutation {

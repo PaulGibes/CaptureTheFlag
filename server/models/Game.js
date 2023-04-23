@@ -11,6 +11,10 @@ const botSchema = new Schema(
     },
     team:{
       type: String,
+    },
+    hasFlag:{
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -24,7 +28,7 @@ const botSchema = new Schema(
 const gameSchema = new Schema({
   status: {      
     type: String,
-    required: true,
+    default: "open",
   },
   teamOne:[ {type: Schema.Types.ObjectId, ref: 'User'}],
   teamTwo:[ {type: Schema.Types.ObjectId, ref: 'User'}],
