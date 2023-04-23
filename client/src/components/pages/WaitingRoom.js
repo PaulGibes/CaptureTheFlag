@@ -41,7 +41,7 @@ function WaitingRoom() {
     };
 
     const getRandomNumber = () => {
-        return Math.floor(Math.random() * 6) + 1;
+        return Math.floor(Math.random() * 4) + 2;
     };
 
     const balls = Array.from({ length: getRandomNumber() }).map(() => {
@@ -84,9 +84,9 @@ function WaitingRoom() {
                         >
                             Leave Lobby
                         </button>
-                        {data.user.isHost ? <div>
+                        {/* {data.user.isHost ? <div>
                             <button onClick={() => HandleCreateGame()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
-                        </div> : ""}
+                        </div> : ""} */}
                     </div>
                     <h2 className="text-2xl text-center accent p-10">
                         Get ready to Capture the Flag!
