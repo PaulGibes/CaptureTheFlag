@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 
 import MapLogic from "../../utils/mapLogic";
 import Battlefield from "./Battlefield";
-import Auth from "../../utils/auth"
-import { QUERY_SINGLE_USER, GET_GAME } from "../../utils/queries"
+import Auth from "../../utils/auth";
+import { QUERY_SINGLE_USER, GET_GAME } from "../../utils/queries";
 import { useQuery, useApolloClient } from "@apollo/client";
 
 function GamePlay() {
@@ -79,8 +79,8 @@ function GamePlay() {
 
   const mainField = JSON.parse(localStorage.getItem("nextRound")) || baseField;
 
-  // =======================     the state variable    ================================
-  //const [fieldMap, startNewRound] = useState(mainField);
+  var urlParams = new URLSearchParams(window.location.search);
+  console.log(urlParams.get('game'));
 
   //Get current username
   const currentUser = Auth.getUsername()
@@ -93,7 +93,7 @@ function GamePlay() {
 
     client.query({
       query: GET_GAME,
-      variables: { gameId: "64433e99235d1037def689e8" },
+      variables: { gameId: urlParams.get('game') },
       //fetchPolicy: "cache-first"   // select appropriate fetchPolicy
     }).then((response) => {
       const gameData = response.data.game;
@@ -123,14 +123,7 @@ function GamePlay() {
         baseField[getIndex(bot.position)].player = bot.botName + " Team:" + bot.team;
        
       });
-      // find index of virtual map to add yourself
-      // const index = baseField.findIndex(tile => tile.id === response.data.user.position);
-      // baseField[index].player = currentUser;
-      // baseField[index].active = true;
-      // //mark the possible moves as active
-      // MapLogic.activatePossibleMoves(baseField);
-      // //save the next map data to local storage
-      // localStorage.setItem("nextRound", JSON.stringify(baseField));
+
       MapLogic.activatePossibleMoves(baseField);
       localStorage.setItem("nextRound", JSON.stringify(baseField));
     }).catch((err) => {
