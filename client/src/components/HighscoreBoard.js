@@ -10,8 +10,7 @@ function HighscoreBoard() {
 
   return (
     <div>
-       
-      <Table className="w-[17rem]  mx-auto h-[20rem]">
+      <Table className="w-[17rem] mx-auto h-[20rem]">
         <Table.Head className="bg-transparent accent">
           <Table.HeadCell>Username</Table.HeadCell>
           <Table.HeadCell>Wins</Table.HeadCell>
@@ -28,7 +27,6 @@ function HighscoreBoard() {
             ))}
         </Table.Body>
       </Table>
-      
     </div>
   );
 }

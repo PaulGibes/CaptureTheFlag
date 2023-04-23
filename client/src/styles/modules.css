@@ -76,8 +76,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position-x: center;
-  /* max-height: 40rem;
-  max-width: 36rem; */
+  /* max-height: 40rem;*/
+  max-width: 44rem;
 }
 .bg-modal-highscore2 {
   background: url("../assets/images/modal-highscore.png");
