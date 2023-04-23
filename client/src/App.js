@@ -16,7 +16,7 @@ import Signup from "./components/pages/Signup";
 import EndGame from "./components/pages/EndGame";
 import GamePlay from "./components/pages/GamePlay";
 import WaitingRoom from "./components/pages/WaitingRoom";
-import HighscoreBoard from "./components/HighscoreBoard";
+import Highscores from "./components/pages/Highscores";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -50,7 +50,7 @@ function App() {
           <Route path="/gameplay" element={<GamePlay />} />
           <Route path="/endgame" element={<EndGame />} />
           <Route path="/waitingRoom" element={<WaitingRoom />} />
-          <Route path="/highscoreBoard" element={<HighscoreBoard />} />
+          <Route path="/highscores" element={<Highscores />} />
         </Routes>
       </Router>
     </ApolloProvider>

@@ -44,7 +44,9 @@ function EndGame() {
               <div className="flex flex-col w-[200px] md:w-[300px] justify-center py-10">
                 <div className="skew-y-12">
                   <h3 className="my-5 text-white">Highscores Leaderboard</h3>
-                  <HighscoreBoard />
+                  <div className="bg-modal-highscore2 p-[30px]">
+                  <HighscoreBoard className="w-[300px]" />
+                  </div>
                 </div>
               </div>
             </div>
