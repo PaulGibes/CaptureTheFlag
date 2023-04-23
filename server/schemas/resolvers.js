@@ -56,8 +56,8 @@ const resolver = {
   },
 
   Mutation: {
-    addUser: async (parent, { username, password }) => {
-      const user = User.create({ username, password });
+    addUser: async (parent, { username, password, image }) => {
+      const user = User.create({ username, password, image });
       const token = signToken(user);
 
       return { user, token };
@@ -87,11 +87,11 @@ const resolver = {
     },
 
     //add a user to the queue
-    joinQueue: async (parent, { users }) => {
+    joinQueue: async (parent, { username }) => {
       const queue = Queue.findOneAndUpdate(
         {},
         {
-          $addToSet: { users },
+          $addToSet: { username },
         },
         {
           new: true,
@@ -139,9 +139,9 @@ const resolver = {
 
               console.log(
                 "Current user: " +
-                  queue.users[recordAdded] +
-                  " count " +
-                  userCount
+                queue.users[recordAdded] +
+                " count " +
+                userCount
               );
               if (teamTwo < teamOne) {
                 updateData = {
@@ -164,7 +164,7 @@ const resolver = {
                 {
                   new: true,
                 }
-              ).then((updatedGame) => {});
+              ).then((updatedGame) => { });
 
               //remove user from queue
               Queue.findOneAndUpdate(
@@ -175,7 +175,7 @@ const resolver = {
                 {
                   new: true,
                 }
-              ).then((response) => {});
+              ).then((response) => { });
               //updating counters for while loop
               userCount--;
               recordAdded++;
@@ -258,7 +258,7 @@ const resolver = {
               {
                 new: true,
               }
-            ).then((updatedGame) => {});
+            ).then((updatedGame) => { });
           }
 
           return {message: "Success"};
@@ -278,6 +278,15 @@ const resolver = {
       const user = await User.findOneAndUpdate(
         { username: username },
         { hasFlag: hasFlag },
+        { new: true }
+      );
+      return user;
+    },
+
+    updateIsHost: async (parent, { username, isHost }) => {
+      const user = await User.findOneAndUpdate(
+        { username: username },
+        { isHost: isHost },
         { new: true }
       );
       return user;
