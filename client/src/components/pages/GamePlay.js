@@ -162,9 +162,10 @@ function GamePlay() {
     <div className="mt-40">
       <div className="flex justify-between px-10">
         <div className="flex">
+        <AiOutlineFlag className="text-xl mr-5 text-red-600" />
           <h2 className="text-xl text-white  mr-2">The Outsiders</h2>
           <h2 className="text-xl text-white">
-            Score:<span className="font-bold accent ml-2">45</span>
+             :<span className="font-bold accent ml-2">45</span>
           </h2>
         </div>
         <div>
@@ -176,9 +177,10 @@ function GamePlay() {
           </h2>
         </div>
         <div className="flex">
+        <AiOutlineFlag className="text-xl mr-5 text-blue-600" />
           <h2 className="text-xl text-white mr-2">The Machines</h2>
           <h2 className="text-xl text-white">
-            Score:<span className="font-bold accent ml-2">20</span>
+             :<span className="font-bold accent ml-2">20</span>
           </h2>
         </div>
       </div>

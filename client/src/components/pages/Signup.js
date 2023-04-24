@@ -2,19 +2,23 @@ import React from "react";
 import { useState } from "react";
 import Button from "../Button";
 import LoginModal from "../LoginModal";
-import Logo from "../../assets/images/capturetheflag.jpg";
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 import { useLoginFormValidator } from "../../utils/useLoginFormValidator.js";
 import "../../styles/modules.css";
-import avatar1 from "../../assets/images/player-1.jpg";
-import avatar2 from "../../assets/images/player-2.jpg";
-import avatar3 from "../../assets/images/player-3.jpg";
-import avatar4 from "../../assets/images/player-4.jpg";
-import avatar5 from "../../assets/images/player-5.jpg";
-import avatar6 from "../../assets/images/player-6.jpg";
-import { stars } from "../../assets/images";
+import {
+  stars,
+  avatar1,
+  avatar2,
+  avatar3,
+  avatar4,
+  avatar5,
+  avatar6,
+  char1,
+  char2,
+  char3,
+} from "../../assets/images";
 
 import { BiUser } from "react-icons/bi";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -32,28 +36,23 @@ function Signup() {
   const [addUser, { error, data }] = useMutation(ADD_USER);
 
   const isValid = formState.username !== "";
-  
 
-  
-  const handleImageVal = (e) =>{
-  
-   //const data = e.target.id
-   const {name, value} = e.target
-   const nextFormState = {
-    ...formState,
-    [name]: value,
+  const handleImageVal = (e) => {
+    //const data = e.target.id
+    const { name, value } = e.target;
+    const nextFormState = {
+      ...formState,
+      [name]: value,
+    };
+    setFormState(nextFormState);
+    console.log(name);
+    console.log(value);
   };
-  setFormState(nextFormState);
-   console.log(name)
-    console.log(value)
-  
-  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-console.log(name)
-console.log(value)
-
+    console.log(name);
+    console.log(value);
 
     //set the form state equal to itself and then add the value to the name of the target(username or password)
     const nextFormState = {
@@ -203,7 +202,10 @@ console.log(value)
                   ) : null}
                 </div>
               </div>
-              <div className="flex flex-col justify-end items-center" onClick={handleImageVal}>
+              <div
+                className="flex flex-col justify-end items-center"
+                onClick={handleImageVal}
+              >
                 <label
                   htmlFor="flags"
                   className="block text-sm text-right font-medium leading-6 text-white"
@@ -223,11 +225,11 @@ console.log(value)
                       />
                       <label
                         for="avatar-1"
-                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500  hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
+                        className="inline-flex items-center justify-between w-full   text-white  border-0  opacity-60 rounded-lg cursor-pointer peer-checked:opacity-100 peer-checked:text-orange-500  hover:opacity-100  "
                       >
                         <div class="block">
                           <div class="w-full text-lg text-center font-semibold">
-                            <img src={avatar1} />
+                            <img src={char1} />
                           </div>
                         </div>
                       </label>
@@ -242,11 +244,11 @@ console.log(value)
                       />
                       <label
                         for="avatar-2"
-                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500  hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
+                        className="inline-flex items-center justify-between w-full   text-white  border-0 opacity-60  rounded-lg cursor-pointer peer-checked:opacity-100 peer-checked:text-orange-500  hover:opacity-100    "
                       >
                         <div class="block">
                           <div class="w-full text-lg text-center font-semibold">
-                            <img src={avatar2} />
+                            <img src={char2} />
                           </div>
                         </div>
                       </label>
@@ -261,79 +263,79 @@ console.log(value)
                       />
                       <label
                         for="avatar-3"
-                        className="inline-flex items-center justify-between w-full px-8 text-white  border border-white rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider border-white "
+                        className="inline-flex items-center justify-between w-full   text-white  border-0  opacity-60  rounded-lg cursor-pointer peer-checked:opacity-100 peer-checked:text-orange-500 hover:opacity-100   "
                       >
                         <div class="block">
                           <div class="w-full text-lg text-center font-semibold">
-                            <img src={avatar3} />
-                      </div>
-                    </div>
-                  </label>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <ul class="flex w-full gap-6 ">
-                <li>
-                  <input
-                    type="radio"
-                    id="avatar-4"
-                    name="image"
-                    value="avatar-4"
-                    class="hidden peer"
-                    required
-                  />
-                  <label
-                    for="avatar-4"
-                    class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div class="block">
-                      <div class="w-full text-lg text-center font-semibold">
-                        <img src={avatar4} />
-                      </div>
-                    </div>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    id="avatar-5"
-                    name="image"
-                    value="avatar-5"
-                    class="hidden peer"
-                  />
-                  <label
-                    for="avatar-5"
-                    class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div class="block">
-                      <div class="w-full text-lg text-center font-semibold">
-                        <img src={avatar5} />
-                      </div>
-                    </div>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    id="avatar-6"
-                    name="image"
-                    value="avatar-6"
-                    class="hidden peer"
-                  />
-                  <label
-                    for="avatar-6"
-                    class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div class="block">
-                      <div class="w-full text-lg text-center font-semibold">
-                        <img src={avatar6} />
+                            <img src={char3} />
                           </div>
                         </div>
                       </label>
                     </li>
                   </ul>
                 </div>
+                {/* <div>
+                  <ul class="flex w-full gap-6 ">
+                    <li>
+                      <input
+                        type="radio"
+                        id="avatar-4"
+                        name="image"
+                        value="avatar-4"
+                        class="hidden peer"
+                        required
+                      />
+                      <label
+                        for="avatar-4"
+                        class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                      >
+                        <div class="block">
+                          <div class="w-full text-lg text-center font-semibold">
+                            <img src={avatar4} />
+                          </div>
+                        </div>
+                      </label>
+                    </li>
+                    <li>
+                      <input
+                        type="radio"
+                        id="avatar-5"
+                        name="image"
+                        value="avatar-5"
+                        class="hidden peer"
+                      />
+                      <label
+                        for="avatar-5"
+                        class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                      >
+                        <div class="block">
+                          <div class="w-full text-lg text-center font-semibold">
+                            <img src={avatar5} />
+                          </div>
+                        </div>
+                      </label>
+                    </li>
+                    <li>
+                      <input
+                        type="radio"
+                        id="avatar-6"
+                        name="image"
+                        value="avatar-6"
+                        class="hidden peer"
+                      />
+                      <label
+                        for="avatar-6"
+                        class="inline-flex items-center justify-between w-full px-8 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                      >
+                        <div class="block">
+                          <div class="w-full text-lg text-center font-semibold">
+                            <img src={avatar6} />
+                          </div>
+                        </div>
+                      </label>
+                    </li>
+                  </ul>
+                </div> */}
               </div>
 
               <button

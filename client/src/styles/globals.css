@@ -86,3 +86,12 @@ h6 {
 .accent {
   color: var(--color-accent);
 }
+
+
+.glow-red{
+ box-shadow: 0px 1px 15px #FF3F3F;
+}
+
+.glow-blue{
+   box-shadow: 0px 1px 15px #4D9FFF;
+}
