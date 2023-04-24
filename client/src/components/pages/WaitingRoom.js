@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/globals.css";
 import { motion } from "framer-motion";
 import Auth from "../../utils/auth";
@@ -9,16 +9,40 @@ import "../../styles/home.css";
 import { mapFooter } from "../../assets/images";
 
 function WaitingRoom() {
-    const [updateHost] = useMutation(UPDATE_ISHOST);
-    const [updateQueue] = useMutation(EXIT_QUEUE);
-    const [fillGame] = useMutation(FILL_GAME);
-    const [startGame] = useMutation(START_GAME);
+    const [counter, setCounter] = useState(0);
 
     var urlParams = new URLSearchParams(window.location.search);
     // console.log(urlParams.get('game'));
     // console.log(urlParams.get('teamPlayers'));
     const gameId = urlParams.get('game')
     const teamPlayers = urlParams.get('teamPlayers')
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCounter((prevCounter) => prevCounter + 1);
+            checkIfGameStarted()
+            // console.log(gameId)
+            try {
+                const { data } = fillGame({
+                    variables: { gameId },
+                });
+                console.log(data)
+            } catch (err) {
+                console.error(err);
+            }
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const checkIfGameStarted = () => {
+        console.log("test")
+    }
+
+    const [updateHost] = useMutation(UPDATE_ISHOST);
+    const [updateQueue] = useMutation(EXIT_QUEUE);
+    const [fillGame] = useMutation(FILL_GAME);
+    const [startGame] = useMutation(START_GAME);
 
     // first grabbing current user from local storage (auth.js)
     const currentUser = Auth.getUsername();
@@ -88,34 +112,26 @@ function WaitingRoom() {
 
         window.location.href = "/choose-game";
     };
+    // for loop for players in queue to check if game has started
 
-    const HandleCreateGame = async (username, userId, gameId, teamLimit) => {
-        console.log(gameId)
-        try {
-            const { data } = await fillGame({
-                variables: { gameId },
-            });
-            console.log(data)
-        } catch (err) {
-            console.error(err);
-        }
+    // const HandleFillGame = async (gameId) => {
+    //     console.log(gameId)
+    //     try {
+    //         const { data } = await fillGame({
+    //             variables: { gameId },
+    //         });
+    //         console.log(data)
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
 
+    const HandleStartGame = async (username, gameId, teamLimit) => {
         try {
             const { data } = await updateHost({
                 variables: {
                     username: username,
                     isHost: false
-                },
-            });
-            console.log(data)
-        } catch (error) {
-            console.error(error);
-        }
-
-        try {
-            const { data } = await updateQueue({
-                variables: {
-                    userId: userId
                 },
             });
             console.log(data)
@@ -131,10 +147,11 @@ function WaitingRoom() {
                 },
             });
             console.log(data)
-            window.location.href = "/gameplay";
         } catch (error) {
             console.error(error);
         }
+
+        window.location.href = "/gameplay";
     }
 
     return (
@@ -148,9 +165,6 @@ function WaitingRoom() {
                         >
                             Leave Lobby
                         </button>
-                        {/* {data.user.isHost ? <div>
-                            <button onClick={() => HandleCreateGame()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded">Start Game</button>
-                        </div> : ""} */}
                     </div>
                     <h2 className="text-2xl text-center accent p-10">
                         Get ready to Capture the Flag!
@@ -171,7 +185,7 @@ function WaitingRoom() {
                     {data.user.isHost ? (
                         <div className="flex">
                             <motion.div
-                                onClick={() => HandleCreateGame(data.user.username, data.user._id, gameId, teamPlayers)}
+                                onClick={() => HandleStartGame(data.user.username, gameId, teamPlayers)}
                                 className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
                                 whileHover={{ scale: 1.3 }}
                                 whileTap={{ scale: 0.9 }}
