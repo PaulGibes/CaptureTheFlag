@@ -1,11 +1,11 @@
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import Auth from "../utils/auth"
-import { QUERY_SINGLE_USER } from "../utils/queries"
+import Auth from "../utils/auth";
+import { QUERY_SINGLE_USER } from "../utils/queries";
 import { CREATE_GAME, START_GAME } from "../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
 import { motion, AnimatePresence } from "framer-motion";
-
 
 const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
     const handleCancelClick = () => {
@@ -14,38 +14,55 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
     };
     const [createGame] = useMutation(CREATE_GAME);
     const [startGame] = useMutation(START_GAME);
+
+    const [flagsToWin, setFlags] = useState(1);
+    const [teamPlayers, setPlayers] = useState(2);
+    const [difficulty, setDifficulty] = useState('easy');
+
+    const handleFlagsChange = (e) => {
+        setFlags(e.target.value);
+    };
+
+    const handlePlayersChange = (e) => {
+        setPlayers(e.target.value);
+    };
+
+    const handleDifficultyChange = (e) => {
+        setDifficulty(e.target.value);
+    };
+
     const currentUser = Auth.getUsername()
     const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
         variables: { username: currentUser }
     });
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
-    
-    const userId = data.user._id;
-    const HandlePlayBots = async () => {
+
+    // const userId = data.user._id;
+    const HandlePlayBots = async (username, flagsToWin, teamPlayers, difficulty) => {
         try {
             const { data } = await createGame({
-              variables: {status: "open", teamOne: userId },
+                variables: { username, flagsToWin, teamPlayers, difficulty },
             });
-            
+
             console.log(data);
-            const gameId= data.createGame._id;
+            const gameId = data.createGame._id;
 
             handleStartGame(gameId)
-            
+
             window.location.href = "/gameplay?game=" + gameId;
-            
-          } catch (err) {
+
+        } catch (err) {
             console.log(err);
-          }
+        }
     };
 
-    async function handleStartGame(game){
-        try{
+    async function handleStartGame(game) {
+        try {
             const { data } = await startGame({
-                    variables: {gameId: game, teamLimit: 3}
-                });
-            
+                variables: { gameId: game, teamLimit: 3 }
+            });
+
             console.log(data);
         } catch (err) {
             console.log(err);
@@ -105,11 +122,13 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                         </label>
                                         <div className="mt-2">
                                             <input
-                                                id="flags"
-                                                name="flags"
+                                                id="flagsToWin"
+                                                name="flagsToWin"
                                                 type="text"
                                                 required
                                                 className="text-center block w-full rounded-md border p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                                                value={flagsToWin}
+                                                onChange={handleFlagsChange}
                                             />
                                         </div>
                                     </div>
@@ -126,9 +145,10 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                                     <input
                                                         type="radio"
                                                         id="2-players"
-                                                        name="players"
-                                                        value="2-players"
-                                                        className="hidden peer"
+                                                        name="teamPlayers"
+                                                        value={teamPlayers}
+                                                        class="hidden peer"
+                                                        onChange={handlePlayersChange}
                                                         required
                                                     />
                                                     <label
@@ -146,9 +166,10 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                                     <input
                                                         type="radio"
                                                         id="3-players"
-                                                        name="players"
-                                                        value="3-players"
-                                                        className="hidden peer"
+                                                        name="teamPlayers"
+                                                        value={teamPlayers}
+                                                        class="hidden peer"
+                                                        onChange={handlePlayersChange}
                                                     />
                                                     <label
                                                         for="3-players"
@@ -179,8 +200,9 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                                         id="easy"
                                                         name="difficulty"
                                                         value="easy"
-                                                        className="hidden peer"
+                                                        class="hidden peer"
                                                         required
+                                                        onChange={handleDifficultyChange}
                                                     />
                                                     <label
                                                         for="easy"
@@ -199,7 +221,8 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                                         id="hard"
                                                         name="difficulty"
                                                         value="hard"
-                                                        className="hidden peer"
+                                                        class="hidden peer"
+                                                        onChange={handleDifficultyChange}
                                                     />
                                                     <label
                                                         for="hard"
@@ -251,7 +274,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                   </div> */}
                                     <div className="flex gap-10 mt-10">
                                         <Link
-                                            onClick={() => HandlePlayBots()}
+                                            onClick={() => HandlePlayBots((data.user.username, flagsToWin, teamPlayers, difficulty))}
                                             className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white  border border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
                                             style={{ cursor: "pointer" }}
                                         >

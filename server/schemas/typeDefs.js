@@ -35,7 +35,10 @@ const typeDefs = gql`
     flagOne: String
     flagTwo: String
     bots: [Bot]!
-    winner: Int
+    winner: String
+    flagsToWin: Int
+    teamPlayers: Int
+    difficulty: String
     teamOneCount: Int
     teamTwoCount: Int
   }
@@ -58,14 +61,14 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, password: String!, image: String): Auth
     login(username: String!, password: String!): Auth
-    createGame(status: String!, teamOne: [String!]): Game
+    createGame(username: String!, flagsToWin: Int, teamPlayers: Int, difficulty: String): Game
     joinQueue(username: String!): Queue
     exitQueue(username: String!): Queue
     fillGame(gameId: ID!): Game
     startGame(gameId: ID!, teamLimit: Int!): Game
     updatePosition(username: String!, position: String!): User
     updateFlag(username: String!, hasFlag: Boolean): User
-    updateIsHost(username: String!, isHost: Boolean): User
+    updateIsHost(username: String!, isHost: Boolean!): User
   }
 `;
 

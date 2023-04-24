@@ -1,7 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Game, Queue } = require("../models");
 const { signToken } = require("../utils/auth");
-const {moveBot, newTest} = require("../utils/botBrains")
+const { moveBot, newTest } = require("../utils/botBrains")
 
 const resolver = {
   Query: {
@@ -80,15 +80,15 @@ const resolver = {
       return { token, user };
     },
 
-    createGame: async (parent, { status, teamOne }) => {
-      const game = Game.create({ status, teamOne });
+    createGame: async (parent, { username, flagsToWin, teamPlayers, difficulty }) => {
+      const game = Game.create({ username, flagsToWin, teamPlayers, difficulty });
 
       return game;
     },
 
     //add a user to the queue
     joinQueue: async (parent, { username }) => {
-      const queue = Queue.findOneAndUpdate(
+      const queue = await Queue.findOneAndUpdate(
         {},
         {
           $addToSet: { username },
@@ -102,12 +102,12 @@ const resolver = {
     },
 
     // remove a user from the queue
-    exitQueue: async (parent, { _id }) => {
-      console.log(_id);
+    exitQueue: async (parent, { username }) => {
+      // console.log(username);
       const queue = Queue.findOneAndUpdate(
         {},
         {
-          $pull: { users: _id },
+          $pull: { users: username },
         },
         {
           new: true,
@@ -183,7 +183,7 @@ const resolver = {
           });
 
           return game;
-        }); 
+        });
     },
 
     startGame: async (parent, { gameId, teamLimit }) => {
@@ -262,7 +262,7 @@ const resolver = {
             ).then((updatedGame) => { });
           }
 
-          return {message: "Success"};
+          return { message: "Success" };
         });
     },
 
@@ -287,7 +287,7 @@ const resolver = {
     updateIsHost: async (parent, { username, isHost }) => {
       const user = await User.findOneAndUpdate(
         { username: username },
-        { isHost: isHost },
+        { isHost },
         { new: true }
       );
       return user;

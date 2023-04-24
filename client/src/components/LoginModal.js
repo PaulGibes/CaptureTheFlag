@@ -137,17 +137,11 @@ const LoginModal = ({ setModalOn, setChoice }) => {
               <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-4" onSubmit={handleFormSubmit}>
                   <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium leading-6 text-white"
-                    >
+                    <label className="block text-sm font-medium leading-6 text-white">
                       Player name
                     </label>
                     <div className="">
-                      <label
-                        htmlFor="name"
-                        class="relative text-orange-500 focus-within:text-orange-600 block"
-                      >
+                      <label className="relative text-orange-500 focus-within:text-orange-600 block">
                         <BiUser className="pointer-events-none w-6 h-6 absolute top-1/2 transform -translate-y-1/2 left-3" />
 
                         <input
@@ -176,18 +170,12 @@ const LoginModal = ({ setModalOn, setChoice }) => {
 
                   <div>
                     <div className="flex items-center justify-between">
-                      <label
-                        htmlFor="password"
-                        className="block text-sm font-medium leading-6 text-white"
-                      >
+                      <label className="block text-sm font-medium leading-6 text-white">
                         Password
                       </label>
                     </div>
                     <div className="">
-                      <label
-                        htmlFor="name"
-                        class="relative text-orange-500 focus-within:text-orange-600 block"
-                      >
+                      <label className="relative text-orange-500 focus-within:text-orange-600 block">
                         <RiLockPasswordFill className="pointer-events-none w-6 h-6 absolute top-1/2 transform -translate-y-1/2 left-3" />
                         <input
                           id="password"
@@ -218,7 +206,7 @@ const LoginModal = ({ setModalOn, setChoice }) => {
                       ) : null}
                     </div>
                   </div>
-                 
+
                   <button
                     className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white shadow-sm border border-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  "
                     style={{ cursor: "pointer" }}

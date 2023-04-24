@@ -19,6 +19,8 @@ function ChooseGame() {
   const [modalOn, setModalOn] = useState(false);
   const [AImodalOn, setAIModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
+  const [updateQueue] = useMutation(JOIN_QUEUE);
+
 
   const currentUser = Auth.getUsername()
   const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
@@ -28,15 +30,14 @@ function ChooseGame() {
   if (error) return `Error! ${error.message}`;
   // console.log(data)
 
-  const HandleJoinQueue = async (id) => {
+  const HandleJoinQueue = async (username) => {
     try {
-      const result = await useMutation({
-        mutation: JOIN_QUEUE,
+      const { data: { updateQueue } } = await updateQueue({
         variables: {
-          id: id
-        }
+          username: username
+        },
       });
-
+      console.log(updateQueue)
     } catch (error) {
       console.error(error);
     }
@@ -70,7 +71,7 @@ function ChooseGame() {
             </div>
             <div className="after:block after:bg-gray-600 after:w-[1px] after:h-64 after:mx-auto after:my-2"></div>
             <div className="flex flex-col  justify-center py-10">
-              <div onClick={() => HandleJoinQueue(data.user._id)} className=" ">
+              <div onClick={() => HandleJoinQueue(data.user.username)} className=" ">
                 <p className="my-5 text-white">Join an online game:</p>
 
                 <motion.div

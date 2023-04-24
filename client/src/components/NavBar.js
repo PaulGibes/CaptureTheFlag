@@ -9,12 +9,12 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function NavBar() {
-  console.log("navbar");
+  // console.log("navbar");
   const [darkMode, setDarkMode] = useState(true);
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
   const clicked = () => {
-    console.log("nav bar state chnage");
+    // console.log("nav bar state chnage");
     setModalOn(true);
   };
 
@@ -31,7 +31,7 @@ function NavBar() {
     const username = localStorage.getItem("username");
     if (username) {
       setLoggedUser(username);
-      console.log(username);
+      // console.log(username);
     } else {
       setLoggedUser(username);
     }
@@ -110,7 +110,7 @@ function NavBar() {
     <div className="">
       <div className=" px-10 md:px-20 lg:px-40  ">
         <nav className="pb-10 mb-12">
-          <div className="text-center absolute z-0 w-90 mx-auto left-0 right-0 flex flex-col justify-center items-center">
+          <div className="text-center absolute z-10 w-90 mx-auto left-0 right-0 flex flex-col justify-center items-center">
             <Link to={"/"}>
               <div className="w-full">
                 <img src={navbarGUI} />
@@ -120,8 +120,8 @@ function NavBar() {
             <h2
               className={
                 user
-                  ? "text-md absolute pb-5 text-white font-medium md:text-4xl "
-                  : "text-md absolute pt-5 pb-5 text-white font-medium md:text-4xl"
+                  ? "text-md absolute pb-5 text-white select-none font-medium md:text-4xl cursor-pointer "
+                  : "text-md absolute pt-5 pb-5 text-white select-none font-medium md:text-4xl cursor-pointer"
               }
             >
               THE OUTSIDERS
@@ -142,7 +142,7 @@ function NavBar() {
               ) : null}
             </div>
           </div>
-          <Link to="/highscoreBoard">
+          <Link to="/highscores">
             <motion.div
               className="flex items-center py-10 sm:pt-12 md:pt-16 absolute z-10  "
               initial="rest"
