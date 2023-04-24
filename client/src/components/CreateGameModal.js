@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Auth from "../utils/auth"
-import { QUERY_SINGLE_USER } from "../utils/queries"
-import { UPDATE_ISHOST } from "../utils/mutations"
+import Auth from "../utils/auth";
+import { QUERY_SINGLE_USER } from "../utils/queries";
+import { UPDATE_ISHOST } from "../utils/mutations";
 import { JOIN_QUEUE, CREATE_GAME } from "../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
@@ -15,7 +15,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
 
   const [flagsToWin, setFlags] = useState(1);
   const [teamPlayers, setPlayers] = useState(2);
-  const [difficulty, setDifficulty] = useState('easy');
+  const [difficulty, setDifficulty] = useState("easy");
 
   const handleFlagsChange = (e) => {
     setFlags(e.target.value);
@@ -39,7 +39,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
     variables: { username: currentUser },
   });
   // console.log(data)
-  if (loading) return 'Loading...';
+  if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
 
 
@@ -47,15 +47,15 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
     // console.log(Number(flagsToWin))
     // console.log(Number(teamPlayers))
     // console.log(difficulty)
-    flagsToWin = Number(flagsToWin)
-    teamPlayers = Number(teamPlayers)
-    let gameId = ""
+    flagsToWin = Number(flagsToWin);
+    teamPlayers = Number(teamPlayers);
+    let gameId = "";
     try {
       const { data } = await createGame({
         variables: { username, flagsToWin, teamPlayers, difficulty },
       });
       // console.log(data)
-      gameId = data.createGame._id
+      gameId = data.createGame._id;
     } catch (err) {
       console.error(err);
     }
@@ -64,7 +64,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
       const { data } = await updateHost({
         variables: {
           username: username,
-          isHost: true
+          isHost: true,
         },
       });
       // console.log(data)
@@ -84,7 +84,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
     }
 
     window.location.href = "/waitingroom?game=" + gameId;
-  }
+  };
 
   const backdrop = {
     visible: { opacity: 1 },
@@ -165,7 +165,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                             id="2-players"
                             name="teamPlayers"
                             value={teamPlayers}
-                            class="hidden peer"
+                            className="hidden peer"
                             onChange={handlePlayersChange}
                             required
                           />
@@ -183,7 +183,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                             id="3-players"
                             name="teamPlayers"
                             value={teamPlayers}
-                            class="hidden peer"
+                            className="hidden peer"
                             onChange={handlePlayersChange}
                           />
                           <label className="inline-flex items-center justify-between w-full px-8 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
@@ -227,7 +227,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                             id="hard"
                             name="difficulty"
                             value="hard"
-                            class="hidden peer"
+                            className="hidden peer"
                             onChange={handleDifficultyChange}
                           />
                           <label className="inline-flex items-center justify-between w-full px-6 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
