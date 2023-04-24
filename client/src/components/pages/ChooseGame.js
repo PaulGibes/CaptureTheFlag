@@ -1,14 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/globals.css";
-import { BsFillMoonStarsFill } from "react-icons/bs";
 import Auth from "../../utils/auth"
 import { QUERY_SINGLE_USER } from "../../utils/queries"
 import { JOIN_QUEUE } from "../../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
-import Button from "../Button";
-import { motion, AnimatePresence } from "framer-motion";
-
-import { useState } from "react";
+import { motion } from "framer-motion";
 import CreateGameModal from "../CreateGameModal";
 import CreateAIGameModal from "../CreateAIGameModal";
 import "../../styles/home.css";
@@ -30,14 +26,14 @@ function ChooseGame() {
   if (error) return `Error! ${error.message}`;
   // console.log(data)
 
-  const HandleJoinQueue = async (username) => {
+  const HandleJoinQueue = async (userId) => {
     try {
-      const { data: { updateQueue } } = await updateQueue({
+      const { data } = await updateQueue({
         variables: {
-          username: username
+          userId: userId
         },
       });
-      console.log(updateQueue)
+      console.log(data)
     } catch (error) {
       console.error(error);
     }
@@ -71,7 +67,7 @@ function ChooseGame() {
             </div>
             <div className="after:block after:bg-gray-600 after:w-[1px] after:h-64 after:mx-auto after:my-2"></div>
             <div className="flex flex-col  justify-center py-10">
-              <div onClick={() => HandleJoinQueue(data.user.username)} className=" ">
+              <div onClick={() => HandleJoinQueue(data.user._id)} className=" ">
                 <p className="my-5 text-white">Join an online game:</p>
 
                 <motion.div
@@ -99,7 +95,7 @@ function ChooseGame() {
             </div>
           </div>
           <div className="w-full overflow-hidden flex justify-center">
-            <img className=" mx-auto w-[200rem] max-w-none" src={mapFooter} />
+            <img className=" mx-auto w-[200rem] max-w-none" src={mapFooter} alt="img" />
           </div>
           {modalOn && (
             <CreateGameModal setModalOn={setModalOn} setChoice={setChoice} />

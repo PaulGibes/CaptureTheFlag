@@ -25,8 +25,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_GAME = gql`
-  mutation createGame($username: String!, $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
-    createGame(username: $username, flagsToWin: $flagsToWin,teamPlayers: $teamPlayers, difficulty: $difficulty,) {
+  mutation createGame($username: String!, $teamOne: [String!], $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
+    createGame(username: $username, teamOne: $teamOne flagsToWin: $flagsToWin,teamPlayers: $teamPlayers, difficulty: $difficulty,) {
       _id
       teamTwoCount
       teamOneCount
@@ -39,22 +39,22 @@ export const CREATE_GAME = gql`
 `;
 
 export const JOIN_QUEUE = gql`
-  mutation joinQueue($username: String!) {
-    joinQueue(username: $username) {
+  mutation joinQueue($userId: String!) {
+    joinQueue(userId: $userId) {
       userCount
       users {
-        username
+        _id
       }
     }
   }
 `;
 
 export const EXIT_QUEUE = gql`
-  mutation exitQueue($username: String!) {
-    exitQueue(username: $username) {
+  mutation exitQueue($userId: String!) {
+    exitQueue(userId: $userId) {
       userCount
       users {
-        username
+        _id
       }
     }
   }
@@ -69,7 +69,7 @@ export const FILL_GAME = gql`
 `;
 
 export const START_GAME = gql`
-  mutation ($gameId: ID!, $teamLimit: Int!) {
+  mutation startGame($gameId: ID!, $teamLimit: Int!) {
     startGame(gameId: $gameId, teamLimit: $teamLimit) {
     _id
   }
