@@ -92,57 +92,58 @@ function GamePlay() {
 
   // fetch and update my position
   function updateMap() {
-    client.query({
-      query: GET_GAME,
-      variables: { gameId: urlParams.get('game') },
-      //fetchPolicy: "cache-first"   // select appropriate fetchPolicy
-    }).then((response) => {
-      const gameData = response.data.game;
-      console.log(gameData);
-      baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag"
-      baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag"
+    client
+      .query({
+        query: GET_GAME,
+        variables: { gameId: urlParams.get("game") },
+        //fetchPolicy: "cache-first"   // select appropriate fetchPolicy
+      })
+      .then((response) => {
+        const gameData = response.data.game;
+        console.log(gameData);
+        baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag";
+        baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag";
 
-      gameData.teamOne.forEach(player => {
-        if (player.position) {
-          let index = getIndex(player.position);
-          baseField[index].player = player.username;
+        gameData.teamOne.forEach((player) => {
+          if (player.position) {
+            let index = getIndex(player.position);
+            baseField[index].player = player.username;
 
-          if (player.username == currentUser) {
-            baseField[index].active = true;
+            if (player.username == currentUser) {
+              baseField[index].active = true;
+            }
+          } else {
+            if (player.username == currentUser) {
+              baseField[13].active = true;
+            }
+            baseField[13].player = player.username;
           }
-        } else {
-          if (player.username == currentUser) {
-            baseField[13].active = true;
+        });
+
+        gameData.teamTwo.forEach((player) => {
+          if (player.position) {
+            let index = getIndex(player.position);
+            baseField[index].player = player.username;
+
+            if (player.username == currentUser) {
+              baseField[index].active = true;
+            }
+          } else {
+            if (player.username == currentUser) {
+              baseField[22].active = true;
+            }
+            baseField[22].player = player.username;
           }
-          baseField[13].player = player.username;
-        }
+        });
+
+        gameData.bots.forEach((bot) => {
+          baseField[getIndex(bot.position)].player =
+            bot.botName + " Team:" + bot.team;
+        });
+
+        MapLogic.activatePossibleMoves(baseField);
+        localStorage.setItem("nextRound", JSON.stringify(baseField));
       });
-
-      gameData.teamTwo.forEach(player => {
-        if (player.position) {
-          let index = getIndex(player.position)
-          baseField[index].player = player.username;
-
-          if (player.username == currentUser) {
-            baseField[index].active = true;
-          }
-        } else {
-          if (player.username == currentUser) {
-            baseField[22].active = true;
-          }
-          baseField[22].player = player.username;
-        }
-      });
-
-      gameData.bots.forEach(bot => {
-
-        baseField[getIndex(bot.position)].player = bot.botName + " Team:" + bot.team;
-
-      });
-
-      MapLogic.activatePossibleMoves(baseField);
-      localStorage.setItem("nextRound", JSON.stringify(baseField));
-    });
   }
 
   function getIndex(value) {
@@ -172,10 +173,10 @@ function GamePlay() {
     <div className="mt-40">
       <div className="flex justify-between px-10">
         <div className="flex">
-        <AiOutlineFlag className="text-xl mr-5 text-red-600" />
+          <AiOutlineFlag className="text-xl mr-5 text-red-600" />
           <h2 className="text-xl text-white  mr-2">The Outsiders</h2>
           <h2 className="text-xl text-white">
-             :<span className="font-bold accent ml-2">45</span>
+            :<span className="font-bold accent ml-2">45</span>
           </h2>
         </div>
         <div>
@@ -187,10 +188,10 @@ function GamePlay() {
           </h2>
         </div>
         <div className="flex">
-        <AiOutlineFlag className="text-xl mr-5 text-blue-600" />
-          <h2 className="text-xl text-white mr-2">The Machines</h2>
+          <AiOutlineFlag className="text-xl mr-5 text-blue-600" />
+          <h2 className="text-xl text-white mr-2">The Insiders</h2>
           <h2 className="text-xl text-white">
-             :<span className="font-bold accent ml-2">20</span>
+            :<span className="font-bold accent ml-2">20</span>
           </h2>
         </div>
       </div>

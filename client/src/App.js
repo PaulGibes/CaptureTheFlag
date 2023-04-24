@@ -10,13 +10,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home";
 import NavBar from "./components/NavBar";
 import ChooseGame from "./components/pages/ChooseGame";
-import Landing from "./components/pages/Landing";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import EndGame from "./components/pages/EndGame";
 import GamePlay from "./components/pages/GamePlay";
 import WaitingRoom from "./components/pages/WaitingRoom";
 import Highscores from "./components/pages/Highscores";
+import HowToPlay from "./components/pages/HowToPlay";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -44,7 +44,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/choose-game" element={<ChooseGame />} />
-          <Route path="/landing" element={<Landing />} />
+          <Route path="/howtoplay" element={<HowToPlay />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/gameplay" element={<GamePlay />} />

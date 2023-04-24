@@ -5,6 +5,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../../styles/home.css";
 import LoginModal from "../LoginModal";
+import HowToPlay from "./HowToPlay";
 import { terrain, stars } from "../../assets/images";
 
 function Home() {
@@ -40,6 +41,7 @@ function Home() {
               <div className="  md:text-xl">Log In to Play</div>
             </motion.div>
           </div>
+          <HowToPlay className="mt-5 z-10" />
           <div className="w-full">
             <img className=" mx-auto" src={terrain} />
           </div>
