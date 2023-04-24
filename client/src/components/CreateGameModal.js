@@ -45,9 +45,9 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
   const userId = data.user._id;
 
   const HandleJoinQueue = async (username, userId, flagsToWin, teamPlayers, difficulty) => {
-    console.log(Number(flagsToWin))
-    console.log(Number(teamPlayers))
-    console.log(difficulty)
+    // console.log(Number(flagsToWin))
+    // console.log(Number(teamPlayers))
+    // console.log(difficulty)
     flagsToWin = Number(flagsToWin);
     teamPlayers = Number(teamPlayers);
     let gameId = "";
@@ -61,6 +61,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
     } catch (err) {
       console.error(err);
     }
+    // console.log(gameId)
 
     try {
       const { data } = await updateHost({
@@ -85,6 +86,8 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
       console.error(error);
     }
 
+    // window.location.href = "/waitingroom?game=" + gameId
+    // window.location.href = "/waitingroom?teamPlayers=" + teamPlayers;
     window.location.href = "/waitingroom?game=" + gameId + "&teamPlayers=" + teamPlayers;
   };
 
