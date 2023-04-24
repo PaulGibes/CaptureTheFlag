@@ -12,17 +12,13 @@ import {
 import { useQuery, useMutation } from "@apollo/client";
 import "../../styles/home.css";
 import { mapFooter } from "../../assets/images";
-import { AiOutlineFlag } from "react-icons/ai";
-
 function WaitingRoom() {
   const [counter, setCounter] = useState(0);
-
   var urlParams = new URLSearchParams(window.location.search);
   // console.log(urlParams.get('game'));
   // console.log(urlParams.get('teamPlayers'));
   const gameId = urlParams.get("game");
   const teamPlayers = urlParams.get("teamPlayers");
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCounter((prevCounter) => prevCounter + 1);
@@ -37,52 +33,20 @@ function WaitingRoom() {
         console.error(err);
       }
     }, 3000);
-
     return () => clearInterval(interval);
   }, []);
-
+  let gameStarted = false;
   const checkIfGameStarted = () => {
-    console.log("test");
+    if (gameStarted === false) {
+      return;
+    } else if (gameStarted === true) {
+      window.location.href = "/gameplay?game=" + gameId;
+    }
   };
-
   const [updateHost] = useMutation(UPDATE_ISHOST);
   const [updateQueue] = useMutation(EXIT_QUEUE);
   const [fillGame] = useMutation(FILL_GAME);
   const [startGame] = useMutation(START_GAME);
-
-  var urlParams = new URLSearchParams(window.location.search);
-  // console.log(urlParams.get('game'));
-  // console.log(urlParams.get('teamPlayers'));
-  const gameId = urlParams.get("game");
-  const teamPlayers = urlParams.get("teamPlayers");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCounter((prevCounter) => prevCounter + 1);
-      checkIfGameStarted();
-      // console.log(gameId)
-      try {
-        const { data } = fillGame({
-          variables: { gameId },
-        });
-        console.log(data);
-      } catch (err) {
-        console.error(err);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const checkIfGameStarted = () => {
-    console.log("test");
-  };
-
-  const [updateHost] = useMutation(UPDATE_ISHOST);
-  const [updateQueue] = useMutation(EXIT_QUEUE);
-  const [fillGame] = useMutation(FILL_GAME);
-  const [startGame] = useMutation(START_GAME);
-
   // first grabbing current user from local storage (auth.js)
   const currentUser = Auth.getUsername();
   // useQuery uses useState and setState internally
@@ -92,18 +56,15 @@ function WaitingRoom() {
   });
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
-
   const ballStyle = {
     width: "5rem",
     height: "5rem",
     margin: "2rem",
     borderRadius: "50%",
   };
-
   const getRandomDuration = () => {
     return Math.random() * 0.4 + 0.2;
   };
-
   const getRandomColor = () => {
     var letters = "0123456789ABCDEF";
     var color = "#";
@@ -112,42 +73,15 @@ function WaitingRoom() {
     }
     return color;
   };
-
   const getRandomNumber = () => {
     return Math.floor(Math.random() * 4) + 2;
   };
-
   const balls = Array.from({ length: getRandomNumber() }).map(() => {
     return {
       duration: getRandomDuration(),
       color: getRandomColor(),
     };
   });
-
-  const getRandomDuration = () => {
-    return Math.random() * 0.4 + 0.2;
-  };
-
-  const getRandomColor = () => {
-    var letters = "0123456789ABCDEF";
-    var color = "#";
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
-  const getRandomNumber = () => {
-    return Math.floor(Math.random() * 4) + 2;
-  };
-
-  const balls = Array.from({ length: getRandomNumber() }).map(() => {
-    return {
-      duration: getRandomDuration(),
-      color: getRandomColor(),
-    };
-  });
-
   const HandleExitQueue = async (username, userId) => {
     try {
       const { data } = await updateHost({
@@ -160,7 +94,6 @@ function WaitingRoom() {
     } catch (error) {
       console.error(error);
     }
-
     try {
       const { data } = await updateQueue({
         variables: {
@@ -171,11 +104,8 @@ function WaitingRoom() {
     } catch (error) {
       console.error(error);
     }
-
     window.location.href = "/choose-game";
   };
-  // for loop for players in queue to check if game has started
-
   // const HandleFillGame = async (gameId) => {
   //     console.log(gameId)
   //     try {
@@ -187,7 +117,6 @@ function WaitingRoom() {
   //         console.error(err);
   //     }
   // }
-
   const HandleStartGame = async (username, gameId, teamLimit) => {
     try {
       const { data } = await updateHost({
@@ -200,7 +129,6 @@ function WaitingRoom() {
     } catch (error) {
       console.error(error);
     }
-
     try {
       const { data } = await startGame({
         variables: {
@@ -209,13 +137,12 @@ function WaitingRoom() {
         },
       });
       console.log(data);
+      gameStarted = true;
     } catch (error) {
       console.error(error);
     }
-
-    window.location.href = "/gameplay";
+    window.location.href = "/gameplay?game=" + gameId;
   };
-
   return (
     <>
       <section className="min-h-screen">
@@ -278,7 +205,6 @@ function WaitingRoom() {
             </motion.p>
           )}
         </div>
-
         <div className="flex justify-center">
           {balls.map((ball, index) => (
             <div
@@ -311,7 +237,6 @@ function WaitingRoom() {
             </div>
           ))}
         </div>
-
         <div className="w-full overflow-hidden flex justify-center">
           <img
             className=" mx-auto w-[200rem] max-w-none"
@@ -323,5 +248,4 @@ function WaitingRoom() {
     </>
   );
 }
-
 export default WaitingRoom;
