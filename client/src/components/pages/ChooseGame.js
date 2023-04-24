@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import "../../styles/globals.css";
-import { BsFillMoonStarsFill } from "react-icons/bs";
 import Auth from "../../utils/auth"
 import { QUERY_SINGLE_USER } from "../../utils/queries"
 import { JOIN_QUEUE } from "../../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
-import Button from "../Button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import CreateGameModal from "../CreateGameModal";
 import CreateAIGameModal from "../CreateAIGameModal";
 import "../../styles/home.css";
@@ -97,7 +95,7 @@ function ChooseGame() {
             </div>
           </div>
           <div className="w-full overflow-hidden flex justify-center">
-            <img className=" mx-auto w-[200rem] max-w-none" src={mapFooter} />
+            <img className=" mx-auto w-[200rem] max-w-none" src={mapFooter} alt="img" />
           </div>
           {modalOn && (
             <CreateGameModal setModalOn={setModalOn} setChoice={setChoice} />

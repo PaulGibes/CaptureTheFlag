@@ -5,7 +5,7 @@ import { QUERY_SINGLE_USER } from "../utils/queries";
 import { CREATE_GAME, START_GAME } from "../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
     const handleCancelClick = () => {
@@ -53,7 +53,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
             console.log(data);
             const gameId = data.createGame._id;
 
-            handleStartGame(gameId)
+            handleStartGame(gameId, teamPlayers)
 
             window.location.href = "/gameplay?game=" + gameId;
 
@@ -62,10 +62,10 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
         }
     };
 
-    async function handleStartGame(game) {
+    async function handleStartGame(game, teamPlayers) {
         try {
             const { data } = await startGame({
-                variables: { gameId: game, teamLimit: 3 }
+                variables: { gameId: game, teamLimit: teamPlayers }
             });
 
             console.log(data);
@@ -120,7 +120,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                 <div className="w-80 mx-auto">
                                     <div className="flex justify-end items-center ">
                                         <label
-                                            htmlFor="flags"
+                                            htmlFor="flagsToWin"
                                             className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                                         >
                                             FLAGS TO WIN (1-10)
@@ -139,7 +139,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
                                     </div>
                                     <div className="flex justify-end items-center ">
                                         <label
-                                            htmlFor="flags"
+                                            htmlFor="teamPlayers"
                                             className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                                         >
                                             TEAM PLAYERS
