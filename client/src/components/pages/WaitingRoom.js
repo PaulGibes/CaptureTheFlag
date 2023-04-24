@@ -3,16 +3,19 @@ import "../../styles/globals.css";
 import { motion } from "framer-motion";
 import Auth from "../../utils/auth";
 import { QUERY_SINGLE_USER } from "../../utils/queries";
-import { EXIT_QUEUE, UPDATE_ISHOST, CREATE_GAME, FILL_GAME } from "../../utils/mutations";
+import { EXIT_QUEUE, UPDATE_ISHOST, FILL_GAME } from "../../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../../styles/home.css";
 import { mapFooter } from "../../assets/images";
 
 function WaitingRoom() {
     const [updateHost] = useMutation(UPDATE_ISHOST);
-    const [createGame] = useMutation(CREATE_GAME);
     const [updateQueue] = useMutation(EXIT_QUEUE);
     const [fillGame] = useMutation(FILL_GAME);
+
+    var urlParams = new URLSearchParams(window.location.search);
+    // console.log(urlParams.get('game'));
+    const gameId = urlParams.get('game')
 
     // first grabbing current user from local storage (auth.js)
     const currentUser = Auth.getUsername();
@@ -83,17 +86,7 @@ function WaitingRoom() {
         window.location.href = "/choose-game";
     };
 
-    const HandleCreateGame = async (username) => {
-        let gameId = ""
-        try {
-            const { data } = await createGame({
-                variables: { username },
-            });
-            console.log(data)
-            gameId = data.createGame._id
-        } catch (err) {
-            console.error(err);
-        }
+    const HandleCreateGame = async (username, gameId) => {
         // console.log(gameId)
         // try {
         //     const { data } = await fillGame({
@@ -167,7 +160,7 @@ function WaitingRoom() {
                     {data.user.isHost ? (
                         <div className="flex">
                             <motion.div
-                                onClick={() => HandleCreateGame(data.user.username)}
+                                onClick={() => HandleCreateGame(data.user.username, gameId)}
                                 className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
                                 whileHover={{ scale: 1.3 }}
                                 whileTap={{ scale: 0.9 }}

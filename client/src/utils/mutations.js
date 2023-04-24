@@ -25,8 +25,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_GAME = gql`
-  mutation createGame($username: String!) {
-    createGame(username: $username) {
+  mutation createGame($username: String!, $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
+    createGame(username: $username, flagsToWin: $flagsToWin,teamPlayers: $teamPlayers, difficulty: $difficulty,) {
       _id
       teamTwoCount
       teamOneCount
@@ -102,14 +102,3 @@ export const UPDATE_ISHOST = gql`
       }
     }
   `;
-
-// export const UPDATE_GAME = gql`
-//   mutation updateGame($gameId: ID!, $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
-//     updateGame(gameId: $gameId, flagsToWin: $flagsToWin, teamPlayers: $teamPlayers, difficulty: $difficulty) {
-//       _id
-//       flagsToWin
-//       teamPlayers
-//       difficulty
-//       }
-//     }
-//   `;

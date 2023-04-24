@@ -80,8 +80,8 @@ const resolver = {
       return { token, user };
     },
 
-    createGame: async (parent, { username }) => {
-      const game = Game.create({ username });
+    createGame: async (parent, { username, flagsToWin, teamPlayers, difficulty }) => {
+      const game = Game.create({ username, flagsToWin, teamPlayers, difficulty });
 
       return game;
     },
@@ -291,17 +291,6 @@ const resolver = {
       );
       return user;
     },
-
-    // updateGame: async (parent, { _id, flagsToWin, teamPlayers, difficulty }) => {
-    //   const game = await Game.findOneAndUpdate(
-    //     { _id: id },
-    //     { flagsToWin },
-    //     { teamPlayers },
-    //     { difficulty },
-    //     { new: true }
-    //   );
-    //   return game;
-    // },
   },
 };
 
