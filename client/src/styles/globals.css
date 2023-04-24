@@ -94,3 +94,14 @@ h6 {
 .glow-blue {
   box-shadow: 0px 1px 15px #4d9fff;
 }
+
+[id="1-5"],
+[id="2-5"],
+[id="5-7"] {
+  border-right: #ff6a13 4px solid;
+}
+[id="3-6"],
+[id="4-7"] {
+  border-right: #ff6a13 4px solid;
+  border-top: #ff6a13 4px solid;
+}
