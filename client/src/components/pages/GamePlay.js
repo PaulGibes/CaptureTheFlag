@@ -12,6 +12,7 @@ import Battlefield from "./Battlefield";
 import Auth from "../../utils/auth";
 import { QUERY_SINGLE_USER, GET_GAME } from "../../utils/queries";
 import { useQuery, useApolloClient } from "@apollo/client";
+import Countdown from "../../assets/sound/count5to0.wav";
 
 function GamePlay() {
   var baseField = [
@@ -170,6 +171,7 @@ function GamePlay() {
   //const fieldMap = ;
   return (
     <div className="mt-40">
+      <audio autoplay="true" src={Countdown}></audio>
       <div className="flex justify-between px-10">
         <div className="flex">
           <h2 className="text-xl text-white  mr-2">The Outsiders</h2>

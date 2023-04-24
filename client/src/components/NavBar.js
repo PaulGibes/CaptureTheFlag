@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import Music from "../assets/sound/neon-gaming.mp3"
+
 function NavBar() {
   // console.log("navbar");
   const [darkMode, setDarkMode] = useState(true);
@@ -108,6 +110,7 @@ function NavBar() {
 
   return (
     <div className="">
+      <audio autoplay="true" src={Music}></audio>
       <div className=" px-10 md:px-20 lg:px-40  ">
         <nav className="pb-10 mb-12">
           <div className="text-center absolute z-10 w-90 mx-auto left-0 right-0 flex flex-col justify-center items-center">
