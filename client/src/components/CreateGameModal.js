@@ -44,9 +44,6 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
 
   const userId = data.user._id;
 
-  const userId = data.user._id;
-
-
   const HandleJoinQueue = async (username, userId, flagsToWin, teamPlayers, difficulty) => {
     // console.log(Number(flagsToWin))
     // console.log(Number(teamPlayers))

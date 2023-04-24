@@ -133,8 +133,15 @@ function GamePlay() {
           baseField[22].player = player.username;
         }
       });
+
+      gameData.bots.forEach(bot => {
+
+        baseField[getIndex(bot.position)].player = bot.botName + " Team:" + bot.team;
+
+      });
+
       MapLogic.activatePossibleMoves(baseField);
-      localStorage.setItem("nextRound",JSON.stringify(baseField));
+      localStorage.setItem("nextRound", JSON.stringify(baseField));
     });
   }
 
