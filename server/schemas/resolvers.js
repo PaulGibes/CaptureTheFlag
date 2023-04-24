@@ -87,11 +87,11 @@ const resolver = {
     },
 
     //add a user to the queue
-    joinQueue: async (parent, { username }) => {
+    joinQueue: async (parent, { userId }) => {
       const queue = await Queue.findOneAndUpdate(
         {},
         {
-          $addToSet: { username },
+          $addToSet: { users: userId },
         },
         {
           new: true,
@@ -102,12 +102,12 @@ const resolver = {
     },
 
     // remove a user from the queue
-    exitQueue: async (parent, { username }) => {
+    exitQueue: async (parent, { userId }) => {
       // console.log(username);
       const queue = Queue.findOneAndUpdate(
         {},
         {
-          $pull: { users: username },
+          $pull: { users: userId },
         },
         {
           new: true,
