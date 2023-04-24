@@ -101,21 +101,35 @@ function GamePlay() {
       baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag"
 
       gameData.teamOne.forEach(player => {
-        let index = getIndex(player.position)
-        baseField[index].player = player.username;
-        
-        if(player.username == currentUser){
-          baseField[index].active = true;
-        }
+        if(player.position){
+          let index = getIndex(player.position);
+          baseField[index].player = player.username;
+         
+          if(player.username == currentUser){
+            baseField[index].active = true;
+          }
+        }else{
+          if(player.username == currentUser){
+            baseField[13].active = true;
+          }
+          baseField[13].player = player.username;
+        } 
       });
 
       gameData.teamTwo.forEach(player => {
+        if(player.position){
         let index = getIndex(player.position)
         baseField[index].player = player.username;
 
         if(player.username == currentUser){
           baseField[index].active = true;
         }
+       }else{
+        if(player.username == currentUser){
+          baseField[22].active = true;
+        }
+        baseField[22].player = player.username;
+       }
       });
 
       gameData.bots.forEach(bot => {
