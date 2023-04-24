@@ -2,7 +2,7 @@ import React from "react";
 import "../../styles/globals.css";
 import { Modal, Carousel, Button } from "flowbite-react";
 import { useState } from "react";
-import img1 from "../../assets/images/1.jpg";
+import img1 from "../../assets/images/htp-1.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 

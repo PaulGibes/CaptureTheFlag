@@ -25,6 +25,7 @@ const typeDefs = gql`
     position: String
     team: Int
     hasFlag: Boolean
+    image: String
   }
 
   type Game {
