@@ -1,71 +1,197 @@
-import { useState } from "react";
-import Button from "./Button";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Auth from "../utils/auth";
+import { QUERY_SINGLE_USER } from "../utils/queries";
+import { UPDATE_ISHOST } from "../utils/mutations";
+import { JOIN_QUEUE, CREATE_GAME } from "../utils/mutations";
+import { useQuery, useMutation } from "@apollo/client";
+import "../styles/modules.css";
+import { motion } from "framer-motion";
 
 const SettingsModal = ({ setModalOn, setChoice }) => {
-  const handleOKClick = () => {
-    setChoice(true);
-    setModalOn(false);
+  const [updateHost] = useMutation(UPDATE_ISHOST);
+  const [updateQueue] = useMutation(JOIN_QUEUE);
+  const [createGame] = useMutation(CREATE_GAME);
+
+  const [flagsToWin, setFlags] = useState(1);
+  const [teamPlayers, setPlayers] = useState(2);
+  const [difficulty, setDifficulty] = useState("easy");
+
+  const handleFlagsChange = (e) => {
+    setFlags(e.target.value);
   };
+
+  const handlePlayersChange = (e) => {
+    setPlayers(e.target.value);
+  };
+
+  const handleDifficultyChange = (e) => {
+    setDifficulty(e.target.value);
+  };
+
   const handleCancelClick = () => {
     setChoice(false);
     setModalOn(false);
   };
 
+  const currentUser = Auth.getUsername();
+  const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
+    variables: { username: currentUser },
+  });
+  // console.log(data)
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
+
+  const userId = data.user._id;
+
+  const HandleJoinQueue = async (
+    username,
+    userId,
+    flagsToWin,
+    teamPlayers,
+    difficulty
+  ) => {
+    console.log(Number(flagsToWin));
+    console.log(Number(teamPlayers));
+    console.log(difficulty);
+    flagsToWin = Number(flagsToWin);
+    teamPlayers = Number(teamPlayers);
+    let gameId = "";
+
+    try {
+      const { data } = await createGame({
+        variables: {
+          username,
+          teamOne: userId,
+          flagsToWin,
+          teamPlayers,
+          difficulty,
+        },
+      });
+      // console.log(data)
+      gameId = data.createGame._id;
+    } catch (err) {
+      console.error(err);
+    }
+
+    try {
+      const { data } = await updateHost({
+        variables: {
+          username: username,
+          isHost: true,
+        },
+      });
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const { data } = await updateQueue({
+        variables: {
+          userId: userId,
+        },
+      });
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    window.location.href =
+      "/waitingroom?game=" + gameId + "&teamPlayers=" + teamPlayers;
+  };
+
+  const backdrop = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  };
+
+  const modal = {
+    hidden: {
+      y: "-100vh",
+      opacity: 0,
+    },
+    visible: {
+      y: "0px",
+      opacity: 1,
+      transition: { delay: 0.2 },
+    },
+  };
+
   return (
     // fixed and inset-0 makes it expand to the entire screen. Opacity is what is behind it loses focus. A high z-index insures the modal will be on top
-    <div className="bg-zinc-200/75 fixed inset-0 z-50">
+    <div
+      className="bg-modal fixed inset-0 z-50"
+      variants={backdrop}
+      initial="hidden"
+      animate="visible"
+      exit={{ opacity: 0 }}
+    >
       <div className="flex h-screen justify-center items-center">
-        <div className="flex-col justify-center bg-white opacity-100 py-6 px-6 border-4 w-90 lg:w-1/3 border-sky-500 rounded-xl">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Game Settings
+        <motion.div
+          className="flex-col justify-center bg-modal-create opacity-100 w-4/5 sm:w-4/5 md:w-3/5 lg:w-2/5 h-3/5  "
+          variants={modal}
+        >
+          <button
+            onClick={handleCancelClick}
+            className=" text-gray-500 mt-10 float-right pr-20 hover:text-orange-500 "
+          >
+            Cancel X
+            {/* absolute top-5 right-20 sm:right-24 md:right-32 lg:right-28 */}
+          </button>
+          <h2 className="mt-10 mb-5 clear-both text-center text-2xl tracking-tight text-white">
+            SETTINGS
           </h2>
-          <div className="flex flex-col">
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" action="#" method="POST">
+          <div className="flex flex-col  mx-auto">
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              <form className="space-y-4" action="#" method="POST">
                 <div className="w-80 mx-auto">
                   <div className="flex justify-end items-center ">
                     <label
-                      htmlFor="flags"
-                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                      htmlFor="flagsToWin"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      Player Character
+                      FLAGS TO WIN
                     </label>
                     <div className="mt-2">
                       <input
-                        id="flags"
-                        name="flags"
+                        id="flagsToWin"
+                        name="flagsToWin"
                         type="text"
+                        placeholder="1 to 10"
                         required
-                        className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="text-center block w-full rounded-md border p-0 sm:py-1.5 text-white bg-transparent border-gray-600  shadow-sm ring-1 ring-inset   placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                        value={flagsToWin}
+                        onChange={handleFlagsChange}
                       />
                     </div>
                   </div>
                   <div className="flex justify-end items-center ">
                     <label
-                      htmlFor="flags"
-                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                      htmlFor="teamPlayers"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      AI Difficulty
+                      TEAM PLAYERS
                     </label>
                     <div className="mt-2">
-                      <ul class="flex w-full gap-2.5 ">
+                      <ul className="flex w-full gap-6 ">
                         <li>
                           <input
                             type="radio"
-                            id="eazy"
-                            name="players"
-                            value="2-players"
+                            id="2-players"
+                            name="teamPlayers"
+                            value={teamPlayers}
                             class="hidden peer"
+                            onChange={handlePlayersChange}
                             required
                           />
                           <label
-                            for="2-players"
-                            class="inline-flex items-center justify-between w-full px-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-green-800 dark:hover:bg-green-700"
+                            htmlFor="2-players"
+                            className="inline-flex items-center justify-between w-full px-8 text-white  border  border-gray-600  shadow-sm ring-1 ring-inset rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white peer-checked:ring-orange-400   peer-checked:border-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
                           >
-                            <div class="block">
-                              <div class="w-full text-sm text-center font-semibold">
-                                Eazy
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
+                                2
                               </div>
                             </div>
                           </label>
@@ -73,19 +199,52 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                         <li>
                           <input
                             type="radio"
-                            id="medium"
-                            name="players"
-                            value="2-players"
-                            class="hidden peer"
-                            required
+                            id="3-players"
+                            name="teamPlayers"
+                            value={teamPlayers}
+                            className="hidden peer"
+                            onChange={handlePlayersChange}
                           />
                           <label
-                            for="2-players"
-                            class="inline-flex items-center justify-between w-full px-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-blue-800 dark:hover:bg-blue-700"
+                            htmlFor="3-players"
+                            className="inline-flex items-center justify-between w-full px-8 text-white  border  border-gray-600  shadow-sm ring-1 ring-inset rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white peer-checked:ring-orange-400   peer-checked:border-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
                           >
-                            <div class="block">
-                              <div class="w-full text-sm text-center font-semibold">
-                                Med
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
+                                3
+                              </div>
+                            </div>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="flex justify-end items-center ">
+                    <label
+                      htmlFor="ai"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
+                    >
+                      DIFFICULTY
+                    </label>
+                    <div className="mt-2">
+                      <ul className="flex w-full gap-6 ">
+                        <li>
+                          <input
+                            type="radio"
+                            id="easy"
+                            name="difficulty"
+                            value="easy"
+                            class="hidden peer"
+                            required
+                            onChange={handleDifficultyChange}
+                          />
+                          <label
+                            htmlFor="easy"
+                            className="inline-flex items-center justify-between w-full px-8 text-white  border  border-gray-600  shadow-sm ring-1 ring-inset rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white peer-checked:ring-orange-400   peer-checked:border-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
+                          >
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
+                                Easy
                               </div>
                             </div>
                           </label>
@@ -94,16 +253,17 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                           <input
                             type="radio"
                             id="hard"
-                            name="players"
-                            value="3-players"
-                            class="hidden peer"
+                            name="difficulty"
+                            value="hard"
+                            className="hidden peer"
+                            onChange={handleDifficultyChange}
                           />
                           <label
-                            for="3-players"
-                            class="inline-flex items-center justify-between w-full px-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-red-800 dark:hover:bg-red-700"
+                            htmlFor="hard"
+                            className="inline-flex items-center justify-between w-full px-8 text-white  border  border-gray-600  shadow-sm ring-1 ring-inset rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white peer-checked:ring-orange-400   peer-checked:border-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  "
                           >
-                            <div class="block">
-                              <div class="w-full text-sm text-center font-semibold">
+                            <div className="block">
+                              <div className="w-full text-lg text-center font-semibold">
                                 Hard
                               </div>
                             </div>
@@ -112,12 +272,12 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                       </ul>
                     </div>
                   </div>
-                  <div className="flex justify-end  items-center">
+                  {/* <div className="flex justify-end  items-center">
                     <label
                       htmlFor="field"
-                      className="block text-sm text-right mr-6 font-medium leading-6 text-gray-900"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      Number of Flags
+                      BOARD SIZE
                     </label>
                     <div className="mt-2">
                       <input
@@ -125,64 +285,48 @@ const SettingsModal = ({ setModalOn, setChoice }) => {
                         name="field"
                         type="text"
                         required
-                        className="text-center block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="text-center block w-full rounded-md border p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                       />
                     </div>
-                  </div>
-                  <div className="flex justify-end items-center ">
+                  </div> */}
+                  {/* <div className="flex justify-end items-center ">
                     <label
                       htmlFor="ai"
-                      className="block text-sm text-right mr-8 font-medium leading-6 text-gray-900"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
                     >
-                      Clear High Scores
+                      AI LEVEL
                     </label>
-
                     <div className="mt-2">
-                      <ul class="flex w-full gap-8 ">
-                        <li>
-                          <input
-                            type="radio"
-                            id="hard"
-                            name="players"
-                            value="3-players"
-                            class="hidden peer"
-                          />
-                          <label class="inline-flex items-center justify-between w-full px-16 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-red-800 dark:hover:bg-red-700">
-                            <div class="block">
-                              <div class="w-full text-lg text-center font-semibold">
-                                Yes
-                              </div>
-                            </div>
-                          </label>
-                        </li>
-                      </ul>
+                      <input
+                        id="ai"
+                        name="ai"
+                        type="text"
+                        required
+                        className="text-center block w-full rounded-md border  p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                      />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex gap-10 mt-10">
-                    <button
-                      onClick={handleCancelClick}
-                      className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                    >
-                      Cancel
-                    </button>
                     <Link
-                      to={"/"}
-                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      onClick={handleCancelClick}
+                      className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white  border border-gray-500  shadow-sm ring-1 ring-inset   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                      style={{ cursor: "pointer" }}
                     >
-                      Save
+                      CANCEL
+                    </Link>
+                    <Link
+                      onClick={handleCancelClick}
+                      className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white  border border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                      style={{ cursor: "pointer" }}
+                    >
+                      SAVE
                     </Link>
                   </div>
                 </div>
               </form>
             </div>
-            {/* <button
-              onClick={handleOKClick}
-              className="rounded px-4 py-2 text-white bg-green-400"
-            >
-              Yes
-            </button> */}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

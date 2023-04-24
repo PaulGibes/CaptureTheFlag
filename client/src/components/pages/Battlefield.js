@@ -19,7 +19,8 @@ function Battlefield({ fieldMap }) {
         },
       });
 
-      document.getElementById(id).style.backgroundColor = "indigo";
+      document.getElementById(id).style.backgroundColor =
+        "rgba(255, 37, 37, 0.71)";
     } catch (err) {
       console.log(err);
     }
@@ -40,8 +41,8 @@ function Battlefield({ fieldMap }) {
             }
             className={
               fieldMap[index].active
-                ? "hover:bg-red-500/30 bg-red-500 border-solid border-2 border-gray-600 text-white cursor-pointer min-w-[100px] max-w-[100px] min-h-[100px] max-h-[100px]"
-                : "hover:bg-red-500/30 bg-transparent border-solid border-2 border-gray-600 text-white cursor-pointer min-w-[100px] max-w-[100px] min-h-[100px] max-h-[100px]"
+                ? "hover:bg-red-500/70 bg-red-500/20 border-solid border-2 border-gray-600 text-white cursor-pointer min-w-[100px] max-w-[100px] min-h-[100px] max-h-[100px]"
+                : "hover:bg-red-500/70 bg-transparent border-solid border-2 border-gray-600 text-white cursor-pointer min-w-[100px] max-w-[100px] min-h-[100px] max-h-[100px]"
             }
           >
             {fieldMap[index].player}

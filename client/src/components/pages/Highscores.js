@@ -24,8 +24,8 @@ function Highscores() {
       </div>
       <div className=" dark:bg-gray-900">
         <section className="min-h-screen">
-          <div className="flex flex-col px-10 py-10 md:px-20 lg:px-40 justify-center text-center clear-both">
-            <div className="bg-modal-highscore p-[30px]">
+          <div className="flex flex-col md:w-2/3 px-10 items-center md:mt-40 mx-auto highscore-board justify-center text-center clear-both">
+            <div className="bg-modal-highscore w-full p-[30px]">
               <HighscoreBoard />
             </div>
           </div>
