@@ -77,8 +77,10 @@ function GamePlay() {
     { id: "5-12", player: " ", active: false, image: "" },
   ];
 
+  //get updated data from local storage
   const mainField = JSON.parse(localStorage.getItem("nextRound")) || baseField;
 
+  //get game id from url params
   var urlParams = new URLSearchParams(window.location.search);
   console.log(urlParams.get("game"));
 
@@ -89,70 +91,68 @@ function GamePlay() {
   const client = useApolloClient();
 
   // fetch and update my position
-  function getMyPosition() {
- 
-
+  function updateMap() {
     client.query({
       query: GET_GAME,
       variables: { gameId: urlParams.get('game') },
       //fetchPolicy: "cache-first"   // select appropriate fetchPolicy
     }).then((response) => {
       const gameData = response.data.game;
+      console.log(gameData);
       baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag"
       baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag"
 
       gameData.teamOne.forEach(player => {
-        if(player.position){
+        if (player.position) {
           let index = getIndex(player.position);
           baseField[index].player = player.username;
-         
-          if(player.username == currentUser){
+
+          if (player.username == currentUser) {
             baseField[index].active = true;
           }
-        }else{
-          if(player.username == currentUser){
+        } else {
+          if (player.username == currentUser) {
             baseField[13].active = true;
           }
           baseField[13].player = player.username;
-        } 
+        }
       });
 
       gameData.teamTwo.forEach(player => {
-        if(player.position){
-        let index = getIndex(player.position)
-        baseField[index].player = player.username;
+        if (player.position) {
+          let index = getIndex(player.position)
+          baseField[index].player = player.username;
 
-        if(player.username == currentUser){
-          baseField[index].active = true;
+          if (player.username == currentUser) {
+            baseField[index].active = true;
+          }
+        } else {
+          if (player.username == currentUser) {
+            baseField[22].active = true;
+          }
+          baseField[22].player = player.username;
         }
-       }else{
-        if(player.username == currentUser){
-          baseField[22].active = true;
-        }
-        baseField[22].player = player.username;
-       }
- 
       });
+      MapLogic.activatePossibleMoves(baseField);
+      localStorage.setItem("nextRound",JSON.stringify(baseField));
+    });
   }
 
   function getIndex(value) {
     return baseField.findIndex((tile) => tile.id === value);
   }
 
-  function startTimer(display) {
+  function startTimer() {
     var timer = 5;
     console.log("Timer started");
     var interval = setInterval(function () {
       document.getElementById("timer").textContent = "00:0" + timer;
       if (timer == 1) {
-        //startNewRound(mainField);
-        getMyPosition();
+        updateMap();
       }
       if (timer == 0) {
-        getMyPosition();
         clearInterval(interval);
-        //startNewRound([...baseField]);
-       // window.location.reload();
+        window.location.reload();
       }
       timer--;
     }, 1000);
@@ -186,19 +186,6 @@ function GamePlay() {
         </div>
       </div>
       <Battlefield fieldMap={mainField} />
-      {/* <div className="grid grid-cols-12 p-10 min-h-screen">
-        {fieldMap.map((id, index) => {
-          return (
-            <div
-              key={fieldMap[index].id}
-              id={fieldMap[index].id}
-              onClick={fieldMap[index].active ? () => activeSpace(fieldMap[index].id) : doNothing}
-              className={"hover:bg-indigo-500 border-solid border-2 border-indigo-600 cursor-pointer min-h-[100px]"}
-              style={fieldMap[index].active ? { backgroundColor: "yellow" } : { backgroundColor: "white" }}
-            >{fieldMap[index].player}</div>
-          );
-        })}
-      </div> */}
     </div>
   );
 }

@@ -80,8 +80,8 @@ const resolver = {
       return { token, user };
     },
 
-    createGame: async (parent, { username, flagsToWin, teamPlayers, difficulty }) => {
-      const game = Game.create({ username, flagsToWin, teamPlayers, difficulty });
+    createGame: async (parent, { username, teamOne, flagsToWin, teamPlayers, difficulty }) => {
+      const game = Game.create({ username, teamOne, flagsToWin, teamPlayers, difficulty });
 
       return game;
     },

@@ -25,8 +25,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_GAME = gql`
-  mutation createGame($username: String!, $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
-    createGame(username: $username, flagsToWin: $flagsToWin,teamPlayers: $teamPlayers, difficulty: $difficulty,) {
+  mutation createGame($username: String!, $teamOne: [String!], $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
+    createGame(username: $username, teamOne: $teamOne flagsToWin: $flagsToWin,teamPlayers: $teamPlayers, difficulty: $difficulty,) {
       _id
       teamTwoCount
       teamOneCount
