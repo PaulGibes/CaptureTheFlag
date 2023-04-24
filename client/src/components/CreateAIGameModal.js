@@ -52,6 +52,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
 
             console.log(data);
             const gameId = data.createGame._id;
+            
 
             handleStartGame(gameId, teamPlayers)
 
@@ -65,7 +66,7 @@ const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
     async function handleStartGame(game, teamPlayers) {
         try {
             const { data } = await startGame({
-                variables: { gameId: game, teamLimit: teamPlayers }
+                variables: { gameId: game, teamLimit: 3 }
             });
 
             console.log(data);

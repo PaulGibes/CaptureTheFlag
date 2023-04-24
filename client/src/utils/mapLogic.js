@@ -17,7 +17,9 @@ class MapLogic {
             if (!(item < 0 || item > 59)) {
                 fieldMap[item].active = true;
             }
-        })
+        });
+        
+        fieldMap[index].active = false;
 
         return fieldMap;
     }
