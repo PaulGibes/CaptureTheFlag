@@ -198,6 +198,7 @@ const resolver = {
           var teamOnePositions = ["2-2", "3-3", "4-2"];
           var teamTwoPositions = ["2-11", "3-10", "4-11"];
 
+          //console.log(game.teamOne[0]._id);
           //update human positions for team one
           for (let i = 0; i < teamOne.length; i++) {
             User.findOneAndUpdate(
@@ -212,7 +213,7 @@ const resolver = {
               }
             );
           }
-
+          
           //update human positions for team two
           for (let i = 0; i < teamTwo.length; i++) {
             User.findOneAndUpdate(

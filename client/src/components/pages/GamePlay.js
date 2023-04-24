@@ -90,45 +90,48 @@ function GamePlay() {
 
   // fetch and update my position
   function getMyPosition() {
-    client
-      .query({
-        query: GET_GAME,
-        variables: { gameId: urlParams.get("game") },
-        //fetchPolicy: "cache-first"   // select appropriate fetchPolicy
-      })
-      .then((response) => {
-        const gameData = response.data.game;
-        baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag";
-        baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag";
+ 
 
-        gameData.teamOne.forEach((player) => {
+    client.query({
+      query: GET_GAME,
+      variables: { gameId: urlParams.get('game') },
+      //fetchPolicy: "cache-first"   // select appropriate fetchPolicy
+    }).then((response) => {
+      const gameData = response.data.game;
+      baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag"
+      baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag"
+
+      gameData.teamOne.forEach(player => {
+        if(player.position){
           let index = getIndex(player.position);
           baseField[index].player = player.username;
-
-          if (player.username == currentUser) {
+         
+          if(player.username == currentUser){
             baseField[index].active = true;
           }
-        });
-
-        gameData.teamTwo.forEach((player) => {
-          let index = getIndex(player.position);
-          baseField[index].player = player.username;
-
-          if (player.username == currentUser) {
-            baseField[index].active = true;
+        }else{
+          if(player.username == currentUser){
+            baseField[13].active = true;
           }
-        });
+          baseField[13].player = player.username;
+        } 
+      });
 
-        gameData.bots.forEach((bot) => {
-          baseField[getIndex(bot.position)].player =
-            bot.botName + " Team:" + bot.team;
-        });
+      gameData.teamTwo.forEach(player => {
+        if(player.position){
+        let index = getIndex(player.position)
+        baseField[index].player = player.username;
 
-        MapLogic.activatePossibleMoves(baseField);
-        localStorage.setItem("nextRound", JSON.stringify(baseField));
-      })
-      .catch((err) => {
-        console.log(err);
+        if(player.username == currentUser){
+          baseField[index].active = true;
+        }
+       }else{
+        if(player.username == currentUser){
+          baseField[22].active = true;
+        }
+        baseField[22].player = player.username;
+       }
+ 
       });
   }
 
