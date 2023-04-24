@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import Music from "../assets/sound/neon-gaming.mp3"
+import Music from "../assets/sound/neon-gaming.mp3";
 
 function NavBar() {
   // console.log("navbar");
@@ -104,6 +104,42 @@ function NavBar() {
     },
   };
 
+  const navbar = {
+    hidden: {
+      y: "-100vh",
+      opacity: 0,
+    },
+    visible: {
+      y: "0px",
+      opacity: 1,
+      transition: { duration: 2, delay: 0.2, type: "ease-in" },
+    },
+  };
+
+  const left = {
+    hidden: {
+      x: "-100vw",
+      opacity: 0,
+    },
+    visible: {
+      x: "0px",
+      opacity: 1,
+      transition: { duration: 2, delay: 0.2, type: "ease-in" },
+    },
+  };
+
+  const right = {
+    hidden: {
+      x: "100vw",
+      opacity: 0,
+    },
+    visible: {
+      x: "0px",
+      opacity: 1,
+      transition: { duration: 2, delay: 0.1, type: "ease-in" },
+    },
+  };
+
   // whileHover={{ scale: 1.2 }}
   //             whileTap={{ scale: 0.9 }}
   //             transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -113,7 +149,12 @@ function NavBar() {
       <audio autoplay="true" src={Music}></audio>
       <div className=" px-10 md:px-20 lg:px-40  ">
         <nav className="pb-10 mb-12">
-          <div className="text-center absolute z-10 w-90 mx-auto left-0 right-0 flex flex-col justify-center items-center">
+          <motion.div
+            variants={navbar}
+            initial="hidden"
+            animate="visible"
+            className="text-center absolute z-10 w-90 mx-auto left-0 right-0 flex flex-col justify-center items-center"
+          >
             <Link to={"/"}>
               <div className="w-full">
                 <img src={navbarGUI} />
@@ -144,13 +185,14 @@ function NavBar() {
                 </h1>
               ) : null}
             </div>
-          </div>
+          </motion.div>
           <Link to="/highscores">
             <motion.div
               className="flex items-center py-10 sm:pt-12 md:pt-16 absolute z-10  "
-              initial="rest"
+              variants={left}
+              initial="hidden"
+              animate="visible"
               whileHover="hover"
-              animate="rest"
             >
               <motion.div
                 className=" w-8 h-8 md:w-10 md:h-10 mx-2 box box-e cursor-pointer"
@@ -174,9 +216,10 @@ function NavBar() {
           <div className=" ">
             <motion.div
               onClick={clicked}
-              initial="rest"
+              variants={right}
+              initial="hidden"
+              animate="visible"
               whileHover="hover"
-              animate="rest"
               className=" flex items-center  cursor-pointer py-10 sm:pt-12 md:pt-16 relative z-10 pr-0 md:pr-10 float-right"
             >
               <motion.h2

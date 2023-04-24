@@ -11,17 +11,50 @@ import { terrain, stars } from "../../assets/images";
 function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [modalOn, setModalOn] = useState(false);
+  const [modalOn2, setModalOn2] = useState(false);
   const [choice, setChoice] = useState(false);
 
   const clicked = () => {
     setModalOn(true);
   };
+
+  const clicked2 = () => {
+    setModalOn2(true);
+  };
+
+  const map = {
+    hidden: {
+      y: "100vh",
+      opacity: 0,
+    },
+    visible: {
+      y: "0px",
+      opacity: 1,
+      transition: { duration: 2, delay: 0.2, type: "ease-in" },
+    },
+  };
+
+  const opacity = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      transition: { duration: 2, delay: 0.2, type: "ease-in" },
+    },
+  };
+
   return (
     <div className="bg-main">
       {/* <ParticlesBg className= "min-h-screen" type="square" bg={true} /> */}
-      <div className="absolute -top-[50%] z-0">
+      <motion.div
+        variants={opacity}
+        initial="hidden"
+        animate="visible"
+        className="absolute -top-[50%] z-0"
+      >
         <img src={stars} />
-      </div>
+      </motion.div>
       <div className=" dark:bg-gray-900">
         <section className="min-h-screen">
           <div className="flex flex-col px-10 py-10 md:px-20 lg:px-40 justify-center text-center clear-both">
@@ -41,13 +74,28 @@ function Home() {
               <div className="  md:text-xl">Log In to Play</div>
             </motion.div>
           </div>
-          <HowToPlay className="mt-5 z-10" />
-          <div className="w-full">
-            <img className=" mx-auto" src={terrain} />
+
+          <div
+            onClick={clicked2}
+            className="cursor-pointer flex items-center justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center "
+          >
+            <h3 className="z-10">How to Play</h3>
           </div>
+
+          <motion.div
+            className="w-full"
+            variants={map}
+            initial="hidden"
+            animate="visible"
+          >
+            <img className=" mx-auto" src={terrain} />
+          </motion.div>
 
           {modalOn && (
             <LoginModal setModalOn={setModalOn} setChoice={setChoice} />
+          )}
+          {modalOn2 && (
+            <HowToPlay setModalOn2={setModalOn2} setChoice={setChoice} />
           )}
         </section>
       </div>
