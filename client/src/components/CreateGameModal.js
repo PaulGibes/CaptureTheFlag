@@ -43,7 +43,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
   if (error) return `Error! ${error.message}`;
 
 
-  const HandleJoinQueue = async (username, flagsToWin, teamPlayers, difficulty) => {
+  const HandleJoinQueue = async (username, userId, flagsToWin, teamPlayers, difficulty) => {
     // console.log(Number(flagsToWin))
     // console.log(Number(teamPlayers))
     // console.log(difficulty)
@@ -75,10 +75,10 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
     try {
       const { data } = await updateQueue({
         variables: {
-          username: username
+          userId: userId
         },
       });
-      // console.log(data)
+      console.log(data)
     } catch (error) {
       console.error(error);
     }
@@ -244,7 +244,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
 
                   <div className="flex gap-10 mt-10">
                     <Link
-                      onClick={() => HandleJoinQueue(data.user.username, flagsToWin, teamPlayers, difficulty)}
+                      onClick={() => HandleJoinQueue(data.user.username, data.user._id, flagsToWin, teamPlayers, difficulty)}
                       className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white  border border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
                       style={{ cursor: "pointer" }}
                     >
