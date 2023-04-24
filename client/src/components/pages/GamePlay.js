@@ -12,6 +12,7 @@ import Battlefield from "./Battlefield";
 import Auth from "../../utils/auth";
 import { QUERY_SINGLE_USER, GET_GAME } from "../../utils/queries";
 import { useQuery, useApolloClient } from "@apollo/client";
+import Countdown from "../../assets/sound/count5to0.wav";
 
 function GamePlay() {
   var baseField = [
@@ -77,8 +78,10 @@ function GamePlay() {
     { id: "5-12", player: " ", active: false, image: "" },
   ];
 
+  //get updated data from local storage
   const mainField = JSON.parse(localStorage.getItem("nextRound")) || baseField;
 
+  //get game id from url params
   var urlParams = new URLSearchParams(window.location.search);
   console.log(urlParams.get("game"));
 
@@ -89,15 +92,14 @@ function GamePlay() {
   const client = useApolloClient();
 
   // fetch and update my position
-  function getMyPosition() {
-
-
+  function updateMap() {
     client.query({
       query: GET_GAME,
       variables: { gameId: urlParams.get('game') },
       //fetchPolicy: "cache-first"   // select appropriate fetchPolicy
     }).then((response) => {
       const gameData = response.data.game;
+      console.log(gameData);
       baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag"
       baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag"
 
@@ -131,8 +133,16 @@ function GamePlay() {
           }
           baseField[22].player = player.username;
         }
+      });
+
+      gameData.bots.forEach(bot => {
+
+        baseField[getIndex(bot.position)].player = bot.botName + " Team:" + bot.team;
 
       });
+
+      MapLogic.activatePossibleMoves(baseField);
+      localStorage.setItem("nextRound", JSON.stringify(baseField));
     });
   }
 
@@ -140,20 +150,17 @@ function GamePlay() {
     return baseField.findIndex((tile) => tile.id === value);
   }
 
-  function startTimer(display) {
+  function startTimer() {
     var timer = 5;
     console.log("Timer started");
     var interval = setInterval(function () {
       document.getElementById("timer").textContent = "00:0" + timer;
       if (timer == 1) {
-        //startNewRound(mainField);
-        getMyPosition();
+        updateMap();
       }
       if (timer == 0) {
-        getMyPosition();
         clearInterval(interval);
-        //startNewRound([...baseField]);
-        // window.location.reload();
+        window.location.reload();
       }
       timer--;
     }, 1000);
@@ -164,6 +171,7 @@ function GamePlay() {
   //const fieldMap = ;
   return (
     <div className="mt-40">
+      <audio autoplay="true" src={Countdown}></audio>
       <div className="flex justify-between px-10">
         <div className="flex">
           <h2 className="text-xl text-white  mr-2">The Outsiders</h2>
@@ -187,19 +195,6 @@ function GamePlay() {
         </div>
       </div>
       <Battlefield fieldMap={mainField} />
-      {/* <div className="grid grid-cols-12 p-10 min-h-screen">
-        {fieldMap.map((id, index) => {
-          return (
-            <div
-              key={fieldMap[index].id}
-              id={fieldMap[index].id}
-              onClick={fieldMap[index].active ? () => activeSpace(fieldMap[index].id) : doNothing}
-              className={"hover:bg-indigo-500 border-solid border-2 border-indigo-600 cursor-pointer min-h-[100px]"}
-              style={fieldMap[index].active ? { backgroundColor: "yellow" } : { backgroundColor: "white" }}
-            >{fieldMap[index].player}</div>
-          );
-        })}
-      </div> */}
     </div>
   );
 }
