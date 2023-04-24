@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import Auth from "../utils/auth"
-import { QUERY_SINGLE_USER } from "../utils/queries"
+import Auth from "../utils/auth";
+import { QUERY_SINGLE_USER } from "../utils/queries";
 import { CREATE_GAME, START_GAME } from "../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
 import { motion, AnimatePresence } from "framer-motion";
-
 
 const CreateAIGameModal = ({ setAIModalOn, setChoice }) => {
     const handleCancelClick = () => {

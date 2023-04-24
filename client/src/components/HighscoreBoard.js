@@ -10,19 +10,19 @@ function HighscoreBoard() {
 
   return (
     <div>
-      <Table>
-        <Table.Head>
+      <Table className="w-[17rem] mx-auto h-[20rem]">
+        <Table.Head className="bg-transparent accent">
           <Table.HeadCell>Username</Table.HeadCell>
           <Table.HeadCell>Wins</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {data &&
             data.scores.map((score) => (
-              <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              <Table.Row className="border-gray-500 ">
+                <Table.Cell className="whitespace-nowrap font-medium text-white">
                   {score.username}
                 </Table.Cell>
-                <Table.Cell>{score.wins}</Table.Cell>
+                <Table.Cell className="accent">{score.wins}</Table.Cell>
               </Table.Row>
             ))}
         </Table.Body>
