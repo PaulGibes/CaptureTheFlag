@@ -14,6 +14,14 @@ import { QUERY_SINGLE_USER, GET_GAME } from "../../utils/queries";
 import { useQuery, useApolloClient } from "@apollo/client";
 import Countdown from "../../assets/sound/count5to0.wav";
 
+import {
+  avatar1,
+  avatar2,
+  avatar3,
+  firstFalg,
+  secondFlag
+} from "../../assets/images";
+
 function GamePlay() {
   var baseField = [
     { id: "1-1", player: " ", active: false, image: "" },
@@ -78,6 +86,7 @@ function GamePlay() {
     { id: "5-12", player: " ", active: false, image: "" },
   ];
 
+  console.log(avatar1);
   //get updated data from local storage
   const mainField = JSON.parse(localStorage.getItem("nextRound")) || baseField;
 
@@ -104,6 +113,9 @@ function GamePlay() {
         console.log(gameData);
         baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag";
         baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag";
+
+        baseField[getIndex(gameData.flagOne)].image = firstFalg;
+        baseField[getIndex(gameData.flagTwo)].image = secondFlag;
 
         gameData.teamOne.forEach((player) => {
           if (player.position) {

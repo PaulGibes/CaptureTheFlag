@@ -14,3 +14,5 @@ export const avatar6 = require("./player-6.jpg");
 export const char1 = require("./character-1.png");
 export const char2 = require("./character-2.png");
 export const char3 = require("./character-3.png");
+export const firstFalg = require("./flag-blue.png");
+export const secondFlag = require("./flag-red.png");

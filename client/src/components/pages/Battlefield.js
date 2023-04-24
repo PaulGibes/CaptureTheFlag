@@ -46,6 +46,7 @@ function Battlefield({ fieldMap }) {
             }
           >
             {fieldMap[index].player}
+            <img src={fieldMap[index].image} />
           </div>
         );
       })}
