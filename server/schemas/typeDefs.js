@@ -61,9 +61,9 @@ const typeDefs = gql`
   type Mutation {
     addUser(username: String!, password: String!, image: String): Auth
     login(username: String!, password: String!): Auth
-    createGame(username: String!, flagsToWin: Int, teamPlayers: Int, difficulty: String): Game
-    joinQueue(userId: String!): Queue
-    exitQueue(userId: String!): Queue
+    createGame(username: String!, teamOne: [String!], flagsToWin: Int, teamPlayers: Int, difficulty: String): Game
+    joinQueue(username: String!): Queue
+    exitQueue(username: String!): Queue
     fillGame(gameId: ID!): Game
     startGame(gameId: ID!, teamLimit: Int!): Game
     updatePosition(username: String!, position: String!): User

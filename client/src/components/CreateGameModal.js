@@ -42,6 +42,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
 
+  const userId = data.user._id;
 
   const HandleJoinQueue = async (username, userId, flagsToWin, teamPlayers, difficulty) => {
     console.log(Number(flagsToWin))
@@ -50,9 +51,10 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
     flagsToWin = Number(flagsToWin);
     teamPlayers = Number(teamPlayers);
     let gameId = "";
+
     try {
       const { data } = await createGame({
-        variables: { username, flagsToWin, teamPlayers, difficulty },
+        variables: { username, teamOne: userId, flagsToWin, teamPlayers, difficulty },
       });
       // console.log(data)
       gameId = data.createGame._id;
