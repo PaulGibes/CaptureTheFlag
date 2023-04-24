@@ -59,23 +59,12 @@ function WaitingRoom() {
         };
     });
 
-    const HandleExitQueue = async (username) => {
+    const HandleExitQueue = async (username, userId) => {
         try {
-            const { data: { updateIsHost } } = await updateHost({
+            const { data } = await updateHost({
                 variables: {
                     username: username,
                     isHost: false
-                },
-            });
-            console.log(updateIsHost)
-        } catch (error) {
-            console.error(error);
-        }
-
-        try {
-            const { data } = await updateQueue({
-                variables: {
-                    username: username
                 },
             });
             console.log(data)
@@ -83,19 +72,30 @@ function WaitingRoom() {
             console.error(error);
         }
 
+        try {
+            const { data } = await updateQueue({
+                variables: {
+                    userId: userId
+                },
+            });
+            // console.log(data)
+        } catch (error) {
+            console.error(error);
+        }
+
         window.location.href = "/choose-game";
     };
 
-    const HandleCreateGame = async (username, gameId) => {
-        // console.log(gameId)
-        // try {
-        //     const { data } = await fillGame({
-        //         variables: { gameId },
-        //     });
-        //     console.log(data)
-        // } catch (err) {
-        //     console.error(err);
-        // }
+    const HandleCreateGame = async (username, userId, gameId) => {
+        console.log(gameId)
+        try {
+            const { data } = await fillGame({
+                variables: { gameId },
+            });
+            // console.log(data)
+        } catch (err) {
+            console.error(err);
+        }
 
         try {
             const { data } = await updateHost({
@@ -109,21 +109,20 @@ function WaitingRoom() {
             console.error(error);
         }
 
-        // try {
-        //     const { data } = await updateQueue({
-        //         variables: {
-        //             username: username
-        //         },
-        //     });
-        //     // nothing is being console.logged...
-        //     console.log(data)
-        // } catch (error) {
-        //     console.error(error);
-        // }
+        try {
+            const { data } = await updateQueue({
+                variables: {
+                    userId: userId
+                },
+            });
+            // console.log(data)
+        } catch (error) {
+            console.error(error);
+        }
 
         // i want to use the startGame function
 
-        // window.location.href = "/gameplay";
+        window.location.href = "/gameplay";
     }
 
     return (
@@ -131,7 +130,7 @@ function WaitingRoom() {
             <section className="min-h-screen">
                 <div className="mt-20">
                     <div className="w-80 mx-auto px-10 md:pt-10 md:mx-10">
-                        <button onClick={() => HandleExitQueue(data.user.username)}
+                        <button onClick={() => HandleExitQueue(data.user.username, data.user._id)}
                             className="btn btn-block btn-outsider mx-auto sm:mx-10 flex w-40 justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white shadow-sm  border border-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  "
                             style={{ cursor: "pointer" }}
                         >
@@ -160,7 +159,7 @@ function WaitingRoom() {
                     {data.user.isHost ? (
                         <div className="flex">
                             <motion.div
-                                onClick={() => HandleCreateGame(data.user.username, gameId)}
+                                onClick={() => HandleCreateGame(data.user.username, data.user._id, gameId)}
                                 className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
                                 whileHover={{ scale: 1.3 }}
                                 whileTap={{ scale: 0.9 }}
