@@ -15,6 +15,10 @@ const botSchema = new Schema(
     hasFlag: {
       type: Boolean,
       default: false
+    },
+    image:{
+      type: String,
+      default: "avatar-" + Math.floor(Math.random() * 3 + 1),
     }
   },
   {

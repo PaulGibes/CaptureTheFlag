@@ -235,15 +235,18 @@ const resolver = {
               botName: "Bot" + Math.floor(Math.random() * 50),
               position: null,
               team: null,
+              image: ""
             };
 
             if (teamTwo < teamOne) {
               botData.team = 2;
               botData.position = teamTwoPositions[teamTwo];
+              botData.image ="avatar-" + Math.floor(Math.random() * 3 + 1);
               teamTwo++;
             } else if (teamOne <= teamTwo) {
               botData.team = 1;
               botData.position = teamOnePositions[teamOne];
+              botData.image ="avatar-" + Math.floor(Math.random() * 3 + 1);
               teamOne++;
             }
 

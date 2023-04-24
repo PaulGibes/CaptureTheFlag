@@ -111,8 +111,8 @@ function GamePlay() {
       .then((response) => {
         const gameData = response.data.game;
         console.log(gameData);
-        baseField[getIndex(gameData.flagOne)].player = "TeamOne Flag";
-        baseField[getIndex(gameData.flagTwo)].player = "TeamTwo Flag";
+        baseField[getIndex(gameData.flagOne)].player = "Flag 1";
+        baseField[getIndex(gameData.flagTwo)].player = "Flag 2";
 
         baseField[getIndex(gameData.flagOne)].image = firstFalg;
         baseField[getIndex(gameData.flagTwo)].image = secondFlag;
@@ -121,7 +121,8 @@ function GamePlay() {
           if (player.position) {
             let index = getIndex(player.position);
             baseField[index].player = player.username;
-            //baseField[index].image = 
+            baseField[index].image = getAvatar(player.image);
+            console.log(player.image);
 
             if (player.username == currentUser) {
               baseField[index].active = true;
@@ -131,6 +132,7 @@ function GamePlay() {
               baseField[13].active = true;
             }
             baseField[13].player = player.username;
+            baseField[13].image = getAvatar(player.image);
           }
         });
 
@@ -138,6 +140,7 @@ function GamePlay() {
           if (player.position) {
             let index = getIndex(player.position);
             baseField[index].player = player.username;
+            baseField[index].image = getAvatar(player.image);
 
             if (player.username == currentUser) {
               baseField[index].active = true;
@@ -147,12 +150,14 @@ function GamePlay() {
               baseField[22].active = true;
             }
             baseField[22].player = player.username;
+            baseField[22].image = getAvatar(player.image);
           }
         });
 
         gameData.bots.forEach((bot) => {
           baseField[getIndex(bot.position)].player =
             bot.botName + " Team:" + bot.team;
+            baseField[getIndex(bot.position)].image = getAvatar(bot.image);
         });
 
         MapLogic.activatePossibleMoves(baseField);
@@ -164,8 +169,19 @@ function GamePlay() {
     return baseField.findIndex((tile) => tile.id === value);
   }
 
-  function getImage(){
+  function getAvatar(image){
+    var result;
+    if(image == "avatar-1"){
+      result = avatar1;
+    }
+    if(image == "avatar-2"){
+      result = avatar2;
+    }
+    if(image == "avatar-3"){
+      result = avatar3;
+    }
 
+    return result;
   }
 
   function startTimer() {

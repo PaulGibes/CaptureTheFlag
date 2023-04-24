@@ -48,12 +48,14 @@ export const GET_GAME = gql`
         username
         position
         hasFlag
+        image
       }
       teamTwo {
         _id
         username
         position
         hasFlag
+        image
       }
       flagOne
       flagTwo
@@ -62,6 +64,7 @@ export const GET_GAME = gql`
         botName
         position
         team
+        image
       }
       winner
       flagsToWin
