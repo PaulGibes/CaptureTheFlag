@@ -25,18 +25,21 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_GAME = gql`
-  mutation Mutation($status: String!, $teamOne: [String!]) {
-    createGame(status: $status, teamOne: $teamOne) {
+  mutation createGame($username: String!, $flagsToWin: Int, $teamPlayers: Int, $difficulty: String) {
+    createGame(username: $username, flagsToWin: $flagsToWin,teamPlayers: $teamPlayers, difficulty: $difficulty,) {
       _id
       teamTwoCount
       teamOneCount
       status
+      flagsToWin
+      teamPlayers
+      difficulty
     }
   }
 `;
 
 export const JOIN_QUEUE = gql`
-  mutation Mutation($username: String!) {
+  mutation joinQueue($username: String!) {
     joinQueue(username: $username) {
       userCount
       users {
@@ -47,7 +50,7 @@ export const JOIN_QUEUE = gql`
 `;
 
 export const EXIT_QUEUE = gql`
-  mutation Mutation($username: String!) {
+  mutation exitQueue($username: String!) {
     exitQueue(username: $username) {
       userCount
       users {
@@ -58,7 +61,7 @@ export const EXIT_QUEUE = gql`
 `;
 
 export const FILL_GAME = gql`
-  mutation Mutation($gameId: ID!) {
+  mutation fillGame($gameId: ID!) {
     fillGame(gameId: $gameId) {
       _id
     }
@@ -92,7 +95,7 @@ export const HAS_FLAG = gql`
 `;
 
 export const UPDATE_ISHOST = gql`
-  mutation Mutation($username: String!, $isHost: String!) {
+  mutation updateIsHost($username: String!, $isHost: Boolean!) {
     updateIsHost(username: $username, isHost: $isHost) {
       username
       isHost

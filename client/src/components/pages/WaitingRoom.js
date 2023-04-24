@@ -3,12 +3,20 @@ import "../../styles/globals.css";
 import { motion } from "framer-motion";
 import Auth from "../../utils/auth";
 import { QUERY_SINGLE_USER } from "../../utils/queries";
-import { EXIT_QUEUE } from "../../utils/mutations";
+import { EXIT_QUEUE, UPDATE_ISHOST, FILL_GAME } from "../../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../../styles/home.css";
 import { mapFooter } from "../../assets/images";
 
 function WaitingRoom() {
+    const [updateHost] = useMutation(UPDATE_ISHOST);
+    const [updateQueue] = useMutation(EXIT_QUEUE);
+    const [fillGame] = useMutation(FILL_GAME);
+
+    var urlParams = new URLSearchParams(window.location.search);
+    // console.log(urlParams.get('game'));
+    const gameId = urlParams.get('game')
+
     // first grabbing current user from local storage (auth.js)
     const currentUser = Auth.getUsername();
     // useQuery uses useState and setState internally
@@ -53,24 +61,69 @@ function WaitingRoom() {
 
     const HandleExitQueue = async (username) => {
         try {
-            const result = await useMutation({
-                mutation: EXIT_QUEUE,
+            const { data: { updateIsHost } } = await updateHost({
                 variables: {
-                    username: username
-                }
+                    username: username,
+                    isHost: false
+                },
             });
-
+            console.log(updateIsHost)
         } catch (error) {
             console.error(error);
         }
+
+        try {
+            const { data } = await updateQueue({
+                variables: {
+                    username: username
+                },
+            });
+            console.log(data)
+        } catch (error) {
+            console.error(error);
+        }
+
         window.location.href = "/choose-game";
     };
 
-    const HandleCreateGame = async () => {
-        // i want to query for an array of users in the queue array
-        // i want to use the createGame mutation to create a game
-        // i want to use the fillGame mutation to fill the game with up to 6 players or bots
-        window.location.href = "/choose-game";
+    const HandleCreateGame = async (username, gameId) => {
+        // console.log(gameId)
+        // try {
+        //     const { data } = await fillGame({
+        //         variables: { gameId },
+        //     });
+        //     console.log(data)
+        // } catch (err) {
+        //     console.error(err);
+        // }
+
+        try {
+            const { data } = await updateHost({
+                variables: {
+                    username: username,
+                    isHost: false
+                },
+            });
+            // console.log(data)
+        } catch (error) {
+            console.error(error);
+        }
+
+        // try {
+        //     const { data } = await updateQueue({
+        //         variables: {
+        //             username: username
+        //         },
+        //     });
+        //     // nothing is being console.logged...
+        //     console.log(data)
+        // } catch (error) {
+        //     console.error(error);
+        // }
+
+        // i want to use the startGame function
+
+        // window.location.href = "/gameplay";
     }
 
     return (
@@ -107,7 +160,7 @@ function WaitingRoom() {
                     {data.user.isHost ? (
                         <div className="flex">
                             <motion.div
-                                //   onClick={clicked}
+                                onClick={() => HandleCreateGame(data.user.username, gameId)}
                                 className="bg-btn hover:bg-btn-h cursor-pointer justify-center w-1/3 h-20 mx-auto p-2 z-10  text-white text-center"
                                 whileHover={{ scale: 1.3 }}
                                 whileTap={{ scale: 0.9 }}

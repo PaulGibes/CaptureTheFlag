@@ -1,15 +1,33 @@
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import Auth from "../utils/auth";
-import { QUERY_SINGLE_USER } from "../utils/queries";
-import { UPDATE_ISHOST } from "../utils/mutations";
-import { JOIN_QUEUE } from "../utils/mutations";
+import Auth from "../utils/auth"
+import { QUERY_SINGLE_USER } from "../utils/queries"
+import { UPDATE_ISHOST } from "../utils/mutations"
+import { JOIN_QUEUE, CREATE_GAME } from "../utils/mutations";
 import { useQuery, useMutation } from "@apollo/client";
 import "../styles/modules.css";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CreateGameModal = ({ setModalOn, setChoice }) => {
-  const updateHost = useMutation(UPDATE_ISHOST);
-  const updateQueue = useMutation(JOIN_QUEUE);
+  const [updateHost] = useMutation(UPDATE_ISHOST);
+  const [updateQueue] = useMutation(JOIN_QUEUE);
+  const [createGame] = useMutation(CREATE_GAME);
+
+  const [flagsToWin, setFlags] = useState(1);
+  const [teamPlayers, setPlayers] = useState(2);
+  const [difficulty, setDifficulty] = useState('easy');
+
+  const handleFlagsChange = (e) => {
+    setFlags(e.target.value);
+  };
+
+  const handlePlayersChange = (e) => {
+    setPlayers(e.target.value);
+  };
+
+  const handleDifficultyChange = (e) => {
+    setDifficulty(e.target.value);
+  };
 
   const handleCancelClick = () => {
     setChoice(false);
@@ -20,33 +38,53 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
   const { loading, error, data } = useQuery(QUERY_SINGLE_USER, {
     variables: { username: currentUser },
   });
-  if (loading) return "Loading...";
+  // console.log(data)
+  if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  const HandleJoinQueue = async (username) => {
-    // try {
-    //   const { isHostResult } = await updateHost({
-    //     variables: {
-    //       username: username,
-    //       isHost: true
-    //     },
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
 
-    // try {
-    //   const { joinQueueResult } = await updateQueue({
-    //     variables: {
-    //       username: username
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
+  const HandleJoinQueue = async (username, flagsToWin, teamPlayers, difficulty) => {
+    // console.log(Number(flagsToWin))
+    // console.log(Number(teamPlayers))
+    // console.log(difficulty)
+    flagsToWin = Number(flagsToWin)
+    teamPlayers = Number(teamPlayers)
+    let gameId = ""
+    try {
+      const { data } = await createGame({
+        variables: { username, flagsToWin, teamPlayers, difficulty },
+      });
+      // console.log(data)
+      gameId = data.createGame._id
+    } catch (err) {
+      console.error(err);
+    }
 
-    window.location.href = "/waitingroom";
-  };
+    try {
+      const { data } = await updateHost({
+        variables: {
+          username: username,
+          isHost: true
+        },
+      });
+      // console.log(data)
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const { data } = await updateQueue({
+        variables: {
+          username: username
+        },
+      });
+      // console.log(data)
+    } catch (error) {
+      console.error(error);
+    }
+
+    window.location.href = "/waitingroom?game=" + gameId;
+  }
 
   const backdrop = {
     visible: { opacity: 1 },
@@ -94,21 +132,29 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
               <form className="space-y-4" action="#" method="POST">
                 <div className="w-80 mx-auto">
                   <div className="flex justify-end items-center ">
-                    <label className="block text-sm text-right mr-6 font-medium leading-6 text-white">
+                    <label
+                      htmlFor="flagsToWin"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
+                    >
                       FLAGS TO WIN (1-10)
                     </label>
                     <div className="mt-2">
                       <input
-                        id="flags"
-                        name="flags"
+                        id="flagsToWin"
+                        name="flagsToWin"
                         type="text"
                         required
                         className="text-center block w-full rounded-md border p-0 sm:py-1.5 text-white bg-transparent border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                        value={flagsToWin}
+                        onChange={handleFlagsChange}
                       />
                     </div>
                   </div>
                   <div className="flex justify-end items-center ">
-                    <label className="block text-sm text-right mr-6 font-medium leading-6 text-white">
+                    <label
+                      htmlFor="flagsToWin"
+                      className="block text-sm text-right mr-6 font-medium leading-6 text-white"
+                    >
                       TEAM PLAYERS
                     </label>
                     <div className="mt-2">
@@ -117,9 +163,10 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                           <input
                             type="radio"
                             id="2-players"
-                            name="players"
-                            value="2-players"
-                            className="hidden peer"
+                            name="teamPlayers"
+                            value={teamPlayers}
+                            class="hidden peer"
+                            onChange={handlePlayersChange}
                             required
                           />
                           <label className="inline-flex items-center justify-between w-full px-8 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
@@ -134,9 +181,10 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                           <input
                             type="radio"
                             id="3-players"
-                            name="players"
-                            value="3-players"
-                            className="hidden peer"
+                            name="teamPlayers"
+                            value={teamPlayers}
+                            class="hidden peer"
+                            onChange={handlePlayersChange}
                           />
                           <label className="inline-flex items-center justify-between w-full px-8 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
                             <div className="block">
@@ -163,6 +211,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                             value="easy"
                             className="hidden peer"
                             required
+                            onChange={handleDifficultyChange}
                           />
                           <label className="inline-flex items-center justify-between w-full px-6 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
                             <div className="block">
@@ -178,7 +227,8 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
                             id="hard"
                             name="difficulty"
                             value="hard"
-                            className="hidden peer"
+                            class="hidden peer"
+                            onChange={handleDifficultyChange}
                           />
                           <label className="inline-flex items-center justify-between w-full px-6 text-white  border  border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 rounded-md cursor-pointer peer-checked:bg-orange-500 peer-checked:text-white hover:text-orange-500 hover:border-orange-500 hover:bg-gray-100 btn-outsider  ">
                             <div className="block">
@@ -194,7 +244,7 @@ const CreateGameModal = ({ setModalOn, setChoice }) => {
 
                   <div className="flex gap-10 mt-10">
                     <Link
-                      onClick={() => HandleJoinQueue(data.user.username)}
+                      onClick={() => HandleJoinQueue(data.user.username, flagsToWin, teamPlayers, difficulty)}
                       className="btn btn-block btn-outsider flex w-full justify-center rounded-md   px-3 py-1.5 text-sm   leading-6 text-white  border border-orange-500  shadow-sm ring-1 ring-inset ring-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
                       style={{ cursor: "pointer" }}
                     >
