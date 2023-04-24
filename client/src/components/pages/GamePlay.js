@@ -121,6 +121,7 @@ function GamePlay() {
           if (player.position) {
             let index = getIndex(player.position);
             baseField[index].player = player.username;
+            //baseField[index].image = 
 
             if (player.username == currentUser) {
               baseField[index].active = true;
@@ -161,6 +162,10 @@ function GamePlay() {
 
   function getIndex(value) {
     return baseField.findIndex((tile) => tile.id === value);
+  }
+
+  function getImage(){
+
   }
 
   function startTimer() {
